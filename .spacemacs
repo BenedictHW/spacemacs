@@ -1,12 +1,6 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
-(defmacro with-system-name (name &rest body)
-  "Evaluate BODY if `system-name' equals NAME.
-  BHW-THINKPAD is my laptop. localhost is my rooted termux phone."
-  (declare (indent defun))
-  `(when (string-equal system-name ',name)
-     ,@body))
 (defconst +project-maria-dir+ "/home/ben/project-maria/"
   "On UNIX likes, expands to /home/ben/project-maria/")
 (defconst +project-jerome-dir+ "/home/ben/project-jerome/"
@@ -456,6 +450,7 @@
    dotspacemacs-frozen-packages
    '(;; Otherwise it will reinstall itself
      helm-swoop
+     mu4e
      )
 
    ;; A list of packages that will not be installed and loaded.
@@ -990,11 +985,11 @@ package is loaded, you should place your code here."
   (define-key calc-mode-map (kbd "C-o") 'casual-main-menu)
   (require 'gptel)
   (require 'auth-source)
-
+  
   (defun bhw/switch-to-llm-buffer ()
     (interactive)
     (switch-to-buffer "*Gemini*"))
-
+  
   (defun get-authinfo-password (machine login)
     (let ((credential (auth-source-search :max 1
                                           :host machine
@@ -1018,7 +1013,7 @@ package is loaded, you should place your code here."
      (programming . "You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.")
      (writing . "You are a large language model and a writing assistant. Respond concisely.")
      (chat . "You are a large language model and a conversation partner. Respond concisely.")))
-
+  
   (spacemacs/set-leader-keys
     (kbd "al") #'bhw/switch-to-llm-buffer)
   (add-hook 'eww-after-render-hook 'eww-readable)
@@ -1028,30 +1023,30 @@ package is loaded, you should place your code here."
   (require 'youtube-sub-extractor)
   (require 'ement)
   (evil-collection-ement-setup)
-
+  
   (spacemacs/set-leader-keys
     (kbd "acM") #'ement-connect
     (kbd "acm") #'ement-list-rooms
     (kbd "acn") #'ement-notify-switch-to-notifications-buffer
     (kbd "acc") #'ement-room-send-message
     (kbd "acv") #'ement-view-room)
-
+  
   (evilified-state-evilify-map ement-room-mode-map
     :mode ement-room-mode
     :eval-after-load ement-room
     :bindings
     ";" #'helm-occur
     "n" #'ement-room-scroll-up-mark-read)
-
+  
   (evilified-state-evilify-map ement-room-list-mode-map
     :mode ement-room-list-mode
     :eval-after-load ement-room-list
     :bindings
     ";" #'helm-occur
     "n" #'ement-room-list-next-unread)
-
+  
   (add-hook 'ement-room-compose-hook 'ement-room-compose-org)
-
+  
   (setf ement-save-sessions t
         ement-room-mark-rooms-read 'send
         ement-room-send-typing nil)
@@ -1178,26 +1173,26 @@ package is loaded, you should place your code here."
                                    file pages file file file)))
               (pdf-view-revert-buffer nil t)
             (error "Rotation error!"))))))
-
+  
   (defun pdf-view-rotate-clockwise (&optional arg)
     "Rotate PDF page 90 degrees clockwise.  With prefix ARG, rotate
   entire document."
     (interactive "P")
     (pdf-view--rotate nil (not arg)))
-
+  
   (defun pdf-view-rotate-counterclockwise (&optional arg)
     "Rotate PDF page 90 degrees counterclockwise.  With prefix ARG,
   rotate entire document."
     (interactive "P")
     (pdf-view--rotate :counterclockwise (not arg)))
-
+  
   (define-key spacemacs-pdf-view-mode-map (kbd "R") 'pdf-view-rotate-clockwise)
   (setf forge-owned-accounts '(("BenedictHW" :remote-name "origin"))
         magit-save-repository-buffers 'dontask)
   ;;-------------------------------------------------------------------------
   ;; ***  Emacs Jupyter Config
   ;;-------------------------------------------------------------------------
-
+  
   (setf dired-omit-mode t
         ;; Stop asking to quit dired buffers of deleted files
         dired-clean-up-buffers-too nil)
@@ -1347,7 +1342,7 @@ package is loaded, you should place your code here."
                   (or (string= msg "Modified buffers exist; exit anyway? ")
                       (funcall real-yes-or-no-p msg)))))
       (funcall oldfn arg)))
-
+  
   (advice-add #'save-buffers-kill-emacs :around #'site/always-save-advice)
   ;; Spacemacs default is 60 seconds. Ridiculous.
   (setf auto-save-interval 1000
@@ -1418,11 +1413,11 @@ package is loaded, you should place your code here."
     ;; See /home/ben/.config/fd/ignore
     (require 'helm-fd)
     (require 'helm-ag)
-
+  
     (defvar bhw/helm-source-fd
       (helm-make-source "fd-find" 'helm-fd-class)
       "For use of FD in `helm-for-files'. See also `helm-fd-switches'")
-
+  
     ;; HACK If (error "Candidates function ‘(closure (t) nil
     ;; (helm-ag--do-ag-candidate-process +project-maria-dir+))’ should run a
     ;; process") Then eval-current-form-sp on the form below.
@@ -1434,7 +1429,7 @@ package is loaded, you should place your code here."
       "To search Project Maria files from `helm-for-files'.
   `helm-ag--do-ag-set-source' used as exemplar. You may have to run
   `helm-projectile-ag' once for fuzzy matching to kick in :O.")
-
+  
     (defvar bhw/helm-source-emacs-commands
       (helm-build-sync-source "Emacs Commands"
         :candidates (lambda ()
@@ -1446,7 +1441,7 @@ package is loaded, you should place your code here."
         :coerce #'intern-soft
         :action #'command-execute)
       "A simple helm source for Emacs commands. Used in `helm-for-files'.")
-
+  
     (setf ace-jump-helm-line-default-action 'select
           ace-jump-helm-line-idle-delay 1
           helm-ff-auto-update-initial-value t
@@ -1462,7 +1457,7 @@ package is loaded, you should place your code here."
           helm-fd-switches '("--search-path" "/home/ben" "--hidden" "--type" "f"
                              "--type" "d" "--color" "never" "--max-results" "10"
                              "--full-path"))
-
+  
     (spacemacs/set-leader-keys "SPC" #'helm-for-files)
     (define-key helm-map (kbd "C-q") nil) ; Replace default binding.
     (define-key helm-map (kbd "C-d") 'ace-jump-helm-line)
@@ -1566,11 +1561,11 @@ package is loaded, you should place your code here."
   (advice-add 'org-id-get-create :after 'org-expiry-insert-created)
   (require 'org-depend)
   (require 'cl-lib)
-
+  
   (org-clock-persistence-insinuate)
-
+  
   (add-hook 'org-clock-in-prepare-hook 'my-org-mode-ask-effort)
-
+  
   (defun my-org-mode-ask-effort ()
     "Ask for an effort estimate when clocking in if none exists."
     (unless (org-entry-get (point) "Effort")
@@ -1580,16 +1575,16 @@ package is loaded, you should place your code here."
               (org-entry-get-multivalued-property (point) "Effort"))))
         (unless (equal effort "")
           (org-set-property "Effort" effort)))))
-
+  
   (defun eos/org-clock-in ()
     (interactive)
     (org-clock-in '(4)))
-
+  
   ;; Exclude DONE state tasks from refile targets
   (defun bh/verify-refile-target ()
     "Exclude todo keywords with a done state from refile targets"
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-
+  
   ;; https://orgmode.org/worg/org-contrib/org-depend.html
   (defun mm/org-insert-trigger ()
     "Automatically insert chain-find-next trigger when entry becomes NEXT"
@@ -1603,11 +1598,11 @@ package is loaded, you should place your code here."
     (defcustom ap/work:clocked-today-ids nil
       "List of Org heading IDs containing clocktables to read."
       :type '(repeat string))
-
+  
     (defcustom ap/work:clocked-today-interval 30
       "Update the clocktables after this many seconds of idle time."
       :type 'number)
-
+  
     ;; HACK: This version just uses the value as-is, expecting it to be a
     ;; decimal number with "h" suffix, and it only uses the first value in
     ;; the ID list.
@@ -1634,11 +1629,11 @@ package is loaded, you should place your code here."
           (when messagep
             (message "Clocked today: %s" string))
           string)))
-
+  
     (defvar ap/work:clocked-today-lighter "")
-
+  
     (defvar ap/work:clocked-today-timer nil)
-
+  
     (define-minor-mode ap/work:clocked-today-mode
       "Show time clocked today in mode line."
       :global t
@@ -1655,7 +1650,7 @@ package is loaded, you should place your code here."
             (cancel-timer ap/work:clocked-today-timer))
           (setf global-mode-string
                 (remove lighter global-mode-string))))))
-
+  
   (spacemacs/set-leader-keys "oa" 'hanshen/default-custom-agenda)
   (spacemacs/set-leader-keys "oj" 'spacemacs/org-clock-jump-to-current-clock)
   (spacemacs/set-leader-keys "oi" 'eos/org-clock-in)
@@ -1663,7 +1658,7 @@ package is loaded, you should place your code here."
   (spacemacs/set-leader-keys "oo" 'org-clock-out)
   (spacemacs/set-leader-keys "or" 'org-resolve-clocks)
   (spacemacs/set-leader-keys "oc" 'org-capture)
-
+  
   ;; Press t to change task todo state
   (setf
    org-use-fast-todo-selection t
@@ -1768,13 +1763,13 @@ package is loaded, you should place your code here."
            "archived-tasks/0taskings-"
            (format-time-string "%Y") ".org::datetree/")
    org-archive-save-context-info '(time category olpath ltags itags))
-
+  
   (add-hook 'org-agenda-mode-hook
             (lambda ()
               (define-key
                org-agenda-mode-map (kbd "s")
                'avy-goto-word-or-subword-1)))
-
+  
   (defun my/org-agenda-calculate-efforts (limit)
     "Sum the efforts of scheduled entries up to LIMIT in the
   agenda buffer."
@@ -1788,7 +1783,7 @@ package is loaded, you should place your code here."
        (cl-reduce #'+
                   (mapcar #'org-duration-to-minutes
                           (cl-remove-if-not 'identity total))))))
-
+  
   (defun my/org-agenda-insert-efforts ()
     "Insert the efforts for each day inside the agenda buffer."
     (save-excursion
@@ -1802,14 +1797,14 @@ package is loaded, you should place your code here."
                                        (next-single-property-change (point) 'day))
                                       ")"))
           (forward-line)))))
-
+  
   (add-hook 'org-agenda-finalize-hook 'my/org-agenda-insert-efforts)
-
+  
   (defun hanshen/default-custom-agenda()
     "Functionally call custom agenda command bound to KEY"
     (interactive)
     (org-agenda nil "d"))
-
+  
   (setf
    org-agenda-block-separator 61
    org-agenda-breadcrumbs-separator " | "
@@ -1992,7 +1987,7 @@ package is loaded, you should place your code here."
                    (org-agenda-entry-types '(:timestamp :sexp :scheduled))
                    (org-agenda-overriding-header "Routine & Appointments\n")
                    ))
-
+  
        )
       ((org-agenda-tag-filter-preset '("-SDAY")))
       )
@@ -2190,7 +2185,7 @@ package is loaded, you should place your code here."
       ((org-agenda-tag-filter-preset '("-SDAY")))
       )
      ))
-
+  
   ;; Following 2 lines are needed to exclude parent heading from table of contents but still export the content
   ;; https://emacs.stackexchange.com/questions/30183/orgmode-export-skip-ignore-first-headline-level
   (require 'ox-extra)
@@ -2265,13 +2260,13 @@ package is loaded, you should place your code here."
                                     <h1 class=\"title\">%t</h1>
                                     <p class=\"subtitle\">%s</p> <br/>
                                     <p class=\"updated\"><a href=\"/contact#article-history\">Updated:</a> %C</p>"
-
+  
            ;; Article Postamble includes
            ;; Javascript snippet to insert anchor links to Table of Contents
            ;; HTML Footer
            :html-postamble "<script>
                               const headers = Array.from( document.querySelectorAll('h2, h3, h4, h5, h6') );
-
+  
                               headers.forEach( header => {
                                 header.insertAdjacentHTML('afterbegin',
                                  '<a href=\"#table-of-contents\">&#8689;</a>'
@@ -2310,10 +2305,10 @@ package is loaded, you should place your code here."
   (defun my/ensure-headline-ids (&rest _)
     "Org trees without a custom ID will have
                               All non-alphanumeric characters are cleverly replaced with ‘-’.
-
+  
                               If multiple trees end-up with the same id property, issue a
                               message and undo any property insertion thus far.
-
+  
                               E.g., ↯ We'll go on a ∀∃⇅ adventure
                                  ↦  We'll-go-on-a-adventure
                               "
@@ -2336,7 +2331,7 @@ package is loaded, you should place your code here."
                  (undo)
                  (setq quit-flag t))
                (org-entry-put nil "CUSTOM_ID" id))))))))
-
+  
   ;; Whenever html & md export happens, ensure we have headline ids.
   (advice-add 'org-html-export-to-html   :before 'my/ensure-headline-ids)
   (advice-add 'org-md-export-to-markdown :before 'my/ensure-headline-ids)
@@ -2416,7 +2411,6 @@ package is loaded, you should place your code here."
   ;; (setq wolfram-path "~/.WolframEngine/Applications") ;; e.g. on Linux ~/.Mathematica/Applications
   ;; For wolfram-mode
   ;; (setq mathematica-command-line "~/project-maria/mash.pl")
-  ;; (setq org-confirm-babel-evaluate nil)
   ;; (setq org-babel-python-command "/usr/bin/python3")
   ;; enable proper mode for sagemath code blocks
   ;; (add-to-list 'org-src-lang-modes '("jupyter-sage" . python))
@@ -2429,7 +2423,6 @@ package is loaded, you should place your code here."
                       (or
                        (org-entry-get (point) "tangle-dir" 'inherit)
                        (default-directory))))
-  (setf org-confirm-babel-evaluate nil)
   ;;-------------------------------------------------------------------------
   ;; ***  Org Recoll Config
   ;;-------------------------------------------------------------------------
@@ -2447,7 +2440,7 @@ package is loaded, you should place your code here."
   (require 'org-expiry)
   ;; Add CREATED property when adding a new org-brain headline entry
   (add-hook 'org-brain-new-entry-hook #'org-expiry-insert-created)
-
+  
   (spacemacs/set-leader-keys "o SPC" 'org-brain-visualize-dwim)
   ;; For evil users,
   (with-eval-after-load 'evil
@@ -2470,7 +2463,7 @@ package is loaded, you should place your code here."
                                 org-expiry-created-property-name)))))
       (cond ((if ta (and tb (< ta tb)) tb) -1)
             ((if tb (and ta (< tb ta)) ta) +1))))
-
+  
   (defun org-brain-timeline ()
     "List all org-brain headlines in chronological order."
     (interactive)
@@ -2478,7 +2471,7 @@ package is loaded, you should place your code here."
           (org-agenda-cmp-user-defined #'org-expiry-created-comp)
           (org-agenda-sorting-strategy '(user-defined-down)))
       (org-tags-view nil (format "+%s>\"\"" org-expiry-created-property-name))))
-
+  
   (defun org-brain-cliplink-resource ()
     "Add a URL from the clipboard as an org-brain resource.
                   Suggest the URL title as a description for resource."
@@ -2488,9 +2481,9 @@ package is loaded, you should place your code here."
        url
        (org-cliplink-retrieve-title-synchronously url)
        t)))
-
+  
   (define-key org-brain-visualize-mode-map (kbd "L") #'org-brain-cliplink-resource)
-
+  
   ;; Prettify the lines via aa2u package, or ascii art to unicode
   (defface aa2u-face '((t . nil))
     "Face for aa2u box drawing characters")
@@ -2551,9 +2544,9 @@ package is loaded, you should place your code here."
       (if (file-exists-p pdf-file)
           (find-file pdf-file)
         (message "No PDF found for %s" key))))
-
+  
   (spacemacs/set-leader-keys "s SPC" 'helm-bibtex)
-
+  
   (setf
    org-bibtex-file (concat +project-maria-dir+ "project-jerome.bib")
    reftex-default-bibliography (list (concat +project-maria-dir+ "project-jerome.bib"))
@@ -2695,104 +2688,103 @@ package is loaded, you should place your code here."
      (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
      (default       . bibtex-completion-format-citation-default))
    helm-source-bibtex org-ref-helm-source-bibtex)
-  (with-system-name "bhw-thinkpad"
-    (defun mu4e-headers-mark-all-unread-read ()
-      "Put a ! \(read) mark on all visible unread messages."
-      (interactive)
-      (mu4e-headers-mark-for-each-if
-       (cons 'read nil)
-       (lambda (msg _param)
-         (memq 'unread (mu4e-msg-field msg :flags))))
-      (mu4e-mark-execute-all t))
-
-    (defun mu4e-headers-refile-all ()
-      "Refile all messages in buffer."
-      (interactive)
-      (mu4e-headers-mark-for-each-if
-       (cons 'refile nil)
-       (lambda (_msg _param) t))
-      (mu4e-mark-execute-all t)
-      (mu4e-search-prev))
-
-    (setf mu4e-change-filenames-when-moving t  ; mbsync specific.
-          ;; see an ASCII table for the character decimal codes
-          mu4e-bookmarks '(("maildir:/INBOX" "Inbox" 105 )
-                           ("\"maildir:/[Gmail]/All Mail\" and flag:unread" "Unread" 85))
-          user-mail-address "benedicthanshenwang@gmail.com"
-          user-full-name "Benedict Hanshen Wang"
-          ;; mu4e-compose-signature
-          mail-user-agent 'mu4e-user-agent
-          mu4e-attachment-dir "/mnt/c/Users/bened/Downloads/"
-          mu4e-drafts-folder "/[Gmail]/Drafts"
-          mu4e-sent-folder "/[Gmail]/Sent Mail"
-          mu4e-trash-folder "/[Gmail]/Trash"
-          mu4e-refile-folder "/[Gmail]/All Mail"
-          send-mail-function 'smtpmail-send-it
-          smtpmail-stream-type 'starttls
-          smtpmail-default-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-service 587
-          message-sendmail-f-is-evil t
-          mu4e-index-update-in-background t
-          mu4e-update-interval 900
-          mu4e-autorun-background-at-startup t
-          mu4e-get-mail-command "mbsync -a"
-          mu4e-hide-index-messages t
-          mu4e-enable-mode-line nil
-          ;; If this is enabled, prompts for new gpg fingerprints will not show up.
-          ;; Instead emails will silently fail to send.
-          mu4e-enable-async-operations nil
-          mu4e-search-skip-duplicates t
-          ;; Multipart html/plaintext email default, if the html portion is larger
-          ;; by a factor of 5, it is assumed the user wants to view html. This
-          ;; sets the factor to the largest possible fixnum, for we prefer the
-          ;; plaintext version.
-          mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum
-          gnus-blocked-images "."
-          mu4e-org-link-query-in-headers-mode nil
-          ;; mu4e-org-contacts-file (concat +project-maria-dir+ "0contacts.org")
-          message-kill-buffer-on-exit t
-          mu4e-confirm-quit nil
-          mu4e-headers-fields
-          '((:human-date . 5)
-            (:from-or-to . 20)
-            (:subject))
-          mml-secure-openpgp-sign-with-sender t
-          mml-secure-openpgp-signers '("06DDA93690F775E3715B628CCA949A6D46BC2BBE")
-          mu4e-compose-complete-addresses t
-          mu4e-compose-complete-only-after "2018-01-01"
-          browse-url-filename-alist
-          '(("^/\\(ftp@\\|anonymous@\\)?\\([^:/]+\\):/*" . "ftp://\\2/")
-            ("^/\\([^:@/]+@\\)?\\([^:/]+\\):/*" . "ftp://\\1\\2/")
-            ;; For gnus-article-browse-html-article on Windows Subsystem for Linux.
-            ("^/+" . "file://///wsl$/Debian/"))
-          )
-    (with-eval-after-load "recentf"
-      (progn
-        (add-to-list 'recentf-exclude (concat +project-jerome-dir+ "email-archive/"))
-        (add-to-list 'recentf-exclude "/tmp/")))
-    ;; Unbind s, originally bound to mu4e-headers-search.
-    ;; Unset =mu4e-headers=search= from both =mu4e-headers-mode-map= and
-    ;; =mu4e-view-mode-map=. Retain =s= for search in =mu4e-main-mode-map=.
-    (define-key mu4e-headers-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
-    (define-key mu4e-headers-mode-map (kbd "K") #'mu4e-view-save-url)
-    (define-key mu4e-headers-mode-map "S" 'helm-mu)
-    (define-key mu4e-view-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
-    (define-key mu4e-view-mode-map (kbd "K") #'mu4e-view-save-url)
-    (define-key mu4e-view-mode-map "S" 'helm-mu)
-    ;; (define-key mu4e-main-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
-    ;; (define-key mu4e-main-mode-map "S" 'helm-mu)
-    (add-hook 'mu4e-view-mode-hook (lambda () (evil-evilified-state)))
-    (define-key mu4e-headers-mode-map (kbd "c") #'mu4e-headers-mark-all-unread-read)
-    (define-key mu4e-headers-mode-map (kbd "C") #'mu4e-headers-refile-all)
-    ;; Functions ran on every message sent
-    (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode "o" 'org-mime-edit-mail-in-org-mode)
-    (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode "p" 'mml-secure-message-sign-pgpmime)
-    (spacemacs/set-leader-keys
-      (kbd "aes") #'helm-mu
-      (kbd "aec") #'helm-mu-contacts
-      (kbd "aej") #'mu4e-search-bookmark)
-    )
+  (defun mu4e-headers-mark-all-unread-read ()
+    "Put a ! \(read) mark on all visible unread messages."
+    (interactive)
+    (mu4e-headers-mark-for-each-if
+     (cons 'read nil)
+     (lambda (msg _param)
+       (memq 'unread (mu4e-msg-field msg :flags))))
+    (mu4e-mark-execute-all t))
+  
+  (defun mu4e-headers-refile-all ()
+    "Refile all messages in buffer."
+    (interactive)
+    (mu4e-headers-mark-for-each-if
+     (cons 'refile nil)
+     (lambda (_msg _param) t))
+    (mu4e-mark-execute-all t)
+    (mu4e-search-prev))
+  
+  (setf mu4e-change-filenames-when-moving t  ; mbsync specific.
+        ;; see an ASCII table for the character decimal codes
+        mu4e-bookmarks '(("maildir:/INBOX" "Inbox" 105 )
+                         ("\"maildir:/[Gmail]/All Mail\" and flag:unread" "Unread" 85))
+        user-mail-address "benedicthanshenwang@gmail.com"
+        user-full-name "Benedict Hanshen Wang"
+        ;; mu4e-compose-signature
+        mail-user-agent 'mu4e-user-agent
+        mu4e-attachment-dir "/mnt/c/Users/bened/Downloads/"
+        mu4e-drafts-folder "/[Gmail]/Drafts"
+        mu4e-sent-folder "/[Gmail]/Sent Mail"
+        mu4e-trash-folder "/[Gmail]/Trash"
+        mu4e-refile-folder "/[Gmail]/All Mail"
+        send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        message-sendmail-f-is-evil t
+        mu4e-index-update-in-background t
+        mu4e-update-interval 900
+        mu4e-autorun-background-at-startup t
+        mu4e-get-mail-command "mbsync -a"
+        mu4e-hide-index-messages t
+        mu4e-enable-mode-line nil
+        ;; If this is enabled, prompts for new gpg fingerprints will not show up.
+        ;; Instead emails will silently fail to send.
+        mu4e-enable-async-operations nil
+        mu4e-search-skip-duplicates t
+        ;; Multipart html/plaintext email default, if the html portion is larger
+        ;; by a factor of 5, it is assumed the user wants to view html. This
+        ;; sets the factor to the largest possible fixnum, for we prefer the
+        ;; plaintext version.
+        mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum
+        gnus-blocked-images "."
+        mu4e-org-link-query-in-headers-mode nil
+        ;; mu4e-org-contacts-file (concat +project-maria-dir+ "0contacts.org")
+        message-kill-buffer-on-exit t
+        mu4e-confirm-quit nil
+        mu4e-headers-fields
+        '((:human-date . 5)
+          (:from-or-to . 20)
+          (:subject))
+        mml-secure-openpgp-sign-with-sender t
+        mml-secure-openpgp-signers '("06DDA93690F775E3715B628CCA949A6D46BC2BBE")
+        mu4e-compose-complete-addresses t
+        mu4e-compose-complete-only-after "2018-01-01"
+        browse-url-filename-alist
+        '(("^/\\(ftp@\\|anonymous@\\)?\\([^:/]+\\):/*" . "ftp://\\2/")
+          ("^/\\([^:@/]+@\\)?\\([^:/]+\\):/*" . "ftp://\\1\\2/")
+          ;; For gnus-article-browse-html-article on Windows Subsystem for Linux.
+          ("^/+" . "file://///wsl$/Debian/"))
+        )
+  (with-eval-after-load "recentf"
+    (progn
+      (add-to-list 'recentf-exclude (concat +project-jerome-dir+ "email-archive/"))
+      (add-to-list 'recentf-exclude "/tmp/")))
+  ;; Unbind s, originally bound to mu4e-headers-search.
+  ;; Unset =mu4e-headers=search= from both =mu4e-headers-mode-map= and
+  ;; =mu4e-view-mode-map=. Retain =s= for search in =mu4e-main-mode-map=.
+  (define-key mu4e-headers-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
+  (define-key mu4e-headers-mode-map (kbd "K") #'mu4e-view-save-url)
+  (define-key mu4e-headers-mode-map "S" 'helm-mu)
+  (define-key mu4e-view-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
+  (define-key mu4e-view-mode-map (kbd "K") #'mu4e-view-save-url)
+  (define-key mu4e-view-mode-map "S" 'helm-mu)
+  ;; (define-key mu4e-main-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
+  ;; (define-key mu4e-main-mode-map "S" 'helm-mu)
+  (add-hook 'mu4e-view-mode-hook (lambda () (evil-evilified-state)))
+  (define-key mu4e-headers-mode-map (kbd "c") #'mu4e-headers-mark-all-unread-read)
+  (define-key mu4e-headers-mode-map (kbd "C") #'mu4e-headers-refile-all)
+  ;; Functions ran on every message sent
+  (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode "o" 'org-mime-edit-mail-in-org-mode)
+  (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode "p" 'mml-secure-message-sign-pgpmime)
+  (spacemacs/set-leader-keys
+    (kbd "aes") #'helm-mu
+    (kbd "aec") #'helm-mu-contacts
+    (kbd "aej") #'mu4e-search-bookmark)
+  
   (require 'elfeed)
   (require 'hydra)
   (require 'elfeed-tube)
@@ -2846,7 +2838,7 @@ package is loaded, you should place your code here."
     (let ((browse-url-browser-function (lambda (url _)
                                          (org-web-tools-read-url-as-org url))))
       (ap/elfeed-search-selected-map #'ap/elfeed-search-browse-entry)))
-
+  
   (defun ap/elfeed-search-browse-entry (entry)
     "Browse ENTRY with `browse-url' and mark as read.
       If ENTRY is unread, it will also be unstarred.  To override the
@@ -2859,11 +2851,11 @@ package is loaded, you should place your code here."
       (elfeed-untag entry 'unread)
       (elfeed-search-update-entry entry)
       (browse-url url)))
-
+  
   (cl-defun ap/elfeed-search-selected-map (fn)
     "Map FN across selected entries in elfeed-search buffer using `mapcar'."
     (mapcar fn (elfeed-search-selected)))
-
+  
   (defun ben/elfeed-search-browse-url (&optional use-generic-p)
     "Visit the current entry in your browser using `browse-url'.
   If there is a prefix argument, visit the current entry in the
@@ -2910,10 +2902,11 @@ package is loaded, you should place your code here."
           (apply orig-fn string rest)
         (message "skipped whitespace kill")
         nil)))
-  (keyboard-translate ?\( ?\[)
-  (keyboard-translate ?\[ ?\()
-  (keyboard-translate ?\) ?\])
-  (keyboard-translate ?\] ?\))
+  ;; https://gnu.emacs.help.narkive.com/p20hvAvC/keyboard-translate-not-working-with-emacs-daemon
+  (define-key key-translation-map [?\(] [?\[])
+  (define-key key-translation-map [?\[] [?\(])
+  (define-key key-translation-map [?\)] [?\]])
+  (define-key key-translation-map [?\]] [?\)])
   ;; Should double buffering cause lag spikes on 3840 x 2160 displays
   ;; we can disable it via...
   (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
@@ -2940,22 +2933,3 @@ package is loaded, you should place your code here."
   ;; (setq powerline-scale 0.50)
   ;; Self explanatory (menu-bar-mode 1) (tool-bar-mode 1)
   )
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(helm-core forge helm magit macrostep elisp-demos mu4e youtube-sub-extractor ws-butler winum window-purpose which-key use-package unfill undo-tree transmission symbol-overlay string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc sly-macrostep shell-pop rainbow-delimiters posframe popwin poly-org plantuml-mode persp-mode pdf-view-restore paradox ox-rss orgit-forge org-web-tools org-vcard org-tanglesync org-superstar org-ref org-re-reveal org-pdftools org-mime org-fragtog org-download org-contrib org-contacts org-cliplink org-brain org-appear magit-todos literate-calc-mode listen link-hint lexic info+ holy-mode highlight-parentheses helpful helm-xref helm-projectile helm-org helm-mu helm-comint helm-c-yasnippet helm-bibtex helm-ag greader gptel google-translate gnuplot git-link flyspell-correct-helm flycheck-ledger eyebrowse exec-path-from-shell evil-textobj-line evil-surround evil-snipe evil-org evil-nerd-commenter evil-matchit evil-lion evil-ledger evil-evilified-state evil-collection evil-cleverparens ement elisp-slime-nav elisp-def elfeed-tube-mpv elfeed-org ebib eat dumb-jump dired-quick-sort diminish company-quickhelp column-enforce-mode cdlatex casual biome bind-map better-jumper auto-yasnippet ascii-art-to-unicode ace-jump-helm-line)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
