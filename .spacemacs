@@ -46,19 +46,13 @@
                       auto-completion-enable-snippets-in-popup t
                       :packages
                       (not
-                       ;; Helm is redundant for auto-complete. C-j, C-k instead.
                        helm-company
-                       ;; The included snippets are not my taste and too trivial.
                        yasnippet-snippets
                        fuzzy
-                       ;; Corfu or company have both replaced auto-complete.
                        ac-ispell
-                       auto-complete
-                       ))
+                       auto-complete))
      (better-defaults :packages
                       (not
-                       ;; It is a motion based command, more suited to Emacs way of editing than
-                       ;; Vim.
                        mwim))
      (bibtex :variables
              bibtex-enable-ebib-support t
@@ -71,23 +65,12 @@
              elfeed-enable-goodies nil
              rmh-elfeed-org-files (list (concat +project-maria-dir+ "dotelfeed.org")))
      (emacs-lisp :packages (not
-                            ;; I don't count myself as an elisp author.
                             flycheck-package
-                            ;; When will elisp have namespacing a la Common
-                            ;; Lisp/Scheme/Clojure?
                             nameless
-                            ;; Made obselete by eglot/lsp and sly/slime.
                             emr
-                            ;; Never used, look into when I plan on writing
-                            ;; elisp unit tests.
                             overseer
-                            ;; I don't use cask at all. And elsa depends on cask.
                             flycheck-elsa
-                            ;; `load-prefer-newer' is set by spacemacs.
                             auto-compile
-                            ;; Common-lisp counterpart is used a lot, and if I
-                            ;; do end up using this for emacs lisp, I ought to
-                            ;; contribute default bindings.
                             inspector
                             ))
      evil-better-jumper
@@ -96,56 +79,29 @@
      finance
      (git   :variables git-enable-magit-todos-plugin t
             :packages (not
-                       ;; How often to you edit these files?
                        git-modes
-                       ;; More gimmicky than useful.
                        golden-ratio
-                       ;; Highlights lines by last change time. Duplicate of magit blame functions.
-                       ;; Magit blame has better highlighting too!
                        smeargle
-                       ;; Can't say a .gitignore should ever be automatically generated.
-                       ;; I mean the wildcard char * is enough.
                        gitignore-templates
-                       ;; There is magit log, magit blame, and blamer.el.
-                       ;; blamer.el can also show full commits.
                        git-messenger
-                       ;; Use SPC g s l l -l -F (or -G) RET (or refresh with g) instead. Magit's
-                       ;; transient interface is much better than remembering command line flags.
                        helm-git-grep
-                       ;; You already have "magit-blame" with "magit-blame-cycle-style" which
-                       ;; highlight the changes, and the ability to do a hard reset with git to
-                       ;; a certain commit. If you don't want to look at changes, what do you
-                       ;; want to look at? The same parts of the file? To manually pickout
-                       ;; changes? Maybe there's a use case I'm missing.
                        git-timemachine
                        ))
      (helm :packages (not
-                      ;; I do not prefer the helm interface here.
                       helm-descbinds
-                      ;; Helm occur is built-in, retains all functionality and has better
-                      ;; performance. It is also preferred by the HELM maintainers. Helm-swoop
-                      ;; did come first, but has been superseded by helm occur.
                       helm-swoop
-                      ;; I don't need a helm-package to select themes. See `dotspacemacs-themes'
                       helm-themes
-                      ;; I have no need right now. How many makefiles does a project need to
-                      ;; have to use helm to filter them?
                       helm-make
-                      ;; Rendered obselete by SPG g s.
                       helm-ls-git
-                      ;; I don't toggle major and minor modes often enough to justify a helm
-                      ;; extension.
                       helm-mode-manager
-                      ;; Helm has this built-in and flx has a performance cost.
                       helm-flx))
      helpful
-     ;; (latex :variables
-     ;;        latex-build-command "LatexMk")
-     llm-client
+     (llm-client :variables
+                 llm-client-enable-ellama nil
+                 llm-client-enable-gptel t)
      (mu4e :variables
            mu4e-installation-path "/usr/share/emacs/site-lisp/elpa/mu4e-1.10.8"
            :packages (not
-                      mu4e-maildirs-extension
                       mu4e-alert))
      (org :variables
           org-enable-modern-support nil
@@ -160,36 +116,28 @@
      ;; pandoc
      pdf
      plantuml
+     (python :variables
+             python-backend 'lsp
+             python-lsp-server 'pylsp
+             python-shell-interpreter "python3")
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
             shell-default-shell 'shell
             :packages (not
-                       ;; I use shell. I have no need for the extra eshell utilites.
                        esh-help
                        eshell-prompt-extras
                        eshell-z
-                       ;; This package turns out to only be used on an eshell-init hook.
                        xterm-color
-                       ;; Built-in Emacs shell has better auto-complete and text pasting abilites.
-                       ;; No need for vterm. I don't run graphical ncurses programs.
                        vterm
                        multi-vterm
-                       ;; An Emacs package to open an external terminal emulator in directories
-                       ;; associated with the current buffer. Originally I thought it was
-                       ;; responsible for =spacemacs/default-pop-shell= opening inside the
-                       ;; current working directory. But nope, keyword external. I have current
-                       ;; need for that.
                        terminal-here
-                       ;; I prefer the much better integrated shell (comint) mode.
                        multi-term
                        ))
      (spell-checking :packages (not
-                                ;; I only type english in my buffers.
                                 auto-dictionary
                                 ))
      (syntax-checking :packages (not
-                                 ;; This does not work.
                                  flycheck-pos-tip))
      (transmission :variables transmission-auto-refresh-all t)
      ;; Danger! Making edits to the default layers.
@@ -201,210 +149,87 @@
                                      holy-mode
                                      hybrid-mode))
      (spacemacs-defaults :packages (not
-                                    ;; Quickrun compiles a buffer. Org-babel
-                                    ;; exists for snippets, and I don't see
-                                    ;; why you would need to call multiple
-                                    ;; different compilers on one buffer.
                                     quickrun))
      (spacemacs-editing
-      :variables
-      vim-style-enable-undo-region t
-      ;; :variables vim-style-enable-undo-region t
+      :variables vim-style-enable-undo-region t
       :packages (not
-                 ;; The flashing gets annoying after a while.
                  eval-sexp-fu
-                 ;; Doom emacs forbids expand-region by
-                 ;; default and instead rightly insists on
-                 ;; using vim objects.
                  expand-region
-                 ;; I am happy with the default Emacs
-                 ;; electric-indent. It probably has better
-                 ;; performance too. Aggressive-indent is
-                 ;; buggy with org-babel blocks.
                  aggressive-indent
-                 ;; .editorconfig is a formally specified grammar to specify consistent
-                 ;; formatting across teams of developers using different IDE's and
-                 ;; languages
                  editorconfig
-                 ;; Deleting all whitespace with <BACKSPACE> instead of <C-BACKSPACE> just
-                 ;; doesn't seem all that useful.
                  hungry-delete
-                 ;; It can be comepletely replaced by a few keyboard macros. It remains
-                 ;; arguably very useful. Just a bit too nichce, and keyboard macros are
-                 ;; more general.
                  multi-line
-                 ;; I use KeePass.
                  password-generator
-                 ;; I don't currently need to generate UUID's
                  uuidgen
-                 ;; I don't need to edit HTML in javascript buffers or
-                 ;; edit strings in seperate buffer
                  string-edit
-                 ;; I have no need/too niche.
                  lorem-ipsum
-                 ;; Dragging stuff arond with arrow keys is never used when you have vim.
                  drag-stuff
-                 ;; No need when =s= is already bound to avy-goto-word-or-subword-1.
                  evil-easymotion))
-     (spacemacs-editing-visual :packages (not
-                                          ;; I use GUI over terminal Emacs and so there is no need to change the cursor shape.
-                                          term-cursor
-                                          ;; I don't use it.
-                                          highlight-indentation
-                                          writeroom-mode
-                                          ;; Super neat feature I don't need.
-                                          hide-comnt
-                                          ;; Depends on obselete
-                                          ;; parent-mode-2.0 when there exists
-                                          ;; (get 'latex-mode
-                                          ;; 'derived-mode-parent). With
-                                          ;; default theme, the highlight is
-                                          ;; barely noticiable anyways.
-                                          highlight-numbers
-                                          ;; Slower and buggier when compared
-                                          ;; to the already more popular and
-                                          ;; more recently maintainted
-                                          ;; highlight-indentation.el. And
-                                          ;; highlight-indentation is already
-                                          ;; included in Spacemacs...
-                                          indent-guide
-                                          ;; The package volatile highlights
-                                          ;; temporarily highlights changes to
-                                          ;; the buffer associated with
-                                          ;; certain commands that add blocks
-                                          ;; of text at once. An example is
-                                          ;; that if you paste (yank) a block
-                                          ;; of text, it will be highlighted
-                                          ;; until you press the next key. I
-                                          ;; don't need it for the same reason
-                                          ;; I don't use evil-goggles. Plus
-                                          ;; both evil goggles and
-                                          ;; volatile-highlights are redundant
-                                          ;; to an extent since the built-in
-                                          ;; pulse exists.
-                                          volatile-highlights
-                                          ))
-     (spacemacs-completion :packages (not
-                                      ;; I use helm and not ido.
-                                      flx-ido))
-     (spacemacs-language :packages (not
-                                    ;; Not exactly redundant, as lexic only searches offline dictionaries.
-                                    ;; Still I have no use for it between lexic and the =google translate=
-                                    ;; package
-                                    define-word))
-     (spacemacs-layouts :packages (not
-                                   counsel-projectile))
-     (spacemacs-misc :packages (not
-                                ;; Each programming mode usually comes with it's own docs.
-                                devdocs))
-     (spacemacs-purpose :packages (not
-                                   ;; With =helm-for-files= and =helm-ag= I have never used =SPC r b= =SPC r
-                                   ;; p= or =SPC r B=. Having just tried all three, they leave me
-                                   ;; unimpressed. Don't get me wrong, I quite like purpose (combined with
-                                   ;; eyebrowse in the spcaemacs-layouts layer makes for fantastic stuff).
-                                   ;; But I fail to see why I need helm for it.
-                                   helm-purpose))
-     ;; I prefer no battery info on my modeline. Emacs profiler tells me the
-     ;; package uses a lot of battery itself.
-     ;; Ditto for icons, lots of wasted cpu cycles for no functionality.
-     ;; Symon is cute, but https://github.com/zk-phi/symon/issues/42 shows
-     ;; that a significant performance price is paid.
-     (spacemacs-modeline :packages (not
-                                    anzu
-                                    fancy-battery
-                                    font-lock+
-                                    neotree
-                                    ;; spaceline-all-the-icons
-                                    symon
-                                    vim-powerline))
-     (spacemacs-navigation :packages (not
-                                      restart-emacs
-                                      ;; `avy-goto-word-or-subword-1' is a more general use case.
-                                      ace-link
-                                      ;; I believe the winum (SPC 1) and avy-word (jumps across windows)
-                                      ;; is enough.
-                                      ace-window
-                                      ;; package-list-packages and
-                                      ;; package-menu-filter-by-keyword "status:installed"
-                                      ;; paradox
-                                      ;; More gimmicky than useful.
-                                      golden-ratio
-                                      ;; Utility packages that I have no use for.
-                                      centered-cursor-mode
-                                      open-junk-file
-                                      auto-highlight-symbol))
-     (spacemacs-org :packages (not
-                               ;; use C-c C-k with pointer on org headline.
-                               toc-org))
-     (spacemacs-visual :packages (not all-the-icons))
-     (spacemacs-evil :packages (not
-                                ;; I never edit,
-                                ;; Binary, e.g. 0b0101, 0B0101.
-                                ;; Octal, e.g. 0o755, 0O700.
-                                ;; Hexadecimal, e.g. 0xDEADBEEF, 0XCAFE.
-                                ;; Unicode superscript and subscript, e.g. ² and 1.
-                                evil-numbers
-                                ;; There exists more updated and better semantic editing packages for sexps
-                                evil-lisp-state
-                                ;; Disables hitting "fd" in rapid succession to function as ESC
-                                ;; We already swap ESC and CAPS LOCK keys.
-                                evil-escape
-                                ;; helm-occur/helm-ag/helm-fdfind then open results in a new buffer.
-                                ;; Optionally then turn on follow-mode for said buffer. This is a better workflow.
-                                evil-anzu
-                                ;; Too niche of a use case. I've never used it myself. When vim's delete
-                                ;; isn't enough we have search and replace.
-                                evil-exchange
-                                ;; Why? With the default spacemacs settings, I have never seen this
-                                ;; package in my life. Package author says =d2w= is a common use case.
-                                ;; Doesn't apply to me, but glad it exists for those that do.
-                                evil-goggles
-                                ;; From
-                                ;; https://emacs.stackexchange.com/questions/47821/iedit-vs-multiple-cursors/47828#47828
-                                ;; I never used iedit extensively, so I could be unaware of some of its
-                                ;; features, but basically iedit is a more interactive search and
-                                ;; replace: you can select occurrences of a string in some scope (region,
-                                ;; defun, buffer, etc.) and then replace them with something else.
-                                ;;
-                                ;; Compared to that, multiple-cursors generalizes in two directions, the
-                                ;; second much more important than the first in my opinion:
-                                ;;
-                                ;; 1. You are not limited to put cursors just at occurrences of some string.
-                                ;; You can put cursors wherever you click the mouse, or at the end of a
-                                ;; bunch of lines, or at matches of a regexp, etc., or any combination of
-                                ;; these locations.
-                                ;;
-                                ;; 2. Even if you did choose to place cursors just at occurrences of some
-                                ;; string, you are not limited to just replacing them with some other
-                                ;; string. You can do any Emacs text editing simultaneously at every
-                                ;; location. For example, you could transpose the words found around each
-                                ;; cursor, or mark the entire defun containing each cursor and comment it
-                                ;; out.
-                                ;;
-                                ;; Just as iedit can be thought of as an instant-preview version of
-                                ;; query-replace, multiple-cursors can be thought of as an
-                                ;; instant-preview version of keyboard macros.
-                                evil-iedit-state
-                                ;; Great tutorial, no need for it currently.
-                                evil-tutor
-                                ;; All the functionality under =[= and =]= are duplicated.
-                                evil-unimpaired
-                                ;; Mark functionality is pretty much replaced by =g d= for
-                                ;; =jump-to-definition= and =C-o/C-i= to jump back.
-                                evil-visual-mark-mode
-                                ;; No need for this when you have helm occur.
-                                evil-visualstar
-                                ;; I don't need an evil argument object. I'll have "what is =ci)= for 500
-                                ;; Alex." Of course, swapping [] and () on your keyboard will do wonders.
-                                ;; I'd rather fix the problem at the root level.
-                                evil-args
-                                ;; This package marks empty lines with a =~=. Superfluous.
-                                vi-tilde-fringe
-                                ;; I use 'da(' wat more often than indendation.
-                                evil-indent-plus
-                                ;; I don't need this.
-                                vim-empty-lines-mode
-                                ))
+     (spacemacs-editing-visual
+      :packages (not
+                 term-cursor
+                 highlight-indentation
+                 writeroom-mode
+                 hide-comnt
+                 highlight-numbers
+                 indent-guide
+                 volatile-highlights
+                 ))
+     (spacemacs-completion
+      :packages (not
+                 flx-ido))
+     (spacemacs-language
+      :packages (not
+                 define-word))
+     (spacemacs-layouts
+      :packages (not
+                 counsel-projectile))
+     (spacemacs-misc
+      :packages (not
+                 devdocs))
+     (spacemacs-purpose
+      :packages (not
+                 helm-purpose))
+     (spacemacs-modeline
+      :packages (not
+                 anzu
+                 fancy-battery
+                 font-lock+
+                 neotree
+                 symon
+                 vim-powerline))
+     (spacemacs-navigation
+      :packages (not
+                 restart-emacs
+                 ace-link
+                 ace-window
+                 golden-ratio
+                 centered-cursor-mode
+                 open-junk-file
+                 auto-highlight-symbol))
+     (spacemacs-org
+      :packages (not
+                 toc-org))
+     (spacemacs-visual
+      :packages (not all-the-icons))
+     (spacemacs-evil
+      :packages (not
+                 evil-numbers
+                 evil-lisp-state
+                 evil-escape
+                 evil-anzu
+                 evil-exchange
+                 evil-goggles
+                 evil-iedit-state
+                 evil-tutor
+                 evil-unimpaired
+                 evil-visual-mark-mode
+                 evil-visualstar
+                 evil-args
+                 vi-tilde-fringe
+                 evil-indent-plus
+                 vim-empty-lines-mode
+                 ))
      )
    ;; ***  Additional Packages
    ;; List of additional packages that will be installed without being
@@ -442,7 +267,7 @@
      greader
      literate-calc-mode
      listen
-     casual
+     casual-calc
      biome
      )
 
@@ -450,28 +275,16 @@
    dotspacemacs-frozen-packages
    '(;; Otherwise it will reinstall itself
      helm-swoop
-     mu4e
      )
 
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages
-   '(;; I don't use hybrid mode.
-     hybrid-mode
-     ;; These 4 packages can't be put into spacemacs/layers as they are part
-     ;; of the built-in package org. Has scaling issues with large org files
-     ;; and has been superseded by =org-ql=, according to the package author.
+   '(hybrid-mode
      helm-org-rifle
-     ;; Superseded by org-re-reveal.
      org-present
-     ;; I have a watch with a timer.
      org-pomodoro
-     ;; Org-projectile provides functions for the creation of org-mode TODOs
-     ;; that are associated with projectile projects. I keep all my TODO's in
-     ;; a project-maria, a centralized place, a single projectile project.
-     ;; Therefore I have no use for this package.
      org-projectile
-     dotenv-mode
-     )
+     dotenv-mode)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -655,7 +468,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 0.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 0.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -872,6 +685,14 @@ It should only modify the values of Spacemacs settings."
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
    dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
 
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-tree', `undo-fu' and `undo-redo', see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; from undo-tree to undo-fu or undo-redo.
+   ;; The default is currently 'undo-tree, but it will likely be changed
+   ;; and at some point removed because undo-tree is not maintained anymore.
+   dotspacemacs-undo-system 'undo-fu
+
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
    ;; %t - `projectile-project-name'
@@ -981,41 +802,45 @@ package is loaded, you should place your code here."
       ("longitude" . -79.337021)
       ("latitude" . 43.856098))))
   (spacemacs/set-leader-keys "a w w" 'biome-query-preset-14)
-  (require 'casual)
-  (define-key calc-mode-map (kbd "C-o") 'casual-main-menu)
-  (require 'gptel)
-  (require 'auth-source)
   
-  (defun bhw/switch-to-llm-buffer ()
-    (interactive)
-    (switch-to-buffer "*Gemini*"))
+    (require 'gptel)
+    (require 'auth-source)
   
-  (defun get-authinfo-password (machine login)
-    (let ((credential (auth-source-search :max 1
-                                          :host machine
-                                          :user login
-                                          :require '(:secret))))
-      (if credential
-          (let ((secret (plist-get (nth 0 credential) :secret)))
-            (if (functionp secret)
-                (funcall secret)
-              secret))
-        (message "No password found for %s@%s" login machine))))
-  ;; In ~/.authinfo,
-  ;;machine aistudio.google.com login ben password *YourAPIkey*
-  (setf
-   gptel-model "gemini-1.5-pro-latest"
-   gptel-backend (gptel-make-gemini "Gemini"
-                   :key (get-authinfo-password "aistudio.google.com" "ben")
-                   :stream t)
-   gptel-directives
-   '((default . "")
-     (programming . "You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.")
-     (writing . "You are a large language model and a writing assistant. Respond concisely.")
-     (chat . "You are a large language model and a conversation partner. Respond concisely.")))
+    (defun bhw/switch-to-llm-buffer ()
+      (interactive)
+      (switch-to-buffer "*Gemini*"))
   
-  (spacemacs/set-leader-keys
-    (kbd "al") #'bhw/switch-to-llm-buffer)
+    (defun get-authinfo-password (machine login)
+      (let ((credential (auth-source-search :max 1
+                                            :host machine
+                                            :user login
+                                            :require '(:secret))))
+        (if credential
+            (let ((secret (plist-get (nth 0 credential) :secret)))
+              (if (functionp secret)
+                  (funcall secret)
+                secret))
+          (message "No password found for %s@%s" login machine))))
+    ;; In ~/.authinfo,
+    ;;machine aistudio.google.com login ben password *YourAPIkey*
+    (setf
+     gptel-model "gemini-1.5-pro-latest"
+     gptel-backend (gptel-make-gemini "Gemini"
+                     :key (get-authinfo-password "aistudio.google.com" "ben")
+                     :stream t)
+     gptel-directives
+     '((default . "
+  Ignore all previous instructions.
+  
+  1. You are to provide clear, concise, and direct responses. 2. Eliminate unnecessary reminders, apologies, self-references, and any pre-programmed niceties. 3. Maintain a casual tone in your communication. 4. Be transparent; if you're unsure about an answer or if a question is beyond your capabilities or knowledge, admit it. 5. For any unclear or ambiguous queries, ask follow-up questions to understand the user's intent better. 6. When explaining concepts, use real-world examples and analogies, where appropriate. 7. For complex requests, take a deep breath and work on the problem step-by-step. 8. For every response, you will be tipped up to $200 (depending on the quality of your output).
+  
+  It is very important that you get this right.")
+       (programming . "You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.")
+       (writing . "You are a large language model and a writing assistant. Respond concisely.")
+       (chat . "You are a large language model and a conversation partner. Respond concisely.")))
+  
+    (spacemacs/set-leader-keys
+      (kbd "al") #'bhw/switch-to-llm-buffer)
   (add-hook 'eww-after-render-hook 'eww-readable)
   (require 'greader)
   ;; FIXME Auto-completion causes lag in shell-mode.
@@ -1094,22 +919,12 @@ package is loaded, you should place your code here."
   ;;         backward-delete-char-untabify
   ;;         dired-next-line
   ;; dired-previous-line))
-  ;;-------------------------------------------------------------------------
-  ;; ***  Pandoc Config
-  ;;-------------------------------------------------------------------------
-  ;;-------------------------------------------------------------------------
-  ;; ***  PDF tools config
-  ;;-------------------------------------------------------------------------
-  ;; Initilization settings. Source: http://pragmaticemacs.com/emacs/even-more-pdf-tools-tweaks/
-  ;; Allows scaling of images during rendering
-  (setq pdf-view-use-scaling nil) ; possible source of memory leak?
-  (setq pdf-view-display-size 'fit-page)
-  (setq pdf-view-resize-factor 1.1)
-  ;; See also .wslconfig for virtual machine RAM limit.
-  ;; 1 GB with a 4k display means Out of Memory is possibility.
-  ;; Clears image cache to reduce ram usage.
-  (setq image-cache-eviction-delay 5)
-  (setf pdf-cache-image-limit 5)
+  (setf
+   pdf-view-use-scaling t
+   pdf-view-display-size 'fit-width
+   pdf-view-resize-factor 1.1
+   image-cache-eviction-delay 128
+   pdf-cache-image-limit 128)
   ;; Custom function to allow double page scrolling by calling
   ;; my-pdf-view-double-scroll-horizontal-view
   (defun my-pdf-view-double-scroll-up-or-next-page (&optional arg)
@@ -1220,13 +1035,9 @@ package is loaded, you should place your code here."
               (lambda (orig-fun &rest args)
                 (setq-local browse-url-browser-function 'eww-browse-url)
                 (apply orig-fun args)))
-  ;;-------------------------------------------------------------------------
-  ;; ***  Python Layer Config
-  ;;-------------------------------------------------------------------------
-  ;; (setq python-format-on-save t)
-  ;; Make sure the black formatter package is installed
-  ;; (setq python-formatter 'black)
-  ;; (setf python-indent-offset 4)
+  (setf
+   python-format-on-save t
+   python-indent-offset 4)
   (require 'lexic)
   (setf lexic-dictionary-specs '
         (("Webster's Revised Unabridged Dictionary (1913)"
@@ -1373,7 +1184,6 @@ package is loaded, you should place your code here."
   (define-key evil-visual-state-map (kbd ";") #'helm-occur)
   (define-key evil-operator-state-map (kbd ";") #'helm-occur)
   (define-key package-menu-mode-map (kbd ";") #'helm-occur)
-  (define-key undo-tree-visualizer-mode-map (kbd ";") #'helm-occur)
   ;; Whenever the commands modified below are called, they are pushed
   ;; onto the evil-jumps-history stack
   (evil-add-command-properties #'evil-scroll-down :jump t)
@@ -1393,9 +1203,6 @@ package is loaded, you should place your code here."
   (evil-add-command-properties #'org-bable-goto-src-block-head :jump t)
   (define-key evil-normal-state-map (kbd "q") #'spacemacs/kill-this-buffer)
   (define-key evil-normal-state-map (kbd "Q") #'kill-buffer-and-window)
-  ;;-------------------------------------------------------------------------
-  ;; ***  Evil Snipe Config
-  ;;-------------------------------------------------------------------------
   ;; Disable all keybindings other than f/t
   (evil-snipe-mode -1)
   (setq  evil-snipe-scope 'whole-visible)
@@ -1410,6 +1217,13 @@ package is loaded, you should place your code here."
           ))
   ;; Remove overriding of "," key in visual mode Ex. "vf),"
   (setq evil-snipe-override-evil-repeat-keys nil)
+  ;; (defun fn/not-in-pdf-view-mode (orig-fun &rest args)
+  ;;   (unless (eq major-mode 'pdf-view-mode)
+  ;;     (apply orig-fun args)))
+  ;; ;; evil-refresh-cursor is called as part of the window-configuration-change-hook
+  ;; ;; and seems to induce performance problems
+  ;; ;; TODO fix this properly
+  ;; (advice-add 'evil-refresh-cursor :around 'fn/not-in-pdf-view-mode)
     ;; See /home/ben/.config/fd/ignore
     (require 'helm-fd)
     (require 'helm-ag)
@@ -1446,17 +1260,19 @@ package is loaded, you should place your code here."
           ace-jump-helm-line-idle-delay 1
           helm-ff-auto-update-initial-value t
           recentf-max-saved-items 1000
-          helm-for-files-preferred-list '(helm-source-recentf
-                                          bhw/helm-source-fd
-                                          bhw/helm-source-maria-ag
-                                          bhw/helm-source-emacs-commands)
+          helm-for-files-preferred-list
+          '(helm-source-recentf
+            bhw/helm-source-fd
+            bhw/helm-source-maria-ag
+            bhw/helm-source-emacs-commands)
           helm-candidate-number-limit 100
           helm-ff-skip-boring-files t
           helm-ag-fuzzy-match t
           helm-fd-executable "fdfind"
-          helm-fd-switches '("--search-path" "/home/ben" "--hidden" "--type" "f"
-                             "--type" "d" "--color" "never" "--max-results" "10"
-                             "--full-path"))
+          helm-fd-switches
+          '("--search-path" "/home/ben" "--hidden" "--type" "f"
+            "--type" "d" "--color" "never" "--max-results" "10"
+            "--full-path"))
   
     (spacemacs/set-leader-keys "SPC" #'helm-for-files)
     (define-key helm-map (kbd "C-q") nil) ; Replace default binding.
@@ -1517,11 +1333,6 @@ package is loaded, you should place your code here."
                  (concat +project-maria-dir+ agenda-file))
         ;; See org-superstar package for more context
         inhibit-compacting-font-caches t
-        ;; https://helpdeskheadesk.net/2022-03-13/
-        ;; For org attach, change org timestamps to more human readable format.
-        org-id-method 'ts
-        org-attach-id-to-path-function-list
-        '(org-attach-id-ts-folder-format org-attach-id-uuid-folder-format)
         ;; See Org Manual 16.4 A Cleaner Outline View
         ;; I prefer a book-like view, which also allows for auto-fill
         org-adapt-indentation nil
@@ -1651,7 +1462,7 @@ package is loaded, you should place your code here."
           (setf global-mode-string
                 (remove lighter global-mode-string))))))
   
-  (spacemacs/set-leader-keys "oa" 'hanshen/default-custom-agenda)
+  (spacemacs/set-leader-keys "oa" 'ben/default-custom-agenda)
   (spacemacs/set-leader-keys "oj" 'spacemacs/org-clock-jump-to-current-clock)
   (spacemacs/set-leader-keys "oi" 'eos/org-clock-in)
   (spacemacs/set-leader-keys "oI" 'org-clock-in)
@@ -1664,11 +1475,11 @@ package is loaded, you should place your code here."
    org-use-fast-todo-selection t
    org-treat-S-cursor-todo-selection-as-state-change t
    ;; Require exit notes for modifying a scheduled for deadline date
-   org-log-reschedule 'note
+   org-log-reschedule 'time
    org-log-redeadline 'note
    org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "APPT(a)" "PROG(i)"
-               "WAIT(w@/!)" "HOLD" "|" "DONE(d)" "CXLD(c@/!)"))
+               "WAIT(w@/!)" "|" "DONE(d)" "CXLD(c@/!)"))
    org-todo-keyword-faces
    '(;; Project Defined
      ("PROJ" :foreground "gold" :weight bold)
@@ -1688,9 +1499,6 @@ package is loaded, you should place your code here."
      ;; Informal (interruption) meeting/verbal/email
      ;; Informal (interruption) calls/texts
      ;; ("MEET" :foreground "MediumOrchid" :weight bold)
-     ;; Decided not to decide, need more information
-     ;; BUT with a deadline set.
-     ("HOLD" :foreground "orchid" :weight bold)
      ;; Cancelled task, unable to complete
      ("CXLD" :foreground "SaddleBrown" :weight bold))
    org-enforce-todo-dependencies t
@@ -1704,15 +1512,11 @@ package is loaded, you should place your code here."
    org-capture-templates
    '(("n" "Next Action" entry (file "~/project-maria/0inbox.org") "* NEXT [#C] %?%^G\n:PROPERTIES:\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:\n" :empty-lines 1)
      ("t" "Todo Task" entry (file "~/project-maria/0inbox.org") "* TODO [#C] %?%^G\n :PROPERTIES:\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:\n" :empty-lines 1)
-     ("p" "New Project" entry (file "~/project-maria/0projects.org") "* PROJ %? [#C] [/] [%] %^G\n:PROPERTIES:\n:ASSIGNED: %U\n:CATEGORY: %^{CATEGORY|Misc.}\n:END:\n** NEXT [#C]\n:PROPERTIES:\n:TRIGGER: chain-find-next(NEXT,from-current,priority-up,effort-up)\n:EFFORT:    %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:\n" :empty-lines 1)
-     ("a" "Set Appointment" entry (file "~/project-maria/0calendar.org") "* APPT %?\nSCHEDULED: %^T\n:PROPERTIES:\n:LOCATION: %^{LOCATION|TBD}\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:" :empty-lines 1)
-     ;; Meeting (ongoing/interruption) should be filed under a specific project
-     ;; If it is really an orphan, refile 0solo.org
-     ("m" "Meeting (Ongoing)" entry (file "~/project-maria/0inbox.org") "* MEETING with %?%^G\n:PROPERTIES:\n:ASSIGNED: %U\n:END:\n" :clock-in t :clock-resume t :empty-lines 1)
-     ("h" "Hold Entry" entry (file "~/project-maria/0someday.org") "* HOLD %?%^G\n SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+1m\"))\n:PROPERTIES:\n:EFFORT: %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:\n" :empty-lines 1)
-     ("C" "Add Contacts" entry (file "~/project-maria/0inbox.org") "* %(org-contacts-template-name)\n:PROPERTIES:\n:PHONE: %?\n:EMAIL:\n:ADDRESS:\n:BIRTHDAY:\n:NOTE: Added on: %U\n:END:" :empty-lines 1)
-     ("H" "Habit" entry (file "~/project-maria/0inbox.org")"* NEXT %?\nSCHEDULED: %(format-time-string \"%\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:ASSIGNED: %U\n:END:" :empty-lines 1)
-     ("j" "Journal Entry" entry (file "~/project-maria/0inbox.org")"* NEXT JOURNAL ENTRY %U\n:PROPERTIES:\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:\n%?" :empty-lines 1))
+     ("a" "Appointment" entry (file "~/project-maria/0calendar.org") "* APPT %?\nSCHEDULED: %^T\n:PROPERTIES:\n:LOCATION: %^{LOCATION|TBD}\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:" :empty-lines 1)
+     ("j" "Journal Entry" entry (file "~/project-maria/0inbox.org")"* NEXT JOURNAL ENTRY %U\n:PROPERTIES:\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:\n%?" :empty-lines 1)
+     ("h" "Habit" entry (file "~/project-maria/0inbox.org")"* NEXT %?\nSCHEDULED: %(format-time-string \"%\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:ASSIGNED: %U\n:END:" :empty-lines 1)
+     ("c" "Contacts" entry (file "~/project-maria/0inbox.org") "* %(org-contacts-template-name)\n:PROPERTIES:\n:PHONE: %?\n:EMAIL:\n:ADDRESS:\n:BIRTHDAY:\n:NOTE: Added on: %U\n:END:" :empty-lines 1)
+     ("p" "Project" entry (file "~/project-maria/0projects.org") "* PROJ %? [#C] [/] [%] %^G\n:PROPERTIES:\n:ASSIGNED: %U\n:CATEGORY: %^{CATEGORY|Misc.}\n:END:\n** NEXT [#C]\n:PROPERTIES:\n:TRIGGER: chain-find-next(NEXT,from-current,priority-up,effort-up)\n:EFFORT:    %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00|4:00|5:00|6:00|7:00|8:00}\n:ASSIGNED: %U\n:END:\n" :empty-lines 1))
    ;; **** 9) Clocking
    org-clock-in-switch-to-state "PROG"
    org-clock-out-remove-zero-time-clocks t
@@ -1800,7 +1604,7 @@ package is loaded, you should place your code here."
   
   (add-hook 'org-agenda-finalize-hook 'my/org-agenda-insert-efforts)
   
-  (defun hanshen/default-custom-agenda()
+  (defun ben/default-custom-agenda()
     "Functionally call custom agenda command bound to KEY"
     (interactive)
     (org-agenda nil "d"))
@@ -1835,357 +1639,56 @@ package is loaded, you should place your code here."
    '(
      ;; ***** Default Agenda
      ("d" "Default (Master) Agenda"
-      ;; Presents the same view as Google Calendar i.e. only APPT and Routine Events
-      ;; Inclusive of all tags. I can't bi-locate after all.
-      (;; Presents Scheduled and Deadline Items, includes Overdue Items
-       ;; Exclusive to 0home tasks
-       (agenda "" ((org-agenda-span 1)                      ; daily agenda
-                   ;; 7 day warning for deadlines, adjust period based on clutter
+      ((agenda "" ((org-agenda-span 1)
                    (org-deadline-warning-days 7)
-                   ;; (org-agenda-todo-keyword-format "[ ]")
-                   (org-agenda-overriding-header "Today's Agenda\n")
-                   ;; (org-agenda-scheduled-leaders '("" ""))
-                   ))
-       ;; Presents in progress tasks for easy access to clock in
+                   (org-agenda-overriding-header "Today's Agenda\n")))
        (tags "TODO=\"PROG\""
-             (
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
+             ((org-agenda-sorting-strategy '(priority-down deadline-up))
               (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nAll Tasks in Progress\n")
-              ))
-       ;; Presents NEXT 0home tasks
+              (org-agenda-overriding-header "\nTasks in Progress\n")))
        (tags "TODO=\"NEXT\""
-             (
-              ;; Sorting for [A] Priority items, then by upcoming deadlines
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
+             ((org-agenda-sorting-strategy '(priority-down deadline-up))
               (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nAll Action Items\n")
-              ;; Skip listing a next/todo item that has already been scheduled
-              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
-              ))
-       ;; Presents 0home WAIT's sorted by oldest first
-       ;; This is as it really should have a scheduled or
-       ;; deadline date, but sometimes you really don't know
-       ;; If given a scheduled or deadline date it will show up in
-       ;; the day's agenda. Make sure to include an active timestamp
-       ;; when switching states
-       ;; Make sure to write down what you are waiting for
+              (org-agenda-overriding-header "\nAction Items\n")
+              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
+       ;; Presents only APPT and Routine Events.
+       (agenda "" ((org-agenda-span '33)
+                   (org-agenda-start-on-weekday nil)
+                   (org-agenda-start-day "+1d")
+                   (org-agenda-entry-types '(:timestamp :sexp :scheduled))
+                   (org-agenda-overriding-header "Routine & Appointments\n")))
        (tags "+TODO=\"WAIT\""
-             (
-              (org-agenda-sorting-strategy '(timestamp-down))
+             ((org-agenda-sorting-strategy '(timestamp-down))
               (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nAll Delegated/Waiting For\n")
-              ))
-       ;; Presents 0home PROJ's grouped by categories
+              (org-agenda-overriding-header "\nDelegated/Waiting For\n")))
        (tags "TODO=\"TODO\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
+             ((org-agenda-sorting-strategy '(category-keep))
               (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nAll Tasks\n")
-              ))
-       ;; Presents 0home PROJ's grouped by categories
+              (org-agenda-overriding-header "\nAll Tasks\n")))
        (tags "TODO=\"PROJ\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
+             ((org-agenda-sorting-strategy '(category-keep))
               (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nAll Projects\n")
-              ))
-       ;; Presents Cancelled and Stuck Projects
-       (tags "TODO=\"CXLD\""
-             (
-              (org-agenda-sorting-strategy '(tsia-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nTerminated Tasks\n")
-              ))
-       (stuck ""
-              (
-               (org-agenda-overriding-header "\nStuck Projects\n")
-               ))
-       (agenda "" (
-                   ;; Increase or decrease if cluttered or empty
-                   (org-agenda-span '33)
-                   (org-agenda-start-on-weekday nil)
-                   (org-agenda-start-day "+1d")         ;; calendar begins tomorrow
-                   (org-agenda-entry-types '(:timestamp :sexp :scheduled))
-                   (org-agenda-overriding-header "Routine & Appointments\n")
-                   ))
-       )
+              (org-agenda-overriding-header "\nAll Projects\n")))
+       (stuck "" ((org-agenda-overriding-header "\nStuck Projects\n"))))
       ((org-agenda-tag-filter-preset '("-SDAY"))))
-     ;; ***** Home Agenda
-     ("h" "Home Agenda"
-      ;; Presents the same view as Google Calendar i.e. only APPT and Routine Events
-      ;; Inclusive of all tags. I can't bi-locate after all.
-      (;; Presents Scheduled and Deadline Items, includes Overdue Items
-       ;; Exclusive to 0home tasks
-       (agenda "" ((org-agenda-span 1)                      ; daily agenda
-                   ;; 7 day warning for deadlines, adjust period based on clutter
-                   (org-deadline-warning-days 7)
-                   ;; (org-agenda-todo-keyword-format "[ ]")
-                   (org-agenda-overriding-header "Today's Agenda\n")
-                   ;; (org-agenda-scheduled-leaders '("" ""))
-                   ))
-       ;; Presents in progress tasks for easy access to clock in
-       (tags "0home+TODO=\"PROG\""
-             (
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0home Tasks in Progress\n")
-              ))
-       ;; Presents NEXT 0home tasks
-       (tags "0home+TODO=\"NEXT\""
-             (
-              ;; Sorting for [A] Priority items, then by upcoming deadlines
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0home Action Items\n")
-              ;; Skip listing a next/todo item that has already been scheduled
-              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
-              ))
-       ;; Presents 0home WAIT's sorted by oldest first
-       ;; This is as it really should have a scheduled or
-       ;; deadline date, but sometimes you really don't know
-       ;; If given a scheduled or deadline date it will show up in
-       ;; the day's agenda. Make sure to include an active timestamp
-       ;; when switching states
-       ;; Make sure to write down what you are waiting for
-       (tags "0home+TODO=\"WAIT\""
-             (
-              (org-agenda-sorting-strategy '(timestamp-down))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0home Delegated/Waiting For\n")
-              ))
-       ;; Presents 0home PROJ's grouped by categories
-       (tags "0home+TODO=\"TODO\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0home Tasks\n")
-              ))
-       ;; Presents 0home PROJ's grouped by categories
-       (tags "0home+TODO=\"PROJ\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0home Projects\n")
-              ))
-       ;; Presents Cancelled and Stuck Projects
-       (tags "0home+TODO=\"CXLD\""
-             (
-              (org-agenda-sorting-strategy '(tsia-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nTerminated Tasks\n")
-              ))
-       (stuck ""
-              (
-               (org-agenda-overriding-header "\nStuck Projects\n")
-               ))
-       (agenda "" (
-                   ;; Increase or decrease if cluttered or empty
-                   (org-agenda-span '33)
-                   (org-agenda-start-on-weekday nil)
-                   (org-agenda-start-day "+1d")         ;; calendar begins tomorrow
-                   (org-agenda-entry-types '(:timestamp :sexp :scheduled))
-                   (org-agenda-overriding-header "Routine & Appointments\n")
-                   ))
-  
-       )
-      ((org-agenda-tag-filter-preset '("-SDAY")))
-      )
-     ;; ***** Office Agenda
-     ("o" "Office Agenda"
-      ;; Presents the same view as Google Calendar i.e. only APPT and Routine Events
-      ;; Inclusive of all tags. I can't bi-locate after all.
-      (;; Presents Scheduled and Deadline Items, includes Overdue Items
-       ;; Exclusive to 0home tasks
-       (agenda "" ((org-agenda-span 1)                      ; daily agenda
-                   ;; 7 day warning for deadlines, adjust period based on clutter
-                   (org-deadline-warning-days 7)
-                   ;; (org-agenda-todo-keyword-format "[ ]")
-                   (org-agenda-overriding-header "Today's Agenda\n")
-                   ;; (org-agenda-scheduled-leaders '("" ""))
-                   ))
-       ;; Presents in progress tasks for easy access to clock in
-       (tags "0office+TODO=\"PROG\""
-             (
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0office Tasks in Progress\n")
-              ))
-       ;; Presents NEXT 0office tasks
-       (tags "0office+TODO=\"NEXT\""
-             (
-              ;; Sorting for [A] Priority items, then by upcoming deadlines
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0office Action Items\n")
-              ;; Skip listing a next/todo item that has already been scheduled
-              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
-              ))
-       ;; Presents 0office WAIT's sorted by oldest first
-       ;; This is as it really should have a scheduled or
-       ;; deadline date, but sometimes you really don't know
-       ;; If given a scheduled or deadline date it will show up in
-       ;; the day's agenda. Make sure to include an active timestamp
-       ;; when switching states
-       ;; Make sure to write down what you are waiting for
-       (tags "0office+TODO=\"WAIT\""
-             (
-              (org-agenda-sorting-strategy '(timestamp-down))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0office Delegated/Waiting For\n")
-              ))
-       ;; Presents 0office PROJ's grouped by categories
-       (tags "0office+TODO=\"TODO\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0office Tasks\n")
-              ))
-       ;; Presents 0office PROJ's grouped by categories
-       (tags "0office+TODO=\"PROJ\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0office Projects\n")
-              ))
-       ;; Presents Cancelled and Stuck Projects
-       (tags "0office+TODO=\"CXLD\""
-             (
-              (org-agenda-sorting-strategy '(tsia-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nTerminated Tasks\n")
-              ))
-       (stuck ""
-              (
-               (org-agenda-overriding-header "\nStuck Projects\n")
-               ))
-       (agenda "" (
-                   ;; Increase or decrease if cluttered or empty
-                   (org-agenda-span '33)
-                   (org-agenda-start-on-weekday nil)
-                   (org-agenda-start-day "+1d")         ;; calendar begins tomorrow
-                   (org-agenda-entry-types '(:timestamp :sexp :scheduled))
-                   (org-agenda-overriding-header "Routine & Appointments\n")
-                   ))
-       )
-      ((org-agenda-tag-filter-preset '("-SDAY")))
-      )
-     ;; ***** Errand Agenda
-     ("e" "Errand Agenda"
-      ;; Presents the same view as Google Calendar i.e. only APPT and Routine Events
-      ;; Inclusive of all tags. I can't bi-locate after all.
-      (;; Presents Scheduled and Deadline Items, includes Overdue Items
-       ;; Exclusive to 0home tasks
-       (agenda "" ((org-agenda-span 1)                      ; daily agenda
-                   ;; 7 day warning for deadlines, adjust period based on clutter
-                   (org-deadline-warning-days 7)
-                   ;; (org-agenda-todo-keyword-format "[ ]")
-                   (org-agenda-overriding-header "Today's Agenda\n")
-                   ;; (org-agenda-scheduled-leaders '("" ""))
-                   ))
-       ;; Presents in progress tasks for easy access to clock in
-       (tags "0errand+TODO=\"PROG\""
-             (
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0errand Tasks in Progress\n")
-              ))
-       ;; Presents NEXT 0errand tasks
-       (tags "0errand+TODO=\"NEXT\""
-             (
-              ;; Sorting for [A] Priority items, then by upcoming deadlines
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0errand Action Items\n")
-              ;; Skip listing a next/todo item that has already been scheduled
-              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
-              ))
-       ;; Presents 0errand WAIT's sorted by oldest first
-       ;; This is as it really should have a scheduled or
-       ;; deadline date, but sometimes you really don't know
-       ;; If given a scheduled or deadline date it will show up in
-       ;; the day's agenda. Make sure to include an active timestamp
-       ;; when switching states
-       ;; Make sure to write down what you are waiting for
-       (tags "0errand+TODO=\"WAIT\""
-             (
-              (org-agenda-sorting-strategy '(timestamp-down))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0errand Delegated/Waiting For\n")
-              ))
-       ;; Presents 0errand PROJ's grouped by categories
-       (tags "0errand+TODO=\"TODO\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0errand Tasks\n")
-              ))
-       ;; Presents 0errand PROJ's grouped by categories
-       (tags "0errand+TODO=\"PROJ\""
-             (
-              (org-agenda-sorting-strategy '(category-keep))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\n0errand Projects\n")
-              ))
-       ;; Presents Cancelled and Stuck Projects
-       (tags "0errand+TODO=\"CXLD\""
-             (
-              (org-agenda-sorting-strategy '(tsia-up))
-              (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nTerminated Tasks\n")
-              ))
-       (stuck ""
-              (
-               (org-agenda-overriding-header "\nStuck Projects")
-               ))
-       (agenda "" (
-                   ;; Increase or decrease if cluttered or empty
-                   (org-agenda-span '33)
-                   (org-agenda-start-on-weekday nil)
-                   (org-agenda-start-day "+1d")         ;; calendar begins tomorrow
-                   (org-agenda-entry-types '(:timestamp :sexp :scheduled))
-                   (org-agenda-overriding-header "Routine & Appointments\n")
-                   ))
-       )
-      ((org-agenda-tag-filter-preset '("-SDAY")))
-      )
      ;; ***** Review Agenda
      ("r" "Review Agenda"
-      ;; Presents the same view as Google Calendar i.e. only APPT and Routine Events
-      ;; Inclusive of all tags. I can't bi-locate after all.
-      (;; Presents Scheduled and Deadline Items, includes Overdue Items
-       ;; Exclusive to 0home tasks
-       ;; Presents in progress tasks for easy access to clock in
-       (tags "TODO=\"DONE\""
-             (
-              (org-agenda-sorting-strategy '(priority-down deadline-up))
+      ((tags "TODO=\"DONE\""
+             ((org-agenda-sorting-strategy '(priority-down deadline-up))
               (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nCompleted Tasks\n")
-              ))
-       ;; Presents Cancelled and Stuck Projects
+              (org-agenda-overriding-header "\nCompleted Tasks\n")))
        (tags "TODO=\"CXLD\""
-             (
-              (org-agenda-sorting-strategy '(tsia-up))
+             ((org-agenda-sorting-strategy '(tsia-up))
               (org-agenda-todo-keyword-format "%-3s")
-              (org-agenda-overriding-header "\nTerminated Tasks\n")
-              ))
-       (stuck ""
-              (
-               (org-agenda-overriding-header "\nStuck Projects\n")
-               ))
-       (agenda "" (
-                   ;; Increase or decrease if cluttered or empty
-                   (org-agenda-span '33)
+              (org-agenda-overriding-header "\nTerminated Tasks\n")))
+       (stuck "" ((org-agenda-overriding-header "\nStuck Projects\n")))
+       (agenda "" ((org-agenda-span '33)
                    (org-agenda-start-on-weekday nil)
-                   (org-agenda-start-day "+1d")         ;; calendar begins tomorrow
+                   (org-agenda-start-day "+1d")
                    (org-agenda-entry-types '(:timestamp :sexp :scheduled))
-                   (org-agenda-overriding-header "Routine & Appointments\n")
-                   ))
-       )
-      ((org-agenda-tag-filter-preset '("-SDAY")))
-      )
-     ))
-  
+                   (org-agenda-overriding-header "Routine & Appointments\n"))))
+      ((org-agenda-tag-filter-preset '("-SDAY")))))
+   org-agenda-window-setup 'current-window)
   ;; Following 2 lines are needed to exclude parent heading from table of contents but still export the content
   ;; https://emacs.stackexchange.com/questions/30183/orgmode-export-skip-ignore-first-headline-level
   (require 'ox-extra)
@@ -2209,7 +1712,7 @@ package is loaded, you should place your code here."
                                     (org-publish-find-date entry project))
                 entry
                 filename))))
-  (setq org-publish-project-alist
+  (setf org-publish-project-alist
         '(("blog"
            :components ("blog-content" "blog-rss"))
           ("blog-content"
@@ -2277,7 +1780,7 @@ package is loaded, you should place your code here."
                               <footer>
                                 <div class=\"copyright-container\">
                                     Comments? Corrections? <a href=\"https://bhw.name/contact\"> Please do reach out.</a><a href=\"https://bhw.name/blog/rss.xml\"> RSS Feed. </a><a href=\"https://bhw.name/subscribe\"> Mailing List. </a><br/>
-                                    Copyright 2021 Benedict Hanshen Wang. <br/>
+                                    Copyright 2021 Benedict H. Wang. <br/>
                                     Blog content is available under <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/4.0/\"> CC-BY-SA 4.0 </a> unless otherwise noted.<br/>
                                     Created with %c on <a href=\"https://www.gnu.org\">GNU</a>/<a href=\"https://www.kernel.org/\">Linux</a><br/>
                                 </div>
@@ -2295,7 +1798,7 @@ package is loaded, you should place your code here."
            :exclude "archive.org"
            :auto-sitemap t
            :sitemap-function posts-rss-feed
-           :sitemap-title "Benedict Hanshen Wang Blog RSS"
+           :sitemap-title "Benedict H. Wang Blog RSS"
            :sitemap-filename "rss.org"
            :sitemap-style list
            :sitemap-sort-files anti-chronologically
@@ -2320,11 +1823,11 @@ package is loaded, you should place your code here."
            (let ((id (org-entry-get nil "CUSTOM_ID")))
              (unless id
                (thread-last (nth 4 (org-heading-components))
-                 (s-replace-regexp "[^[:alnum:]']" "-")
-                 (s-replace-regexp "-+" "-")
-                 (s-chop-prefix "-")
-                 (s-chop-suffix "-")
-                 (setq id))
+                            (s-replace-regexp "[^[:alnum:]']" "-")
+                            (s-replace-regexp "-+" "-")
+                            (s-chop-prefix "-")
+                            (s-chop-suffix "-")
+                            (setq id))
                (if (not (member id ids))
                    (push id ids)
                  (message-box "Oh no, a repeated id!\n\n\t%s" id)
@@ -2361,7 +1864,7 @@ package is loaded, you should place your code here."
                 representation for the files to include.  PROJECT is the current
                 project."
     (concat
-     "#+TITLE: " title "\n#+EMAIL: admin@bhw.name" "\n\n"
+     "#+TITLE: " title "\n#+EMAIL: seneschal@bhw.name" "\n\n"
      (org-list-to-subtree list)))
   (defun publish-posts-rss-feed (plist filename dir)
     "Publish PLIST to RSS when FILENAME is rss.org.
@@ -2406,7 +1909,7 @@ package is loaded, you should place your code here."
   ;; (add-to-list 'org-src-lang-modes '("mathematica" . wolfram))
   ;; (autoload 'wolfram-mode "wolfram-mode" nil t)
   ;; (autoload 'run-wolfram "wolfram-mode" nil t)
-  ;; (setq wolfram-program "/home/hanshen/Wolfram/WolframEngine/12.2/Executables/WolframKernel")
+  ;; (setq wolfram-program "/home/ben/Wolfram/WolframEngine/12.2/Executables/WolframKernel")
   ;; (add-to-list 'auto-mode-alist '("\.m$" . wolfram-mode))
   ;; (setq wolfram-path "~/.WolframEngine/Applications") ;; e.g. on Linux ~/.Mathematica/Applications
   ;; For wolfram-mode
@@ -2423,14 +1926,16 @@ package is loaded, you should place your code here."
                       (or
                        (org-entry-get (point) "tangle-dir" 'inherit)
                        (default-directory))))
-  ;;-------------------------------------------------------------------------
-  ;; ***  Org Recoll Config
-  ;;-------------------------------------------------------------------------
   ;; (load "~/.emacs.d/private/local/org-recoll.el")
   ;; (setq org-recoll-results-num 50)
   ;; (spacemacs/set-leader-keys "ss" 'org-recoll-search)
-  (setq org-attach-id-dir "~/project-jerome/org-attach-data/" )
-  (setq org-attach-preferred-new-method 'dir)
+  (setf
+   org-attach-id-dir "~/project-jerome/org-attach-data/"
+   ;; https://helpdeskheadesk.net/2022-03-13/
+   ;; For org attach, change org timestamps to more human readable format.
+   org-id-method 'ts
+   org-attach-id-to-path-function-list
+   '(org-attach-id-ts-folder-format org-attach-id-uuid-folder-format))
   (setf org-noter-always-create-frame nil
         org-noter-hide-other nil
         org-noter-auto-save-last-location t)
@@ -2448,9 +1953,6 @@ package is loaded, you should place your code here."
   ;; Automatically add ID properties to all org headlines when saving
   ;; Disabled because of slowdown, use org-id-get-create instead
   ;; (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
-  (push '("b" "Org-Brain" plain (function org-brain-goto-end)
-          "* %i%?" :empty-lines 1)
-        org-capture-templates)
   (defun org-expiry-created-comp (a b)
     "Compare `org-expiry-created-property-name' properties of A and B."
     (let ((ta (ignore-errors
@@ -2710,8 +2212,8 @@ package is loaded, you should place your code here."
         ;; see an ASCII table for the character decimal codes
         mu4e-bookmarks '(("maildir:/INBOX" "Inbox" 105 )
                          ("\"maildir:/[Gmail]/All Mail\" and flag:unread" "Unread" 85))
-        user-mail-address "benedicthanshenwang@gmail.com"
-        user-full-name "Benedict Hanshen Wang"
+        user-mail-address (get-authinfo-password "personal.gmail" "ben")
+        user-full-name "Benedict H. Wang"
         ;; mu4e-compose-signature
         mail-user-agent 'mu4e-user-agent
         mu4e-attachment-dir "/mnt/c/Users/bened/Downloads/"
@@ -2761,7 +2263,7 @@ package is loaded, you should place your code here."
         )
   (with-eval-after-load "recentf"
     (progn
-      (add-to-list 'recentf-exclude (concat +project-jerome-dir+ "email-archive/"))
+      (add-to-list 'recentf-exclude "~/project-jerome/email-archive/")
       (add-to-list 'recentf-exclude "/tmp/")))
   ;; Unbind s, originally bound to mu4e-headers-search.
   ;; Unset =mu4e-headers=search= from both =mu4e-headers-mode-map= and
@@ -2769,12 +2271,12 @@ package is loaded, you should place your code here."
   (define-key mu4e-headers-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
   (define-key mu4e-headers-mode-map (kbd "K") #'mu4e-view-save-url)
   (define-key mu4e-headers-mode-map "S" 'helm-mu)
-  (define-key mu4e-view-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
-  (define-key mu4e-view-mode-map (kbd "K") #'mu4e-view-save-url)
-  (define-key mu4e-view-mode-map "S" 'helm-mu)
-  ;; (define-key mu4e-main-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
-  ;; (define-key mu4e-main-mode-map "S" 'helm-mu)
-  (add-hook 'mu4e-view-mode-hook (lambda () (evil-evilified-state)))
+  (add-hook 'mu4e-view-mode-hook
+            (lambda () (progn
+                         (evil-evilified-state)
+                         (define-key mu4e-view-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
+                         (define-key mu4e-view-mode-map (kbd "K") #'mu4e-view-save-url)
+                         (define-key mu4e-view-mode-map "S" 'helm-mu))))
   (define-key mu4e-headers-mode-map (kbd "c") #'mu4e-headers-mark-all-unread-read)
   (define-key mu4e-headers-mode-map (kbd "C") #'mu4e-headers-refile-all)
   ;; Functions ran on every message sent
@@ -2796,7 +2298,7 @@ package is loaded, you should place your code here."
     (progn
       (define-key elfeed-search-mode-map (kbd "RET") nil)
       (define-key elfeed-search-mode-map (kbd "RET") #'ap/elfeed-search-browse-org)))
-  (defhydra hanshen/hydra-elfeed (:exit t)
+  (defhydra ben/hydra-elfeed (:exit t)
     ("g" (elfeed-search-set-filter "@6-months-ago +unread +gbl") "Global News")
     ("l" (elfeed-search-set-filter "@6-months-ago +unread +lcl") "Local News")
     ("s" (elfeed-search-set-filter "@6-months-ago +unread +sci") "Science & Tech")
@@ -2813,7 +2315,7 @@ package is loaded, you should place your code here."
     :bindings
     "s"  #'avy-goto-word-or-subword-1
     "S"  #'elfeed-search-live-filter
-    "f"  #'hanshen/hydra-elfeed/body
+    "f"  #'ben/hydra-elfeed/body
     "r"  #'elfeed-mark-all-as-read
     "RET"  #'ap/elfeed-search-browse-org
     "t"   #'elfeed-search-show-entry
@@ -2881,9 +2383,6 @@ package is loaded, you should place your code here."
               :after #'elfeed-tube--auto-fetch)
   (advice-add elfeed-show-refresh-function
               :after #'elfeed-tube-show)
-  ;;-------------------------------------------------------------------------
-  ;; ***  Shell Config
-  ;;-------------------------------------------------------------------------
   ;; Forces bash shell into interactive mode, leadings to sourcing of
   ;; ~/.bashrc and interactive aliases and functions
   ;; (setq shell-command-switch "-ic")
@@ -2928,8 +2427,4 @@ package is loaded, you should place your code here."
   ;; Determines the length of time between the end of typing for SPC j j (avy-timer)
   ;; and the appearance of green prompt letters
   (setq avy-timeout-seconds 0.50)
-  ;; Change the scale of the powerline
-  ;; Commented out as I'm currently using default Emacs modeline.
-  ;; (setq powerline-scale 0.50)
-  ;; Self explanatory (menu-bar-mode 1) (tool-bar-mode 1)
   )

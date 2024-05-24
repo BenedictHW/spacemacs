@@ -1,0 +1,2 @@
+;; Generated package description from ement.el  -*- no-byte-compile: t -*-
+(define-package "ement" "0.15.1" "Matrix client" '((emacs "27.1") (map "2.1") (persist "0.5") (plz "0.6") (taxy "0.10") (taxy-magit-section "0.13") (svg-lib "0.2.5") (transient "0.3.7")) :commit "e120fdb3bdf23e31f6f8b4a3aa4490794ca37183" :authors '(("Adam Porter" . "adam@alphapapa.net")) :maintainer '("Adam Porter" . "adam@alphapapa.net") :keywords '("comm") :url "https://github.com/alphapapa/ement.el")

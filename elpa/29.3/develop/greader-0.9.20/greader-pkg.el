@@ -1,2 +1,0 @@
-;; Generated package description from greader.el  -*- no-byte-compile: t -*-
-(define-package "greader" "0.9.20" "gnamù reader, send buffer contents to a speech engine." '((emacs "25")) :commit "524ec7c80038a7f38ab6968cec4e357394e58e66" :url "https://elpa.gnu.org/packages/greader.html" :authors '(("Michelangelo Rodriguez" . "michelangelo.rodriguez@gmail.com")) :maintainer '("Michelangelo Rodriguez" . "michelangelo.rodriguez@gmail.com") :keywords '("tools" "accessibility"))
