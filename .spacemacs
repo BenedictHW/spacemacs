@@ -1,0 +1,2562 @@
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;; This file is loaded by Spacemacs at startup.
+;; It must be stored in your home directory.
+(defconst +project-maria-dir+ "~/project-maria/"
+  "On UNIX likes, expands to /home/ben/project-maria")
+(defconst +project-jerome-dir+ "~/project-jerome/"
+  "On UNIX likes, expands to /home/ben/project-jerome/")
+
+(defun dotspacemacs/layers ()
+  "Layer configuration:
+  This function should only modify configuration layer settings."
+  (setq-default
+   ;; Base distribution to use. This is a layer contained in the directory
+   ;; `+distribution'. For now available distributions are `spacemacs-base'
+   ;; or `spacemacs'. (default 'spacemacs)
+   dotspacemacs-distribution 'spacemacs
+
+   ;; Lazy installation of layers (i.e. layers are installed only when a file
+   ;; with a supported type is opened). Possible values are `all', `unused'
+   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
+   ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
+   ;; lazy install any layer that support lazy installation even the layers
+   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
+   ;; installation feature and you have to explicitly list a layer in the
+   ;; variable `dotspacemacs-configuration-layers' to install it.
+   ;; (default 'unused)
+   dotspacemacs-enable-lazy-installation 'nil
+
+   ;; If non-nil then Spacemacs will ask for confirmation before installing
+   ;; a layer lazily. (default t)
+   dotspacemacs-ask-for-lazy-installation t
+
+   ;; List of additional paths where to look for configuration layers.
+   ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
+   dotspacemacs-configuration-layer-path '()
+
+   ;; List of configuration layers to load.
+   dotspacemacs-configuration-layers
+   '(;; ----------------------------------------------------------------
+     ;; Example of useful layers you may want to use right away.
+     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+     ;; `M-m f e R' (Emacs style) to install them.
+     ;; ----------------------------------------------------------------
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-snippets-in-popup t
+                      :packages
+                      (not
+                       helm-company
+                       yasnippet-snippets
+                       fuzzy
+                       ac-ispell
+                       auto-complete))
+     (better-defaults :packages
+                      (not
+                       mwim))
+     (bibtex :variables
+             bibtex-enable-ebib-support t
+             ebib-preload-bib-files (list (concat +project-maria-dir+ "project-jerome.bib"))
+             ebib-file-search-dirs (list +project-jerome-dir+)
+             ebib-import-directory (list +project-jerome-dir+))
+     ;; $ git clone git@github.com:BenedictHW/common-lisp-sly.git ~/.emacs.d/private/
+     common-lisp-sly
+     (elfeed :variables
+             elfeed-enable-goodies nil
+             rmh-elfeed-org-files (list (concat +project-maria-dir+ "/dotelfeed.org")))
+     (emacs-lisp :packages (not
+                            flycheck-package
+                            nameless
+                            emr
+                            overseer
+                            flycheck-elsa
+                            auto-compile
+                            inspector
+                            ))
+     evil-better-jumper
+     (evil-snipe :variables
+                 evil-snipe-enable-alternate-f-and-t-behaviors 't)
+     finance
+     (git   :variables git-enable-magit-todos-plugin t
+            :packages (not
+                       git-modes
+                       golden-ratio
+                       smeargle
+                       gitignore-templates
+                       git-messenger
+                       helm-git-grep
+                       git-timemachine
+                       ))
+     (helm :packages (not
+                      helm-descbinds
+                      helm-swoop
+                      helm-themes
+                      helm-make
+                      helm-ls-git
+                      helm-mode-manager
+                      helm-flx))
+     helpful
+     (llm-client :variables
+                 llm-client-enable-ellama nil
+                 llm-client-enable-gptel t)
+     (mu4e :variables
+           mu4e-installation-path "/usr/share/emacs/site-lisp/elpa/mu4e-1.10.8"
+           :packages (not
+                      mu4e-alert))
+     (org :variables
+          org-enable-roam-support t
+          org-want-todo-bindings t
+          org-enable-reveal-js-support t
+          org-enable-org-journal-support nil
+          org-enable-org-contacts-support t
+          org-enable-appear-support t
+          org-enable-sticky-header nil
+          :packages (not org-rich-yank))
+     ;; pandoc
+     pdf
+     plantuml
+     (python :variables
+             python-backend 'lsp
+             python-lsp-server 'pylsp
+             python-shell-interpreter "python3")
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom
+            shell-default-shell 'shell
+            :packages (not
+                       esh-help
+                       eshell-prompt-extras
+                       eshell-z
+                       xterm-color
+                       vterm
+                       multi-vterm
+                       terminal-here
+                       multi-term
+                       ))
+     (spell-checking :packages (not
+                                auto-dictionary
+                                ))
+     (syntax-checking :packages (not
+                                 flycheck-pos-tip))
+     (transmission :variables transmission-auto-refresh-all t)
+     ;; Danger! Making edits to the default layers.
+     ;; See Spacemacs Issue 13595. The spacemacs distribution layer lists
+     ;; treemacs in configuration-layer/declare-layers.
+     (treemacs :packages nil)
+     (spacemacs-bootstrap :packages (not
+                                     dash
+                                     holy-mode
+                                     hybrid-mode))
+     (spacemacs-defaults :packages (not
+                                    quickrun))
+     (spacemacs-editing
+      :variables vim-style-enable-undo-region t
+      :packages (not
+                 eval-sexp-fu
+                 expand-region
+                 aggressive-indent
+                 editorconfig
+                 hungry-delete
+                 multi-line
+                 password-generator
+                 uuidgen
+                 string-edit
+                 lorem-ipsum
+                 drag-stuff
+                 evil-easymotion
+                 undo-fu
+                 undo-fu-session))
+     (spacemacs-editing-visual
+      :packages (not
+                 term-cursor
+                 highlight-indentation
+                 writeroom-mode
+                 hide-comnt
+                 highlight-numbers
+                 indent-guide
+                 volatile-highlights
+                 ))
+     (spacemacs-completion
+      :packages (not
+                 flx-ido))
+     (spacemacs-language
+      :packages (not
+                 define-word))
+     (spacemacs-layouts
+      :packages (not
+                 counsel-projectile))
+     (spacemacs-misc
+      :packages (not
+                 devdocs))
+     (spacemacs-purpose
+      :packages (not
+                 helm-purpose))
+     (spacemacs-modeline
+      :packages (not
+                 anzu
+                 fancy-battery
+                 font-lock+
+                 neotree
+                 symon
+                 vim-powerline))
+     (spacemacs-navigation
+      :packages (not
+                 restart-emacs
+                 ace-link
+                 golden-ratio
+                 centered-cursor-mode
+                 open-junk-file
+                 auto-highlight-symbol))
+     (spacemacs-org
+      :packages (not
+                 toc-org))
+     (spacemacs-visual
+      :packages (not all-the-icons))
+     (spacemacs-evil
+      :packages (not
+                 evil-numbers
+                 evil-lisp-state
+                 evil-escape
+                 evil-anzu
+                 evil-exchange
+                 evil-goggles
+                 evil-iedit-state
+                 evil-tutor
+                 evil-unimpaired
+                 evil-visual-mark-mode
+                 evil-visualstar
+                 evil-args
+                 vi-tilde-fringe
+                 evil-indent-plus
+                 vim-empty-lines-mode
+                 ))
+     )
+   ;; ***  Additional Packages
+   ;; List of additional packages that will be installed without being
+   ;; wrapped in a layer. If you need some configuration for these
+   ;; packages, then consider creating a layer. You can also put the
+   ;; configuration in `dotspacemacs/user-config'.
+   dotspacemacs-additional-packages
+   '(;; Replaces `dotspacemacs/user-env'.
+     exec-path-from-shell
+     org-noter
+     org-pdftools
+     org-web-tools
+     ;; Pulls entire douay rheims bible from sword project
+     ;; (sword-to-org :location (recipe :fetcher github
+     ;;                                  :repo "alphapapa/sword-to-org"))
+     cdlatex
+     org-fragtog
+     ;; keyfreq
+     ;; For org-brain
+     ascii-art-to-unicode
+     ;; wolfram-mode
+     ;; See emacs-jupyter in user config section
+     ;; jupyter
+     lexic
+     ;; Since it is a pretty heavy package, only include it when doing heavy
+     ;; analysis on my own time spent.
+     ;; org-analyzer
+     org-tanglesync
+     poly-org
+     ement
+     elfeed-tube
+     elfeed-tube-mpv
+     greader
+     literate-calc-mode
+     listen
+     casual
+     biome
+     webfeeder
+     anki-editor
+     ;; (reader :location (recipe :fetcher codeberg
+     ;;                           :repo "divyaranjan/emacs-reader"))
+     )
+
+   ;; A list of packages that cannot be updated.
+   dotspacemacs-frozen-packages
+   '(;; Otherwise it will reinstall itself
+     helm-swoop
+     )
+
+   ;; A list of packages that will not be installed and loaded.
+   dotspacemacs-excluded-packages
+   '(hybrid-mode
+     helm-org-rifle
+     org-present
+     org-pomodoro
+     org-projectile
+     dotenv-mode)
+
+   ;; Defines the behaviour of Spacemacs when installing packages.
+   ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
+   ;; `used-only' installs only explicitly used packages and deletes any unused
+   ;; packages as well as their unused dependencies. `used-but-keep-unused'
+   ;; installs only the used packages but won't delete unused ones. `all'
+   ;; installs *all* packages supported by Spacemacs and never uninstalls them.
+   ;; (default is `used-only')
+   dotspacemacs-install-packages 'used-but-keep-unused))
+
+(defun dotspacemacs/init ()
+  "Initialization:
+This function is called at the very beginning of Spacemacs startup,
+before layer configuration.
+It should only modify the values of Spacemacs settings."
+  ;; This setq-default sexp is an exhaustive list of all the supported
+  ;; spacemacs settings.
+  (setq-default
+   ;; If non-nil then enable support for the portable dumper. You'll need to
+   ;; compile Emacs 27 from source following the instructions in file
+   ;; EXPERIMENTAL.org at to root of the git repository.
+   ;;
+   ;; WARNING: pdumper does not work with Native Compilation, so it's disabled
+   ;; regardless of the following setting when native compilation is in effect.
+   ;;
+   ;; (default nil)
+   dotspacemacs-enable-emacs-pdumper nil
+
+   ;; Name of executable file pointing to emacs 27+. This executable must be
+   ;; in your PATH.
+   ;; (default "emacs")
+   dotspacemacs-emacs-pdumper-executable-file "emacs"
+
+   ;; Name of the Spacemacs dump file. This is the file will be created by the
+   ;; portable dumper in the cache directory under dumps sub-directory.
+   ;; To load it when starting Emacs add the parameter `--dump-file'
+   ;; when invoking Emacs 27.1 executable on the command line, for instance:
+   ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
+   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
+   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
+
+   ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
+   ;; possible. Set it to nil if you have no way to use HTTPS in your
+   ;; environment, otherwise it is strongly recommended to let it set to t.
+   ;; This variable has no effect if Emacs is launched with the parameter
+   ;; `--insecure' which forces the value of this variable to nil.
+   ;; (default t)
+   dotspacemacs-elpa-https t
+
+   ;; Maximum allowed time in seconds to contact an ELPA repository.
+   ;; (default 5)
+   dotspacemacs-elpa-timeout 5
+
+   ;; Set `gc-cons-threshold' and `gc-cons-percentage' when startup finishes.
+   ;; This is an advanced option and should not be changed unless you suspect
+   ;; performance issues due to garbage collection operations.
+   ;; (default '(100000000 0.1))
+   ;; Emacs maintainer Eli Zaretskii recommends not altering the value from
+   ;; Emacs default.
+   ;; https://old.reddit.com/r/emacs/comments/bg85qm/garbage_collector_magic_hack/
+   ;; https://old.reddit.com/r/emacs/comments/6uc7g5/just_figured_out_why_emacs_pauses_sometimes/
+   ;; Update: see `spacemacs-editing/init-undo-tree' undo limits.
+   ;; If we lower the threshold there will be freezing
+   ;; when we use the undo history.
+   ;; Also see: https://github.com/lewang/flx#gc-optimization
+   dotspacemacs-gc-cons '(100000000 0.1)
+
+   ;; Set `read-process-output-max' when startup finishes.
+   ;; This defines how much data is read from a foreign process.
+   ;; Setting this >= 1 MB should increase performance for lsp servers
+   ;; in emacs 27.
+   ;; (default (* 1024 1024))
+   dotspacemacs-read-process-output-max (* 1024 1024)
+
+   ;; If non-nil then Spacelpa repository is the primary source to install
+   ;; a locked version of packages. If nil then Spacemacs will install the
+   ;; latest version of packages from MELPA. Spacelpa is currently in
+   ;; experimental state please use only for testing purposes.
+   ;; (default nil)
+   dotspacemacs-use-spacelpa nil
+
+   ;; If non-nil then verify the signature for downloaded Spacelpa archives.
+   ;; (default t)
+   dotspacemacs-verify-spacelpa-archives t
+
+   ;; If non-nil then spacemacs will check for updates at startup
+   ;; when the current branch is not `develop'. Note that checking for
+   ;; new versions works via git commands, thus it calls GitHub services
+   ;; whenever you start Emacs. (default nil)
+   dotspacemacs-check-for-update nil
+
+   ;; If non-nil, a form that evaluates to a package directory. For example, to
+   ;; use different package directories for different Emacs versions, set this
+   ;; to `emacs-version'. (default 'emacs-version)
+   dotspacemacs-elpa-subdirectory 'emacs-version
+
+   ;; One of `vim', `emacs' or `hybrid'.
+   ;; `hybrid' is like `vim' except that `insert state' is replaced by the
+   ;; `hybrid state' with `emacs' key bindings. The value can also be a list
+   ;; with `:variables' keyword (similar to layers). Check the editing styles
+   ;; section of the documentation for details on available variables.
+   ;; (default 'vim)
+   dotspacemacs-editing-style 'vim
+
+   ;; If non-nil show the version string in the Spacemacs buffer. It will
+   ;; appear as (spacemacs version)@(emacs version)
+   ;; (default t)
+   dotspacemacs-startup-buffer-show-version t
+
+   ;; Specify the startup banner. Default value is `official', it displays
+   ;; the official spacemacs logo. An integer value is the index of text
+   ;; banner, `random' chooses a random text banner in `core/banners'
+   ;; directory. A string value must be a path to an image format supported
+   ;; by your Emacs build.
+   ;; If the value is nil then no banner is displayed. (default 'official)
+   dotspacemacs-startup-banner nil
+
+   ;; Scale factor controls the scaling (size) of the startup banner. Default
+   ;; value is `auto' for scaling the logo automatically to fit all buffer
+   ;; contents, to a maximum of the full image height and a minimum of 3 line
+   ;; heights. If set to a number (int or float) it is used as a constant
+   ;; scaling factor for the default logo size.
+   dotspacemacs-startup-banner-scale 'nil
+
+   ;; List of items to show in startup buffer or an association list of
+   ;; the form `(list-type . list-size)`. If nil then it is disabled.
+   ;; Possible values for list-type are:
+   ;; `recents' `recents-by-project' `bookmarks' `projects' `agenda' `todos'.
+   ;; List sizes may be nil, in which case
+   ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   ;; The exceptional case is `recents-by-project', where list-type must be a
+   ;; pair of numbers, e.g. `(recents-by-project . (7 .  5))', where the first
+   ;; number is the project limit and the second the limit on the recent files
+   ;; within a project.
+   dotspacemacs-startup-lists '((agenda . 30))
+
+   ;; True if the home buffer should respond to resize events. (default t)
+   dotspacemacs-startup-buffer-responsive t
+
+   ;; Show numbers before the startup list lines. (default t)
+   dotspacemacs-show-startup-list-numbers t
+
+   ;; The minimum delay in seconds between number key presses. (default 0.4)
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
+
+   ;; If non-nil, show file icons for entries and headings on Spacemacs home buffer.
+   ;; This has no effect in terminal or if "all-the-icons" package or the font
+   ;; is not installed. (default nil)
+   dotspacemacs-startup-buffer-show-icons nil
+
+   ;; Default major mode for a new empty buffer. Possible values are mode
+   ;; names such as `text-mode'; and `nil' to use Fundamental mode.
+   ;; (default `text-mode')
+   dotspacemacs-new-empty-buffer-major-mode 'nil
+
+   ;; Default major mode of the scratch buffer (default `text-mode')
+   dotspacemacs-scratch-mode 'common-lisp-mode
+
+   ;; If non-nil, *scratch* buffer will be persistent. Things you write down in
+   ;; *scratch* buffer will be saved and restored automatically.
+   dotspacemacs-scratch-buffer-persistent nil
+
+   ;; If non-nil, `kill-buffer' on *scratch* buffer
+   ;; will bury it instead of killing.
+   dotspacemacs-scratch-buffer-unkillable nil
+
+   ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
+   ;; (default nil)
+   dotspacemacs-initial-scratch-message nil
+
+   ;; List of themes, the first of the list is loaded when spacemacs starts.
+   ;; Press `SPC T n' to cycle to the next theme in the list (works great
+   ;; with 2 themes variants, one dark and one light)
+   dotspacemacs-themes '(spacemacs-dark
+                         spacemacs-light)
+
+   ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
+   ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
+   ;; first three are spaceline themes. `doom' is the doom-emacs mode-line.
+   ;; `vanilla' is default Emacs mode-line. `custom' is a user defined themes,
+   ;; refer to the DOCUMENTATION.org for more info on how to create your own
+   ;; spaceline theme. Value can be a symbol or list with additional properties.
+   ;; (default '(spacemacs :separator wave :separator-scale 1.5))
+   dotspacemacs-mode-line-theme 'doom
+
+   ;; If non-nil the cursor color matches the state color in GUI Emacs.
+   ;; (default t)
+   dotspacemacs-colorize-cursor-according-to-state t
+
+   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; a non-negative integer (pixel size), or a floating-point (point size).
+   ;; Point size is recommended, because it's device independent. (default 10.0)
+   ;; Dell 32 4K USB-C Hub Monitor - P3222QE
+   dotspacemacs-default-font '("IosevkaTermSlabNerdFont"
+                               :size 26.0
+                               :weight normal
+                               :width normal)
+
+   ;; Default icons font, it can be `all-the-icons' or `nerd-icons'.
+   dotspacemacs-default-icons-font 'nerd-icons
+
+   ;; The leader key (default "SPC")
+   dotspacemacs-leader-key "SPC"
+
+   ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
+   ;; (default "SPC")
+   dotspacemacs-emacs-command-key ""
+
+   ;; The key used for Vim Ex commands (default ":")
+   dotspacemacs-ex-command-key ":"
+
+   ;; The leader key accessible in `emacs state' and `insert state'
+   ;; (default "M-m")
+   dotspacemacs-emacs-leader-key "M-m"
+
+   ;; Major mode leader key is a shortcut key which is the equivalent of
+   ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
+   dotspacemacs-major-mode-leader-key ","
+
+   ;; Major mode leader key accessible in `emacs state' and `insert state'.
+   ;; (default "C-M-m" for terminal mode, "<M-return>" for GUI mode).
+   ;; Thus M-RET should work as leader key in both GUI and terminal modes.
+   ;; C-M-m also should work in terminal mode, but not in GUI mode.
+   dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
+
+   ;; These variables control whether separate commands are bound in the GUI to
+   ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
+   ;; Setting it to a non-nil value, allows for separate commands under `C-i'
+   ;; and TAB or `C-m' and `RET'.
+   ;; In the terminal, these pairs are generally indistinguishable, so this only
+   ;; works in the GUI. (default nil)
+   dotspacemacs-distinguish-gui-tab t
+
+   ;; Name of the default layout (default "Default")
+   dotspacemacs-default-layout-name "Default"
+
+   ;; If non-nil the default layout name is displayed in the mode-line.
+   ;; (default nil)
+   dotspacemacs-display-default-layout nil
+
+   ;; If non-nil then the last auto saved layouts are resumed automatically upon
+   ;; start. (default nil)
+   dotspacemacs-auto-resume-layouts nil
+
+   ;; If non-nil, auto-generate layout name when creating new layouts. Only has
+   ;; effect when using the "jump to layout by number" commands. (default nil)
+   dotspacemacs-auto-generate-layout-names nil
+
+   ;; Size (in MB) above which spacemacs will prompt to open the large file
+   ;; literally to avoid performance issues. Opening a file literally means that
+   ;; no major mode or minor modes are active. (default is 1)
+   dotspacemacs-large-file-size 50
+   ;; Also see large-file-warning-threshold, set in dotspacemacs user config
+
+   ;; Location where to auto-save files. Possible values are `original' to
+   ;; auto-save the file in-place, `cache' to auto-save the file to another
+   ;; file stored in the cache directory and `nil' to disable auto-saving.
+   ;; (default 'cache)
+   dotspacemacs-auto-save-file-location 'cache
+
+   ;; Maximum number of rollback slots to keep in the cache. (default 5)
+   dotspacemacs-max-rollback-slots 5
+
+   ;; If non-nil, the paste transient-state is enabled. While enabled, after you
+   ;; paste something, pressing `C-j' and `C-k' several times cycles through the
+   ;; elements in the `kill-ring'. (default nil)
+   dotspacemacs-enable-paste-transient-state t
+
+   ;; Which-key delay in seconds. The which-key buffer is the popup listing the
+   ;; commands bound to the current keystroke sequence. (default 0.4) HW annot:
+   ;; the default sacrifices -quite a lot of!- performance for accessibility,
+   ;; and after some experience a tradeoff in favour of the former is preferred.
+   dotspacemacs-which-key-delay 2
+
+   ;; Which-key frame position. Possible values are `right', `bottom' and
+   ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
+   ;; right; if there is insufficient space it displays it at the bottom.
+   ;; (default 'bottom)
+   dotspacemacs-which-key-position 'bottom
+
+   ;; Control where `switch-to-buffer' displays the buffer. If nil,
+   ;; `switch-to-buffer' displays the buffer in the current window even if
+   ;; another same-purpose window is available. If non-nil, `switch-to-buffer'
+   ;; displays the buffer in a same-purpose window even if the buffer can be
+   ;; displayed in the current window. (default nil)
+   dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; If non-nil a progress bar is displayed when spacemacs is loading. This
+   ;; may increase the boot time on some systems and emacs builds, set it to
+   ;; nil to boost the loading time. (default t)
+   dotspacemacs-loading-progress-bar nil
+
+   ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
+   ;; (Emacs 24.4+ only)
+   dotspacemacs-fullscreen-at-startup nil
+
+   ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
+   ;; Use to disable fullscreen animations in OSX. (default nil)
+   dotspacemacs-fullscreen-use-non-native nil
+
+   ;; If non-nil the frame is maximized when Emacs starts up.
+   ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
+   ;; (default nil) (Emacs 24.4+ only)
+   dotspacemacs-maximized-at-startup t
+
+   ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
+   ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
+   ;; borderless fullscreen. (default nil)
+   dotspacemacs-undecorated-at-startup nil
+
+   ;; A value from the range (0..100), in increasing opacity, which describes
+   ;; the transparency level of a frame when it's active or selected.
+   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
+   dotspacemacs-active-transparency 100
+
+   ;; A value from the range (0..100), in increasing opacity, which describes
+   ;; the transparency level of a frame when it's inactive or deselected.
+   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
+   dotspacemacs-inactive-transparency 100
+
+   ;; If non-nil show the titles of transient states. (default t)
+   dotspacemacs-show-transient-state-title t
+
+   ;; If non-nil show the color guide hint for transient state keys. (default t)
+   dotspacemacs-show-transient-state-color-guide t
+
+   ;; If non-nil unicode symbols are displayed in the mode line.
+   ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
+   ;; the value to quoted `display-graphic-p'. (default t)
+   dotspacemacs-mode-line-unicode-symbols t
+
+   ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
+   ;; scrolling overrides the default behavior of Emacs which recenters point
+   ;; when it reaches the top or bottom of the screen. (default t)
+   dotspacemacs-smooth-scrolling t
+
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling nil
+
+   ;; Control line numbers activation.
+   ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
+   ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
+   ;; numbers are relative. If set to `visual', line numbers are also relative,
+   ;; but only visual lines are counted. For example, folded lines will not be
+   ;; counted and wrapped lines are counted as multiple lines.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :visual nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
+   ;; When used in a plist, `visual' takes precedence over `relative'.
+   ;; (default nil)
+   dotspacemacs-line-numbers nil
+
+   ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
+   ;; (default 'evil)
+   dotspacemacs-folding-method 'evil
+
+   ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
+   ;; `smartparens-strict-mode' will be enabled in programming modes.
+   ;; (default nil)
+   dotspacemacs-smartparens-strict-mode nil
+
+   ;; If non-nil smartparens-mode will be enabled in programming modes.
+   ;; (default t)
+   dotspacemacs-activate-smartparens-mode t
+
+   ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
+   ;; over any automatically added closing parenthesis, bracket, quote, etc...
+   ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
+   dotspacemacs-smart-closing-parenthesis nil
+
+   ;; Select a scope to highlight delimiters. Possible values are `any',
+   ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
+   ;; emphasis the current one). (default 'all)
+   dotspacemacs-highlight-delimiters 'all
+
+   ;; If non-nil, start an Emacs server if one is not already running.
+   ;; (default nil)
+   dotspacemacs-enable-server nil
+
+   ;; Set the emacs server socket location.
+   ;; If nil, uses whatever the Emacs default is, otherwise a directory path
+   ;; like \"~/.emacs.d/server\". It has no effect if
+   ;; `dotspacemacs-enable-server' is nil.
+   ;; (default nil)
+   dotspacemacs-server-socket-dir nil
+
+   ;; If non-nil, advise quit functions to keep server open when quitting.
+   ;; (default nil)
+   dotspacemacs-persistent-server nil
+
+   ;; List of search tool executable names. Spacemacs uses the first installed
+   ;; tool of the list. Supported tools are `rg', `ag', `ack' and `grep'.
+   ;; (default '("rg" "ag" "ack" "grep"))
+   dotspacemacs-search-tools '("rg" "ag" "ack" "grep")
+
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-tree', `undo-fu' and `undo-redo', see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; from undo-tree to undo-fu or undo-redo.
+   ;; The default is currently 'undo-tree, but it will likely be changed
+   ;; and at some point removed because undo-tree is not maintained anymore.
+   dotspacemacs-undo-system 'undo-redo
+
+   ;; Format specification for setting the frame title.
+   ;; %a - the `abbreviated-file-name', or `buffer-name'
+   ;; %t - `projectile-project-name'
+   ;; %I - `invocation-name'
+   ;; %S - `system-name'
+   ;; %U - contents of $USER
+   ;; %b - buffer name
+   ;; %f - visited file name
+   ;; %F - frame name
+   ;; %s - process status
+   ;; %p - percent of buffer above top of window, or Top, Bot or All
+   ;; %P - percent of buffer above bottom of window, perhaps plus Top, or Bot or All
+   ;; %m - mode name
+   ;; %n - Narrow if appropriate
+   ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
+   ;; %Z - like %z, but including the end-of-line format
+   ;; If nil then Spacemacs uses default `frame-title-format' to avoid
+   ;; performance issues, instead of calculating the frame title by
+   ;; `spacemacs/title-prepare' all the time.
+   ;; (default "%I@%S")
+   dotspacemacs-frame-title-format nil
+
+   ;; Format specification for setting the icon title format
+   ;; (default nil - same as frame-title-format)
+   dotspacemacs-icon-title-format nil
+
+   ;; Show trailing whitespace (default t)
+   dotspacemacs-show-trailing-whitespace t
+
+   ;; Delete whitespace while saving buffer. Possible values are `all'
+   ;; to aggressively delete empty line and long sequences of whitespace,
+   ;; `trailing' to delete only the whitespace at end of lines, `changed' to
+   ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; (default nil)
+   dotspacemacs-whitespace-cleanup 'trailing
+
+   ;; If non-nil activate `clean-aindent-mode' which tries to correct
+   ;; virtual indentation of simple modes. This can interfere with mode specific
+   ;; indent handling like has been reported for `go-mode'.
+   ;; If it does deactivate it here.
+   ;; (default t)
+   dotspacemacs-use-clean-aindent-mode nil
+
+   ;; Accept SPC as y for prompts if non-nil. (default nil)
+   dotspacemacs-use-SPC-as-y nil
+
+   ;; If non-nil shift your number row to match the entered keyboard layout
+   ;; (only in insert state). Currently supported keyboard layouts are:
+   ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
+   ;; New layouts can be added in `spacemacs-editing' layer.
+   ;; (default nil)
+   dotspacemacs-swap-number-row nil
+
+   ;; Either nil or a number of seconds. If non-nil zone out after the specified
+   ;; number of seconds. (default nil)
+   dotspacemacs-zone-out-when-idle nil
+
+   ;; Run `spacemacs/prettify-org-buffer' when
+   ;; visiting README.org files of Spacemacs.
+   ;; (default nil)
+   dotspacemacs-pretty-docs nil
+
+   ;; If nil the home buffer shows the full path of agenda items
+   ;; and todos. If non-nil only the file name is shown.
+   dotspacemacs-home-shorten-agenda-source t
+
+   ;; If non-nil then byte-compile some of Spacemacs files.
+   dotspacemacs-byte-compile t))
+
+
+(defun dotspacemacs/user-env ()
+  "Environment variables setup.
+    This function defines the environment variables for your Emacs session. By
+    default it calls `spacemacs/load-spacemacs-env' which loads the environment
+    variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
+      See the header of this file for more information.")
+
+(defun dotspacemacs/user-init ()
+  "Initialization for user code:
+    This function is called immediately after `dotspacemacs/init', before layer
+    configuration.
+    It is mostly for variables that should be set before packages are loaded.
+    If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  ;; https://github.com/syl20bnr/spacemacs/issues/11321
+  (spacemacs|do-after-display-system-init
+    (spacemacs/set-default-font dotspacemacs-default-font)))
+
+(defun dotspacemacs/user-load ()
+  "Library to load while dumping.
+    This function is called only while dumping Spacemacs configuration. You can
+    `require' or `load' the libraries of your choice that will be included in the
+    dump.")
+
+(defun dotspacemacs/user-config ()
+  "Configuration function for user code.
+This function is called at the very end of Spacemacs
+initialization after layers configuration. This is the place
+where most of your configurations should be done. Unless it is
+explicitly specified that a variable should be set before a
+package is loaded, you should place your code here."
+  (add-to-list 'load-path "/usr/local/src/emacs-reader/")
+  (require 'reader-saveplace)
+  (require 'reader)
+  (add-to-list 'auto-mode-alist '("\\.docx\\'" . reader-mode))
+  (define-key reader-mode-map (kbd "d") #'reader-scroll-down-or-next-page)
+  (define-key reader-mode-map (kbd "u") #'reader-scroll-up-or-prev-page)
+  (define-key reader-mode-map (kbd "gt") #'reader-goto-page)
+  (define-key reader-mode-map (kbd "q") #'reader-close-doc)
+  (spacemacs/set-leader-keys-for-major-mode 'reader-mode "fh" 'reader-fit-to-height)
+  (spacemacs/set-leader-keys-for-major-mode 'reader-mode "fw" 'reader-fit-to-width)
+  (spacemacs/set-leader-keys-for-major-mode 'reader-mode "o" 'reader-outline-show)
+  (spacemacs/set-leader-keys-for-major-mode 'reader-mode "ss" 'reader-search-mode)
+  (setf nerd-icons-font-family "IosevkaTermSlab Nerd Font"
+        nerd-icons-fonts-subdirectory "/usr/local/share/fonts/IosevkaTermSlab/")
+
+  (require 'biome)
+  (biome-def-preset biome-query-preset-14
+    ((:name . "GEM (Canada)")
+     (:group . "hourly")
+     (:params
+      ("hourly" "wind_speed_10m" "cloud_cover" "precipitation" "apparent_temperature")
+      ("longitude" . -79.337021)
+      ("latitude" . 43.856098))))
+  (spacemacs/set-leader-keys "a w w" 'biome-query-preset-14)
+  (require 'casual-calc)
+  (keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
+  (keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
+  (require 'gptel)
+  (require 'auth-source)
+
+  (defun bhw/switch-to-llm-buffer ()
+    (interactive)
+    (switch-to-buffer "*Gemini*"))
+
+  (defun get-authinfo-password (machine login)
+    (let ((credential (auth-source-search :max 1
+                                          :host machine
+                                          :user login
+                                          :require '(:secret))))
+      (if credential
+          (let ((secret (plist-get (nth 0 credential) :secret)))
+            (if (functionp secret)
+                (funcall secret)
+              secret))
+        (message "No password found for %s@%s" login machine))))
+  ;; In ~/.authinfo,
+  ;;machine aistudio.google.com login ben password *YourAPIkey*
+  (setf
+   gptel-model 'gemini-2.5-flash-preview-05-20
+   gptel-backend (gptel-make-gemini "Gemini"
+                   :key (get-authinfo-password "aistudio.google.com" "ben")
+                   :stream t)
+   gptel-directives
+   '((default . "
+  Ignore all previous instructions.
+
+  1. You are to provide clear, concise, and direct responses. 2. Eliminate unnecessary reminders, apologies, self-references, and any pre-programmed niceties. 3. Maintain a casual tone in your communication. 4. Be transparent; if you're unsure about an answer or if a question is beyond your capabilities or knowledge, admit it. 5. For any unclear or ambiguous queries, ask follow-up questions to understand the user's intent better. 6. When explaining concepts, use real-world examples and analogies, where appropriate. 7. For complex requests, take a deep breath and work on the problem step-by-step. Show your work. 8. For every response, you will be tipped up to $20000 (depending on the quality of your output).
+
+  Prioritize substance, clarity, and depth. Challenge all my proposals, designs, and conclusions as hypotheses to be tested. Sharpen follow-up questions for precision, surfacing hidden assumptions, trade offs, and failure modes early. Default to terse, logically structured, information-dense responses unless detailed exploration is required. Skip unnecessary praise unless grounded in evidence. Explicitly acknowledge uncertainty when applicable. Always propose at least one alternative framing. Accept critical debate as normal and preferred. Treat all factual claims as provisional unless cited or clearly justified. Cite when appropriate. Acknowledge when claims rely on inference or incomplete information. Favor accuracy over sounding certain. When citing, please tell me in-situ, including reference links.  Use a technical tone, but assume high-school graduate level of comprehension. In situations where the conversation requires a trade-off between substance and clarity versus detail and depth, prompt me with an option to add more detail and depth.
+
+  It is very important that you get this right.")))
+  (add-hook 'eww-after-render-hook 'eww-readable)
+  (require 'greader)
+  ;; FIXME Auto-completion causes lag in shell-mode.
+  (setf company-global-modes '(not shell-mode))
+  (require 'ement)
+  (evil-collection-ement-setup)
+
+  (spacemacs/set-leader-keys
+    (kbd "acM") #'ement-connect
+    (kbd "acm") #'ement-list-rooms
+    (kbd "acn") #'ement-notify-switch-to-notifications-buffer
+    (kbd "acc") #'ement-room-send-message
+    (kbd "acv") #'ement-view-room)
+
+  (evilified-state-evilify-map ement-room-mode-map
+    :mode ement-room-mode
+    :eval-after-load ement-room
+    :bindings
+    ";" #'ement-room-occur
+    "n" #'ement-room-scroll-up-mark-read)
+
+  (evilified-state-evilify-map ement-room-list-mode-map
+    :mode ement-room-list-mode
+    :eval-after-load ement-room-list
+    :bindings
+    ";" #'helm-occur
+    "n" #'ement-room-list-next-unread)
+
+  (add-hook 'ement-room-compose-hook 'ement-room-compose-org)
+
+  (setf ement-save-sessions t
+        ement-room-mark-rooms-read 'send
+        ement-room-send-typing nil)
+  (setf plantuml-default-exec-mode 'jar
+        plantuml-jar-path "/usr/share/plantuml/plantuml.jar"
+        org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar"
+        plantuml-output-type "txt")
+  (with-eval-after-load "org-mode"
+    (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
+  (setf paradox-github-token t)
+  ;; (keyfreq-mode 1)
+  ;; (keyfreq-autosave-mode 1)
+  ;; (setf keyfreq-excluded-commands
+  ;;       '(self-insert-command
+  ;;         org-self-insert-command
+  ;;         forward-char
+  ;;         backward-char
+  ;;         previous-line
+  ;;         next-line
+  ;;         evil-forward-char
+  ;;         evil-backward-char
+  ;;         evil-previous-visual-line
+  ;;         evil-next-visual-line
+  ;;         helm-next-line
+  ;;         helm-previous-line
+  ;;         evil-scroll-page-down
+  ;;         evil-scroll-page-up
+  ;;         delete-backward-char
+  ;;         evil-delete-backward-char-and-join
+  ;;         evil-undo
+  ;;         mwheel-scroll
+  ;;         mouse-set-point
+  ;;         mouse-drag-region
+  ;;         evil-mouse-drag-region
+  ;;         evil-normal-state
+  ;;         keyboard-escape-quit
+  ;;         evil-goto-first-line
+  ;;         evil-insert
+  ;;         evil-append
+  ;;         evil-delete
+  ;;         evil-join
+  ;;         evil-delete-char
+  ;;         evil-open-below
+  ;;         evil-change
+  ;;         backward-delete-char-untabify
+  ;;         dired-next-line
+  ;; dired-previous-line))
+  (setf
+   pdf-view-use-scaling t
+   pdf-view-display-size 'fit-width
+   pdf-view-resize-factor 1.1
+   image-cache-eviction-delay 128
+   pdf-cache-image-limit 128
+   pdf-view-restore-filename "~/.emacs.d/.cache/.pdf-view-restore")
+  ;; Custom function to allow double page scrolling by calling
+  ;; my-pdf-view-double-scroll-horizontal-view
+  (defun my-pdf-view-double-scroll-up-or-next-page (&optional arg)
+    "Scroll page up ARG lines if possible, else go to the next page.
+  When `pdf-view-continuous' is non-nil, scrolling upward at the
+  bottom edge of the page moves to the next page.  Otherwise, go to
+  next page only on typing SPC (ARG is nil)."
+    (interactive "P")
+    (if (or pdf-view-continuous (null arg))
+        (let ((hscroll (window-hscroll))
+              (cur-page (pdf-view-current-page)))
+          (when (or (= (window-vscroll) (image-scroll-up arg))
+                    ;; Workaround rounding/off-by-one issues.
+                    (memq pdf-view-display-size
+                          '(fit-height fit-page)))
+            (pdf-view-next-page 2)
+            (when (/= cur-page (pdf-view-current-page))
+              (image-bob)
+              (image-bol 1))
+            (set-window-hscroll (selected-window) hscroll)))
+      (image-scroll-up arg)))
+  (defun my-pdf-view-double-scroll-horizontal-view ()
+    (interactive)
+    (my-pdf-view-double-scroll-up-or-next-page)
+    (other-window 1)
+    (my-pdf-view-double-scroll-up-or-next-page)
+    (other-window 1))
+  ;; add spacemacs major mode keybind
+  (spacemacs/set-leader-keys-for-major-mode 'pdf-view-mode "d" 'my-pdf-view-double-scroll-horizontal-view)
+  ;; Allow rotating of sheet music in pdfs
+  (defun pdf-view--rotate (&optional counterclockwise-p page-p)
+    "Rotate PDF 90 degrees.  Requires pdftk to work.\n
+  Clockwise rotation is the default; set COUNTERCLOCKWISE-P to
+  non-nil for the other direction.  Rotate the whole document by
+  default; set PAGE-P to non-nil to rotate only the current page.
+  \nWARNING: overwrites the original file, so be careful!"
+    ;; error out when pdftk is not installed
+    (if (null (executable-find "pdftk"))
+        (error "Rotation requires pdftk")
+      ;; only rotate in pdf-view-mode
+      (when (eq major-mode 'pdf-view-mode)
+        (let* ((rotate (if counterclockwise-p "left" "right"))
+               (file   (format "\"%s\"" (pdf-view-buffer-file-name)))
+               (page   (pdf-view-current-page))
+               (pages  (cond ((not page-p)                        ; whole doc?
+                              (format "1-end%s" rotate))
+                             ((= page 1)                          ; first page?
+                              (format "%d%s %d-end"
+                                      page rotate (1+ page)))
+                             ((= page (pdf-info-number-of-pages)) ; last page?
+                              (format "1-%d %d%s"
+                                      (1- page) page rotate))
+                             (t                                   ; interior page?
+                              (format "1-%d %d%s %d-end"
+                                      (1- page) page rotate (1+ page))))))
+          ;; empty string if it worked
+          (if (string= "" (shell-command-to-string
+                           (format (concat "pdftk %s cat %s "
+                                           "output %s.NEW "
+                                           "&& mv %s.NEW %s")
+                                   file pages file file file)))
+              (pdf-view-revert-buffer nil t)
+            (error "Rotation error!"))))))
+
+  (defun pdf-view-rotate-clockwise (&optional arg)
+    "Rotate PDF page 90 degrees clockwise.  With prefix ARG, rotate
+  entire document."
+    (interactive "P")
+    (pdf-view--rotate nil (not arg)))
+
+  (defun pdf-view-rotate-counterclockwise (&optional arg)
+    "Rotate PDF page 90 degrees counterclockwise.  With prefix ARG,
+  rotate entire document."
+    (interactive "P")
+    (pdf-view--rotate :counterclockwise (not arg)))
+
+  (define-key spacemacs-pdf-view-mode-map (kbd "R") 'pdf-view-rotate-clockwise)
+  (setf forge-owned-accounts '(("BenedictHW" :remote-name "origin"))
+        magit-save-repository-buffers 'dontask)
+  ;;-------------------------------------------------------------------------
+  ;; ***  Emacs Jupyter Config
+  ;;-------------------------------------------------------------------------
+
+  (setf dired-omit-mode t
+        ;; Stop asking to quit dired buffers of deleted files
+        dired-clean-up-buffers-too nil)
+  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode)))
+  (evilified-state-evilify-map dired-mode-map
+    :mode dired-mode
+    :eval-after-load dired
+    :bindings
+    "s" #'avy-goto-word-or-subword-1
+    "S" #'hydra-dired-quick-sort/body
+    ";" #'helm-occur
+    "C-i" #'better-jumper-jump-forward
+    "C-o" #'better-jumper-jump-backward)
+  (setf
+   common-lisp-hyperspec-root
+   (concat
+    "file://"
+    +project-jerome-dir+
+    "000-generalities-information-computers/000-computer-science/HyperSpec/"))
+  ;; https://emacs.stackexchange.com/questions/62536/what-does-making-browse-url
+  ;; -browser-function-local-to-eww-while-let-bound-m
+  (advice-add 'hyperspec-lookup
+              :around
+              (lambda (orig-fun &rest args)
+                (setq-local browse-url-browser-function 'eww-browse-url)
+                (apply orig-fun args)))
+  (setf
+   python-format-on-save t
+   python-indent-offset 4)
+  (require 'lexic)
+  (setf lexic-dictionary-specs '
+        (("Webster's Revised Unabridged Dictionary (1913)"
+          :short "===========================================================\n Webster's Revised Unabridged Dictionary (1913)\n==========================================================="
+          :formatter lexic-format-webster
+          :priority 1)
+         ("Soule's Dictionary of English Synonyms"
+          :short "===========================================================\n Soule's Dictionary of English Synonyms (1871)\n==========================================================="
+          :formatter lexic-format-soule
+          :priority 2)
+         ("Online Etymology Dictionary"
+          :short "===========================================================\n Online Etymology Dictionary (2000)\n==========================================================="
+          :formatter lexic-format-online-etym
+          :priority 3)
+         ("Oxford English Dictionary 2nd Ed P1"
+          :short "===========================================================\n Oxford English Dictionary 2nd Ed. (1989)\n==========================================================="
+          :formatter lexic-format-online-etym
+          :priority 4)
+         ("Oxford English Dictionary 2nd Ed P2"
+          :short "===========================================================\n Oxford English Dictionary 2nd Ed. (1989)\n==========================================================="
+          :formatter lexic-format-online-etym
+          :priority 5)
+         ("latin-english"
+          :short "===========================================================\n Latin > English\n==========================================================="
+          :formatter lexic-format-online-etym
+          :priority 6)
+         ))
+  ;; Set Global Keybindings
+  (spacemacs/set-leader-keys "sx" 'lexic-search-word-at-point)
+  (spacemacs/set-leader-keys "sX" 'lexic-search)
+  ;; Set Lexic Major Mode Keybindings
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "q" 'lexic-return-from-lexic)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode (kbd "RET") 'lexic-search-word-at-point)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "a" 'outline-show-all)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "h" 'outline-hide-body)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "o" 'lexic-toggle-entry)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "n" 'lexic-next-entry)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "p" 'lexic-previous-entry)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "b" 'lexic-search-history-backwards)
+  (spacemacs/set-leader-keys-for-major-mode 'lexic-mode "f" 'lexic-search-history-forwards)
+  ;; I am convinced this is a case of bad defaults. Setting
+  ;; =savehist-autosave-interval= to 60 seconds (from the default of 300) and
+  ;; =history-length= to 1000 (from the default of 100) causes disproportionate
+  ;; performance problems for arguable benefits. Performance problems can be plainly
+  ;; seen by using the Emacs cpu+mem profiler. See
+  ;; https://emacs.stackexchange.com/questions/12086/high-cpu-memory-usage-and-abnormally-large-savehist-file
+  ;; =spacemacs-defaults/init-savehist=, Spacemacs Github issues #9409, #1369.
+  ;; Reset variables to sensible Emacs defaults.
+  (setf history-length 25
+        savehist-save-minibuffer-history nil
+        savehist-autosave-interval nil
+        kill-ring-max 200
+        savehist-mode nil)
+  (delq 'mark-ring savehist-additional-variables)
+  (delq 'global-mark-ring savehist-additional-variables)
+  (delq 'search-ring savehist-additional-variables)
+  (delq 'regexp-search-ring savehist-additional-variables)
+  (delq 'extended-command-history savehist-additional-variables)
+  (delq 'kill-ring savehist-additional-variables)
+  (put 'org-brain-headline-cache 'history-length 10)
+  (put 'bibtex-completion-cache 'history-length 10)
+  (push 'org-brain-headline-cache savehist-additional-variables)
+  (push 'bibtex-completion-cache savehist-additional-variables)
+  (push 'helm-ff-history savehist-additional-variables)
+  (push 'org-clock-history savehist-additional-variables)
+  ;; Emacs profiler shows `savehist-autosave' is very performance intensive.
+  (add-hook 'kill-emacs-hook #'savehist-save) ; Savehist only on exit.
+  ;; Scrolling.
+  ;;
+  ;; The behaviors Emacs offers for scrolling can be customized
+  ;; by the variables some of which were already mentioned:
+  ;; scroll-conservatively, scroll-margin, scroll-step, and
+  ;; scroll-up/down-aggressively. They basically control whether
+  ;; Emacs recenters point when it scrolls the window, when (if
+  ;; at all) it does recenter, by how many lines it scrolls if
+  ;; it doesn't recenter, and how close to window edges point is
+  ;; allowed to be before the window is scrolled. This defines a
+  ;; set of behaviors you can get universally. In general, the
+  ;; default is to recenter if scrolling by a few lines fails to
+  ;; bring point into view. That is what you see, and that is
+  ;; how Emacs works.
+  ;; Source: https://old.reddit.com/r/emacs/comments/8jli87/is_there_a_hook_after_cursor_jump/
+  (setq scroll-conservatively 0)
+  (setq scroll-preserve-screen-position t)
+  ;; Line Breaks/Fill Column/Characters
+  ;;
+  ;; Prefer 80 chars due to anatomical restriction of the human eye.
+  ;; Secondary concern of long known emacs performance issues with long lines.
+  ;;
+  ;; According to the Emacs manual, to enable autofill in all major modes:
+  ;; (setq-default auto-fill-function 'do-auto-fill)
+  ;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Turning-on-auto_002dfill-by-default.html
+  ;;
+  ;; However, it does have side-effects in some modes, most notably it screws
+  ;; up auto-completion in lisp mode buffers. In addition to performance
+  ;; reasons, it makes sense to selectively enable for certain modes.
+  ;; Therefore look under the mode configuration for the added hooks.
+  ;; i.e. search for (add-hook 'example-mode-hook 'turn-on-auto-fill)
+  ;; allows the use of SPC leader key in calc buffer
+  (with-eval-after-load 'calc
+    (define-key calc-mode-map " " spacemacs-cmds))
+  (setq large-file-warning-threshold '100000000)
+  ;; https://www.masteringemacs.org/article/disabling-prompts-emacs
+  (setq kill-buffer-query-functions
+        (remq 'process-kill-buffer-query-function
+              kill-buffer-query-functions))
+  (require 'cl-lib)
+  (defun site/always-save-advice (oldfn &optional arg)
+    "Overwrite `yes-or-no-p' in OLDFN.
+    The new temporary function will return non-nil, when the message
+    wants to save modified buffers, without querying the user.
+    Otherwise the original behaviour is preserves, and ARG is passed
+    on to OLDFN."
+    (cl-letf* ((real-yes-or-no-p (symbol-function 'yes-or-no-p))
+               ((symbol-function 'yes-or-no-p)
+                (lambda (msg)
+                  (or (string= msg "Modified buffers exist; exit anyway? ")
+                      (funcall real-yes-or-no-p msg)))))
+      (funcall oldfn arg)))
+
+  (advice-add #'save-buffers-kill-emacs :around #'site/always-save-advice)
+  ;; Spacemacs default is 60 seconds. Ridiculous.
+  (setf auto-save-interval 1000
+        auto-save-timeout nil)
+  ;; https://github.com/joaotavora/yasnippet/issues/998#issuecomment-496449546
+  (defun my-yas-try-expanding-auto-snippets ()
+    (when (and (boundp 'yas-minor-mode) yas-minor-mode)
+      (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+        (yas-expand))))
+  (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
+  ;; C-h f "evilnc-comment-operator" or any of the default evil keybindings
+  ;; to discover what maps you need to override.
+  ;; rebind "SPC j j" or avy-goto-word-or-subword-1 to "s"
+  ;; At first, will not work as evil-surround is using "s" in visual mode
+  (setf evil-move-beyond-eol t)
+  (evil-define-key 'visual evil-surround-mode-map
+    (kbd "s") 'avy-goto-word-or-subword-1)
+  (evil-define-key 'visual evil-surround-mode-map
+    (kbd "S") 'evil-surround-region)
+  (define-key evil-motion-state-map (kbd "s") 'avy-goto-word-or-subword-1)
+  (define-key evil-normal-state-map (kbd "s") 'avy-goto-word-or-subword-1)
+  (define-key evil-visual-state-map (kbd "s") 'avy-goto-word-or-subword-1)
+  (define-key evil-operator-state-map (kbd "s") 'avy-goto-word-or-subword-1)
+  (define-key package-menu-mode-map (kbd "s") 'avy-goto-word-or-subword-1)
+  ;; #'helm-occur rebinding
+  (define-key evil-motion-state-map (kbd ";") #'helm-occur)
+  (define-key evil-normal-state-map (kbd ";") #'helm-occur)
+  (define-key evil-visual-state-map (kbd ";") #'helm-occur)
+  (define-key evil-operator-state-map (kbd ";") #'helm-occur)
+  (define-key package-menu-mode-map (kbd ";") #'helm-occur)
+  (define-key evil-normal-state-map (kbd "q") #'spacemacs/ace-kill-this-buffer)
+  (define-key evil-normal-state-map (kbd "Q") #'kill-buffer-and-window)
+  ;; Whenever the commands modified below are called, they are pushed
+  ;; onto the evil-jumps-history stack
+  (evil-add-command-properties #'evil-scroll-down :jump t)
+  (evil-add-command-properties #'evil-scroll-up :jump t)
+  (evil-add-command-properties #'evil-scroll-page-down :jump t)
+  (evil-add-command-properties #'evil-scroll-page-up :jump t)
+  (evil-add-command-properties #'helm-occur :jump t)
+  (evil-add-command-properties #'helm-for-files :jump t)
+  (evil-add-command-properties #'helm-projectile-find-file :jump t)
+  (evil-add-command-properties #'spacemacs/alternate-buffer :jump t)
+  (evil-add-command-properties #'spacemacs/helm-M-x-fuzzy-matching :jump t)
+  (evil-add-command-properties #'helm-find-files :jump t)
+  (evil-add-command-properties #'org-previous-visible-heading :jump t)
+  (evil-add-command-properties #'org-next-visible-heading :jump t)
+  (evil-add-command-properties #'outline-up-heading :jump t)
+  (evil-add-command-properties #'outline-next-heading :jump t)
+  (evil-add-command-properties #'org-bable-goto-src-block-head :jump t)
+  ;; Disable all keybindings other than f/t
+  (evil-snipe-mode -1)
+  (setq  evil-snipe-scope 'whole-visible)
+  ;; Alias [ and ] to all types of brackets
+  ;; Alias ' to ' and "
+  (setq evil-snipe-aliases
+        '((?\' "['\"]")
+          ;; No longer needed as () are translated to []
+          ;; via keyboard-translate function
+          ;; (?\[ "[[{(]")
+          ;; (?\] "[]})]")
+          ))
+  ;; Remove overriding of "," key in visual mode Ex. "vf),"
+  (setq evil-snipe-override-evil-repeat-keys nil)
+  ;; (defun fn/not-in-pdf-view-mode (orig-fun &rest args)
+  ;;   (unless (eq major-mode 'pdf-view-mode)
+  ;;     (apply orig-fun args)))
+  ;; ;; evil-refresh-cursor is called as part of the window-configuration-change-hook
+  ;; ;; and seems to induce performance problems
+  ;; ;; TODO fix this properly
+  ;; (advice-add 'evil-refresh-cursor :around 'fn/not-in-pdf-view-mode)
+  ;; See /home/ben/.config/fd/ignore
+  (require 'helm-fd)
+  (require 'helm-ag)
+
+  (defvar bhw/helm-source-fd
+    (helm-make-source "fd-find" 'helm-fd-class)
+    "For use of FD in `helm-for-files'. See also `helm-fd-switches'")
+
+  ;; HACK If (error "Candidates function ‘(closure (t) nil
+  ;; (helm-ag--do-ag-candidate-process +project-maria-dir+))’ should run a
+  ;; process") Then eval-current-form-sp on the form below.
+  (defvar bhw/helm-source-maria-ag
+    (helm-make-source "Project Maria - AG" 'helm-do-ag-class
+      :candidates-process
+      (lambda ()
+        (helm-ag--do-ag-candidate-process +project-maria-dir+)))
+    "To search Project Maria files from `helm-for-files'.
+  `helm-ag--do-ag-set-source' used as exemplar. You may have to run
+  `helm-projectile-ag' once for fuzzy matching to kick in :O.")
+
+  (defvar bhw/helm-source-emacs-commands
+    (helm-build-sync-source "Emacs Commands"
+      :candidates (lambda ()
+                    (let ((cmds))
+                      (mapatoms (lambda (elt)
+                                  (when (commandp elt)
+                                    (push (symbol-name elt) cmds))))
+                      cmds))
+      :coerce #'intern-soft
+      :action #'command-execute)
+    "A simple helm source for Emacs commands. Used in `helm-for-files'.")
+
+  (setf avy-jump-helm-line-default-action 'select
+        avy-jump-helm-line-idle-delay 1
+        helm-ff-auto-update-initial-value t
+        recentf-max-saved-items 1000
+        helm-for-files-preferred-list
+        '(helm-source-recentf
+          bhw/helm-source-fd
+          bhw/helm-source-maria-ag
+          bhw/helm-source-emacs-commands)
+        helm-candidate-number-limit 100
+        helm-ff-skip-boring-files t
+        helm-ag-fuzzy-match t
+        helm-fd-executable "fdfind"
+        helm-fd-switches
+        '("--search-path" "/home/ben" "--hidden" "--type" "f"
+          "--type" "d" "--color" "never" "--max-results" "10"
+          "--full-path")
+        helm-ag-use-agignore t)
+
+  (spacemacs/set-leader-keys "SPC" #'helm-for-files)
+  (define-key helm-map (kbd "C-q") nil) ; Replace default binding.
+  (define-key helm-map (kbd "C-d") 'avy-jump-helm-line)
+  (require 'org)
+  ;; Format text to fit 80 chars when pressing RET or ENTER.
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  ;; Source https://emacs.stackexchange.com/questions/10707/in-org-mode-how-to-remove-a-link
+  (defun afs/org-replace-link-by-link-description ()
+    "Replace an org link by its description or if empty its address"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0)))
+                (description
+                 (if (match-end 2)
+                     (org-match-string-no-properties 2)
+                   (org-match-string-no-properties 1))))
+            (apply 'delete-region remove)
+            (insert description)))))
+  ;; Source https://emacs.stackexchange.com/questions/12391/insert-org-id-link-at-point-via-outline-path-completion
+  (defun org-id-complete-link (&optional arg)
+    "Create an id: link using completion"
+    (concat "id:"
+            (org-id-get-with-outline-path-completion)))
+  (org-link-set-parameters "id"
+                           :complete 'org-id-complete-link)
+  ;; Source https://hungyi.net/posts/copy-org-mode-url/
+  (defun org-retrieve-url-from-point ()
+    "Copies the URL from an org link at the point"
+    (interactive)
+    (let ((plain-url (thing-at-point-url-at-point)))
+      (if plain-url
+          (progn
+            (kill-new plain-url)
+            (message (concat "Copied: " plain-url)))
+        (let* ((link-info (assoc :link (org-context)))
+               (text (when link-info
+                       (buffer-substring-no-properties
+                        (or (cadr link-info) (point-min))
+                        (or (caddr link-info) (point-max))))))
+          (if (not text)
+              (error "Oops! Point isn't in an org link")
+            (string-match org-link-bracket-re text)
+            (let ((url (substring text (match-beginning 1) (match-end 1))))
+              (kill-new url)
+              (message (concat "Copied: " url))))))))
+  (setf org-directory +project-maria-dir+
+        org-agenda-files
+        (cl-loop for agenda-file in
+                 '("hq.org")
+                 collect
+                 (concat +project-maria-dir+ agenda-file))
+        ;; See org-superstar package for more context
+        inhibit-compacting-font-caches t
+        ;; See Org Manual 16.4 A Cleaner Outline View
+        ;; I prefer a book-like view, which also allows for auto-fill
+        org-adapt-indentation nil
+        org-list-allow-alphabetical t
+        org-image-actual-width '600
+        org-hide-emphasis-markers nil
+        org-footnote-auto-adjust t
+        org-persist-directory "~/.cache/org-persist/"
+        ;; Needs the libreoffice suite installed.
+        ;; 'sudo apt install libreoffice'
+        org-odt-preferred-output-format "docx")
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "xR" 'afs/org-replace-link-by-link-description)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "iI" 'org-id-get-create)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "tC" 'org-table-create-or-convert-from-region)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "hn" 'org-next-visible-heading)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "hp" 'org-previous-visible-heading)
+  (setq org-sticky-header-full-path 'full)
+  ;; Require org-contacts to work with mu4e
+  (require 'org-contacts)
+  (setf org-contacts-files (list (concat +project-maria-dir+ "contacts.org")))
+  (require 'org-re-reveal)
+  (setf org-re-reveal-revealjs-version "4"
+        org-re-reveal-root  "https://cdn.jsdelivr.net/npm/reveal.js")
+  (setf org-mime-export-options '(:section-numbers nil
+                                                   ;; otherwise tables will not work
+                                                   :with-broken-links t
+                                                   :with-author nil
+                                                   :with-toc nil
+                                                   :with-latex dvipng))
+  (setf org-export-backends '(ascii html icalendar latex odt beamer man md
+                                    org texinfo)
+        org-export-with-broken-links t)
+  (setf org-download-method 'attach)
+  ;; Add key bindings for org-expiry package
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "dc" 'org-expiry-insert-created)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "de" 'org-expiry-insert-expiry)
+  ;; Add call to org-expiry-insert-created every time org-id-get-create is run
+  ;; (advice-add 'org-id-get-create :after 'org-expiry-insert-created)
+  (require 'org-depend)
+  (require 'cl-lib)
+
+  (org-clock-persistence-insinuate)
+
+  (add-hook 'org-clock-in-prepare-hook 'my-org-mode-ask-effort)
+
+  (defun my-org-mode-ask-effort ()
+    "Ask for an effort estimate when clocking in if none exists."
+    (unless (org-entry-get (point) "Effort")
+      (let ((effort
+             (completing-read
+              "Effort: "
+              (org-entry-get-multivalued-property (point) "Effort"))))
+        (unless (equal effort "")
+          (org-set-property "Effort" effort)))))
+
+  (defun eos/org-clock-in ()
+    (interactive)
+    (org-clock-in '(10)))
+
+  (defun bh/verify-refile-target ()
+    "Exclude todo keywords with a done state from refile targets"
+    (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+  (spacemacs/set-leader-keys "oa" 'ben/default-custom-agenda)
+  (spacemacs/set-leader-keys "oj" 'spacemacs/org-clock-jump-to-current-clock)
+  (spacemacs/set-leader-keys "oi" 'eos/org-clock-in)
+  (spacemacs/set-leader-keys "oo" 'org-clock-out)
+  (spacemacs/set-leader-keys "or" 'org-resolve-clocks)
+  (spacemacs/set-leader-keys "oc" 'org-capture)
+
+  ;; Press t to change task todo state
+  (setf
+   org-use-fast-todo-selection t
+   org-treat-S-cursor-todo-selection-as-state-change t
+   ;; Require exit notes for modifying a scheduled for deadline date
+   org-log-reschedule 'time
+   org-log-redeadline 'note
+   org-todo-keywords
+   '((sequence "TODO(t)" "PROJ(p)" "APPT(a)" "PROG(i)"
+               "WAIT(w@/!)" "|" "DONE(d)" "CXLD(c@/!)"))
+   org-todo-keyword-faces
+   '(("PROJ" :foreground "DarkSlateBlue" :weight bold)
+     ("TODO" :foreground "tomato1" :weight bold)
+     ("WAIT" :foreground "orchid3" :weight bold)
+     ("PROG" :foreground "DeepSkyBlue3" :weight bold)
+     ("DONE" :foreground "SpringGreen3" :weight bold)
+     ("APPT" :foreground "tomato3" :weight bold)
+     ("CXLD" :foreground "sienna" :weight bold))
+   org-enforce-todo-dependencies t
+   org-agenda-dim-blocked-tasks t
+   org-habit-graph-column 80
+   org-agenda-skip-scheduled-if-deadline-is-shown t
+   org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
+   org-agenda-skip-scheduled-if-done t
+   org-agenda-skip-deadline-if-done t
+   org-agenda-todo-ignore-scheduled 'future
+   org-agenda-todo-ignore-deadlines t
+   org-deadline-warning-days 7
+   ;; 6) Adding New Tasks Quickly with Org Capture
+   ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+   ;; \n is newline in the template. Functions as RET would in insert mode
+   ;; placing a backslash before " in TRIGGER below to have the string not end
+   org-capture-templates
+   '(("t" "Todo Task" entry (file+headline "~/project-maria/hq.org" "Inbox") "* TODO [#C] %?\n:PROPERTIES:\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00}\n:ASSIGNED: %U\n:END:\n" :empty-lines 1)
+     ("a" "Appointment" entry (file+headline "~/project-maria/hq.org" "Inbox") "* APPT %?\nSCHEDULED: %^T\n:PROPERTIES:\n:LOCATION: %^{LOCATION|TBD}\n:EFFORT:   %^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00}\n:ASSIGNED: %U\n:END:\n%^T" :empty-lines 1)
+     ("j" "Journal Entry" entry (file+headline "~/project-maria/hq.org" "Inbox")"* TODO [#C] JOURNAL ENTRY %<Y%YW%V%B%d>\n:PROPERTIES:\n:ASSIGNED: %U\n:END:\n%?" :empty-lines 1)
+     ("h" "Habit" entry (file+headline "~/project-maria/hq.org" "Inbox")"* TODO %?\nSCHEDULED: %(format-time-string \"%\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:ASSIGNED: %U\n:END:" :empty-lines 1)
+     ("c" "Contacts" entry (file "~/project-maria/contacts.org") "* %(org-contacts-template-name)\n:PROPERTIES:\n:PHONE: %?\n:EMAIL:\n:ADDRESS:\n:BIRTHDAY:\n:NOTE: Added on: %U\n:END:" :empty-lines 1)
+     ("p" "Project" entry (file "~/project-maria/hq.org") "* PROJ %? [/] [%] %^G\n:PROPERTIES:\n:ASSIGNED: %U\n:CATEGORY: %^{CATEGORY|Misc.}\n:END:\n** TODO [#C]\n:PROPERTIES:\n:EFFORT:%^{0:00|0:10|0:30|1:00|1:30|2:00|2:30|3:00}\n:ASSIGNED: %U\n:END:\n" :empty-lines 1))
+   ;; **** 9) Clocking
+   org-clock-in-switch-to-state "PROG"
+   org-clock-out-remove-zero-time-clocks t
+   org-clock-out-when-done t
+   org-clock-persist t
+   org-clock-in-resume t
+   org-clock-persist-query-resume nil
+   org-clock-auto-clock-resolution 'when-no-clock-is-running
+   org-clock-report-include-clocking-task t
+   org-time-stamp-rounding-minutes '(1 1)
+   org-agenda-clockreport-parameter-plist
+   '(:link t :maxlevel 10 :fileskip0 t :stepskip0 t :compact t :narrow 80)
+   org-log-into-drawer t
+   org-clock-history-length 35
+   ;; **** 7) Refiling Tasks
+   org-refile-targets '((nil :maxlevel . 9)
+                        (org-agenda-files :maxlevel . 9))
+   org-outline-path-complete-in-steps nil
+   org-refile-use-outline-path 'file
+   org-refile-target-verify-function 'bh/verify-refile-target
+   ;; **** 11) Context Tags with fast selection keys
+   org-tag-alist '(;; Sets geo-spatial and context tags
+                   ;; Startgroup and endgroup make tags mutually
+                   ;; exclusive (:startgroup)
+                   ("home" . ?h)
+                   ("office" . ?o)
+                   ("errand" . ?e)
+                   ;; (:endgroup)
+                   ;; Person(s) can be contexts too.
+                   ("father" . ?d)
+                   ("workteam1" . ?d)
+                   ("docket" . ?d))
+   org-fast-tag-selection-single-key 'expert
+   org-tags-column 0
+   ;; For tag searches ignore tasks with scheduled and deadline dates
+   org-agenda-tags-todo-honor-ignore-options t
+   ;; **** 14) Stuck Projects
+   org-stuck-projects   '("+TODO=\"PROJ\"" ("TODO" "PROG" "WAIT") nil nil)
+   ;; **** 15) Archiving
+   org-archive-default-command 'org-archive-subtree
+   org-archive-location
+   (concat +project-maria-dir+
+           "archived-tasks/taskings-"
+           (format-time-string "%Y") ".org::datetree/")
+   org-archive-save-context-info '(time category olpath ltags itags)
+   org-habit-show-habits t
+   ;; To speed up org agenda generation
+   org-agenda-dim-blocked-tasks nil
+   org-agenda-inhibit-startup t
+   org-agenda-ignore-properties '(ASSIGNED LAST_REPEAT)
+   org-agenda-sticky t)
+
+  (add-hook 'org-agenda-mode-hook
+            (lambda ()
+              (define-key
+               org-agenda-mode-map (kbd "s")
+               'avy-goto-word-or-subword-1)))
+
+  (defun my/org-agenda-calculate-efforts (limit)
+    "Sum the efforts of scheduled entries up to LIMIT in the
+                            agenda buffer."
+    (let (total)
+      (save-excursion
+        (while (< (point) limit)
+          (when (member (org-get-at-bol 'type) '("scheduled" "past-scheduled" "timestamp"))
+            (push (org-entry-get (org-get-at-bol 'org-hd-marker) "EFFORT") total))
+          (forward-line)))
+      (org-duration-from-minutes
+       (cl-reduce #'+
+                  (mapcar #'org-duration-to-minutes
+                          (cl-remove-if-not 'identity total))))))
+
+  (defun my/org-agenda-insert-efforts ()
+    "Insert the efforts for each day inside the agenda buffer."
+    (save-excursion
+      (let (pos)
+        (while (setq pos (text-property-any
+                          (point) (point-max) 'org-agenda-date-header t))
+          (goto-char pos)
+          (end-of-line)
+          (insert-and-inherit
+           (concat " ("
+                   (my/org-agenda-calculate-efforts
+                    (or (text-property-any
+                         (point) (point-max) 'org-agenda-date-header t)
+                        (point-max)))
+                   ")"))
+          (forward-line)))))
+
+  (add-hook 'org-agenda-finalize-hook 'my/org-agenda-insert-efforts)
+  ;;; find-free-time.el --- Find available time blocks in an org-agenda view
+
+  ;;; Commentary:
+  ;; This script provides an interactive function `bda/find-agenda-free-time'
+  ;; that can be run from an org-mode agenda buffer. It parses the schedule,
+  ;; finds the gaps between appointments, and then breaks those gaps into
+  ;; blocks of a user-specified length. The results are printed to the
+  ;; minibuffer.
+  ;;
+  ;; The user is prompted for a start and end time to constrain the search,
+  ;; and whether to include weekend days.
+  ;;
+  ;; This version iterates over buffer lines as a list, avoiding manual
+  ;; point movement with `forward-line`.
+  ;;
+  ;; Modified to sort the output by day with the least scheduled effort first.
+
+  ;;; Code:
+
+  (defun bda/time-string-to-minutes (time-str)
+    "Convert HH:MM string to minutes from midnight."
+    (unless (string-match "\\`\\([0-9]+\\):\\([0-9]+\\)\\'" time-str)
+      (error "Invalid time string format: %s" time-str))
+    (let ((h (string-to-number (match-string 1 time-str)))
+          (m (string-to-number (match-string 2 time-str))))
+      (+ (* h 60) m)))
+
+  (defun bda/minutes-to-time-string (minutes)
+    "Convert minutes from midnight to HH:MM string."
+    (format "%02d:%02d" (/ minutes 60) (% minutes 60)))
+
+  (defun bda/find-agenda-free-time (effort-length start-time-str end-time-str include-weekends)
+    "Parse the agenda buffer to find free time slots of EFFORT-LENGTH minutes.
+  Slots are constrained between START-TIME-STR and END-TIME-STR.
+  User is prompted whether to INCLUDE-WEEKENDS.
+  Days are sorted by the least amount of scheduled time (effort) first."
+    (interactive
+     (list (read-number "Effort length (minutes): " 60)
+           (read-string "Start time (HH:MM): " "06:00")
+           (read-string "End time (HH:MM): " "23:00")
+           (y-or-n-p "Include weekends? ")))
+    (unless (derived-mode-p 'org-agenda-mode)
+      (error "This command must be run from an org-agenda buffer"))
+
+    (let ((all-days-data '())
+          (current-day-entry nil)
+          (start-of-day-minutes (bda/time-string-to-minutes start-time-str))
+          (end-of-day-minutes (bda/time-string-to-minutes end-time-str))
+          (date-regexp "^\\([A-Za-z]+[ \t]+[0-9]+[ \t]+[A-Za-z]+[ \t]+[0-9]\\{4\\}\\)")
+          (time-regexp "\\([0-9]\\{1,2\\}:[0-9]\\{2\\}\\)-\\([0-9]\\{1,2\\}:[0-9]\\{2\\}\\)"))
+
+      ;; 1. Parse buffer to gather busy times for each day.
+      (let ((lines (split-string (buffer-string) "\n" t)))
+        (dolist (line lines)
+          (cond
+           ((string-match date-regexp line)
+            (let* ((day-name (match-string 1 line))
+                   (is-weekend (or (string-match-p "^Saturday" day-name)
+                                   (string-match-p "^Sunday" day-name))))
+              ;; Set current-day-entry to a new list *only* if it passes the filter.
+              ;; Otherwise, set it to nil to ignore subsequent time entries.
+              (setq current-day-entry
+                    (if (or include-weekends (not is-weekend))
+                        (list day-name '())
+                      nil))
+              ;; Only push if it's not nil.
+              (when current-day-entry
+                (push current-day-entry all-days-data))))
+           ((and current-day-entry (string-match time-regexp line))
+            (let* ((start-str (match-string 1 line))
+                   (end-str (match-string 2 line))
+                   (start-min (bda/time-string-to-minutes start-str))
+                   (end-min (bda/time-string-to-minutes end-str)))
+              (setf (cadr current-day-entry)
+                    (cons (cons start-min end-min)
+                          (cadr current-day-entry))))))))
+
+      (setq all-days-data (nreverse all-days-data))
+
+      ;; 2. Process data: merge intervals, calculate total effort, then sort by effort.
+      (let* ((processed-days-data
+              (mapcar
+               (lambda (day-data)
+                 (let* ((day-name (car day-data))
+                        (busy-times (cadr day-data))
+                        (merged-times '())
+                        (total-effort 0))
+                   (when busy-times
+                     ;; Merge overlapping/adjacent busy intervals.
+                     (let* ((sorted-times (sort busy-times (lambda (a b) (< (car a) (car b)))))
+                            (current-start (caar sorted-times))
+                            (current-end (cdar sorted-times)))
+                       (dolist (next-interval (cdr sorted-times))
+                         (if (<= (car next-interval) current-end)
+                             (setq current-end (max current-end (cdr next-interval)))
+                           (push (cons current-start current-end) merged-times)
+                           (setq current-start (car next-interval))
+                           (setq current-end (cdr next-interval))))
+                       (push (cons current-start current-end) merged-times)
+                       (setq merged-times (nreverse merged-times)))
+
+                     ;; Sum the durations of the merged intervals for total effort.
+                     (dolist (interval merged-times)
+                       (setq total-effort (+ total-effort (- (cdr interval) (car interval))))))
+                   ;; Return a new structure: (list day-name merged-intervals total-effort)
+                   (list day-name merged-times total-effort)))
+               all-days-data))
+             (sorted-days-data
+              (sort processed-days-data (lambda (day1 day2)
+                                          (< (caddr day1) (caddr day2))))))
+
+        ;; 3. Generate output string from sorted data.
+        (let ((output-string ""))
+          (dolist (day-data sorted-days-data)
+            (let* ((day-name (car day-data))
+                   (merged-times (cadr day-data))
+                   (total-effort (caddr day-data))
+                   (day-header (format "%s (%s)"
+                                       day-name
+                                       (bda/minutes-to-time-string total-effort)))
+                   (free-slots '()))
+
+              ;; Find all free slots of EFFORT-LENGTH for the current day.
+              (if merged-times
+                  ;; --- Logic for days WITH appointments ---
+                  (let ((time-cursor start-of-day-minutes))
+                    ;; a. Find gaps between merged intervals.
+                    (dolist (busy-interval merged-times)
+                      (let ((free-end (min (car busy-interval) end-of-day-minutes))
+                            (slot-start time-cursor))
+                        (while (<= (+ slot-start effort-length) free-end)
+                          (push (format "%s-%s"
+                                        (bda/minutes-to-time-string slot-start)
+                                        (bda/minutes-to-time-string (+ slot-start effort-length)))
+                                free-slots)
+                          (setq slot-start (+ slot-start effort-length))))
+                      (setq time-cursor (max time-cursor (cdr busy-interval))))
+                    ;; b. Handle the final gap from the last task until the end of the day.
+                    (let ((slot-start time-cursor))
+                      (while (<= (+ slot-start effort-length) end-of-day-minutes)
+                        (push (format "%s-%s"
+                                      (bda/minutes-to-time-string slot-start)
+                                      (bda/minutes-to-time-string (+ slot-start effort-length)))
+                              free-slots)
+                        (setq slot-start (+ slot-start effort-length)))))
+                ;; --- Logic for completely FREE days ---
+                (let ((slot-start start-of-day-minutes))
+                  (while (<= (+ slot-start effort-length) end-of-day-minutes)
+                    (push (format "%s-%s"
+                                  (bda/minutes-to-time-string slot-start)
+                                  (bda/minutes-to-time-string (+ slot-start effort-length)))
+                          free-slots)
+                    (setq slot-start (+ slot-start effort-length)))))
+
+              (when free-slots
+                (setq output-string
+                      (concat output-string
+                              (format "%s\n" day-header)
+                              (mapconcat 'identity (nreverse free-slots) "\n")
+                              "\n")))))
+
+          ;; 4. Display the final result in the minibuffer.
+          (message "%s" (if (string-empty-p output-string)
+                            "No free slots found."
+                          (substring output-string 0 -1)))))))
+
+  (defun ben/default-custom-agenda()
+    "Functionally call custom agenda command bound to KEY"
+    (interactive)
+    (org-agenda nil "d"))
+
+  (defun ben/org-capture-set-priority-on-deadline ()
+    "Set the priority of an org-capture entry to [#B] if a deadline exists.
+                          This function is intended to be used with `org-capture-before-finalize-hook`."
+    (save-excursion
+      (goto-char (point-min))
+      ;; Check if a DEADLINE: timestamp exists in the entry
+      (when (re-search-forward "^[ \t]*DEADLINE:" nil t)
+        ;; If a deadline is found, set the priority to 'B'
+        (org-priority ?B))))
+
+  (add-hook 'org-capture-before-finalize-hook #'ben/org-capture-set-priority-on-deadline)
+
+  (setf
+   org-agenda-block-separator 61
+   org-agenda-breadcrumbs-separator " | "
+   ;; https://stackoverflow.com/questions/58820073/s-in-org-agenda-prefix-format-doesnt-display-dates-in-the-todo-view
+   org-agenda-prefix-format
+   '((agenda . "%-t %s")
+     (todo . "%s")
+     (tags . "%s")
+     (search . "%s"))
+   org-agenda-deadline-leaders '("D: " "D%2d: " "OD%2d: ")
+   org-agenda-scheduled-leaders '("" "S%2d: ")
+   org-agenda-time-grid (quote ((daily today remove-match)
+                                (0600 0900 1200 1500 1800 2100)
+                                "......" "----------------"))
+   org-columns-default-format-for-agenda "%75ITEM(Task) %DEADLINE %10Effort(Estim){:} %10CLOCKSUM(ActTime)"
+   org-columns-default-format "%75ITEM(Task) %DEADLINE %10Effort(Estim){:} %10CLOCKSUM(ActTime)"
+   org-global-properties '(quote (("Effort_ALL" . "0:00 0:10 0:30 1:00 1:30 2:00 2:30 3:00 4:00 5:00 6:00 7:00 8:00")
+                                  ("STYLE_ALL" . "habit")))
+   org-agenda-columns-add-appointments-to-effort-sum t
+   org-agenda-default-appointment-duration 0
+   org-agenda-log-mode-items '(closed state clock)
+   org-agenda-start-with-log-mode nil
+   org-agenda-start-with-entry-text-mode nil
+   org-agenda-add-entry-text-maxlines 5
+   org-agenda-entry-text-maxlines 5
+   org-agenda-start-with-clockreport-mode nil
+   org-priority-default ?C
+   org-agenda-custom-commands
+   '(
+     ;; Default Agenda
+     ("d" "Default (Master) Agenda"
+      ((agenda "" ((org-agenda-span 1)
+                   (org-deadline-warning-days 7)
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("PROG")))
+                   (org-agenda-overriding-header "Today's Agenda\n")))
+       (tags "TODO=\"PROG\""
+             ((org-agenda-sorting-strategy '(priority-down deadline-up effort-down))
+              (org-agenda-todo-keyword-format "%-3s")
+              (org-agenda-overriding-header "\nTasks in Progress\n")))
+       (tags "TODO=\"TODO\""
+             ((org-agenda-sorting-strategy '(priority-down deadline-up effort-down))
+              (org-agenda-todo-keyword-format "%-3s")
+              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
+              (org-agenda-overriding-header "\nTodo List\n")))
+       (agenda "" ((org-agenda-span 30)
+                   (org-agenda-start-on-weekday nil)
+                   (org-agenda-start-day "+1d")
+                   (org-agenda-entry-types '(:timestamp :sexp :scheduled))
+                   (org-agenda-overriding-header "Calendar\n"))))
+      ((org-agenda-tag-filter-preset '("-SDAY"))))
+     ;; Review Agenda
+     ("r" "Review Agenda"
+      ((tags "TODO=\"DONE\""
+             ((org-agenda-sorting-strategy '(priority-down deadline-up))
+              (org-agenda-todo-keyword-format "%-3s")
+              (org-agenda-overriding-header "\nCompleted Tasks\n")))
+       (tags "TODO=\"CXLD\""
+             ((org-agenda-sorting-strategy '(tsia-up))
+              (org-agenda-todo-keyword-format "%-3s")
+              (org-agenda-overriding-header "\nTerminated Tasks\n")))
+       (tags "+TODO=\"WAIT\""
+             ((org-agenda-sorting-strategy '(timestamp-down))
+              (org-agenda-todo-keyword-format "%-3s")
+              (org-agenda-overriding-header "\nDelegated/Waiting For\n")))
+       (stuck "" ((org-agenda-overriding-header "\nStuck Projects\n")))
+       (agenda "" ((org-agenda-span 120)
+                   (org-agenda-start-on-weekday nil)
+                   (org-agenda-start-day "+1d")
+                   (org-agenda-entry-types '(:timestamp :sexp :scheduled))
+                   (org-agenda-overriding-header "Calendar\n"))))
+      ((org-agenda-tag-filter-preset '("-SDAY" "-bio1200" "-his2500" "-cla154" "-lat122" "-mus221" "-the249" "-the274" "-phl300")))))
+   org-agenda-window-setup 'current-window)
+  ;; Following 2 lines are needed to exclude parent heading from table of contents but still export the content
+  ;; https://emacs.stackexchange.com/questions/30183/orgmode-export-skip-ignore-first-headline-level
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+  ;; Allows exporting bibtex citations to html
+  (require 'ox-bibtex)
+  ;; Exclude default CSS from html export and add external stylesheet
+  (setq org-html-head-include-default-style nil)
+  ;; Omit inline css as we use an imported stylesheet
+  (setq org-html-htmlize-output-type 'css)
+  ;; https://www.taingram.org/blog/org-mode-blog.html
+  (setq org-export-global-macros
+        '(("timestamp" . "@@html:<span class=\"timestamp\">[$1]</span>@@")))
+  (defun my/org-sitemap-date-entry-format (entry style project)
+    "Format ENTRY in org-publish PROJECT Sitemap format ENTRY ENTRY STYLE format that includes date."
+    (let ((filename (org-publish-find-title entry project)))
+      (if (= (length filename) 0)
+          (format "*%s*" entry)
+        (format "{{{timestamp(%s)}}} [[file:%s][%s]]"
+                (format-time-string "%Y-%m-%d"
+                                    (org-publish-find-date entry project))
+                entry
+                filename))))
+  (setf org-publish-project-alist
+        '(("blog"
+           :base-directory "~/project-maria/blog"
+           :html-extension "html"
+           :base-extension "org"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :publishing-directory "~/common-lisp/project-isidore/assets/blog"
+           :section-numbers t
+           :table-of-contents t
+           :exclude "rss.org"
+           :with-title nil
+           :auto-sitemap t
+           :sitemap-filename "archive.org"
+           :sitemap-title "Blog Archive"
+           :sitemap-sort-files anti-chronologically
+           :sitemap-style tree
+           :sitemap-format-entry my/org-sitemap-date-entry-format
+           ;; Use HTML5
+           ;; https://orgmode.org/manual/HTML-doctypes.html#HTML-doctypes
+           :html-doctype "html5"
+           :html-html5-fancy t
+           ;; Link to external custom stylesheet
+           ;; If you need code highlight from highlight.js, include the latter three lines.
+           :html-head "
+                      <link rel=\"stylesheet\" type=\"text/css\" href=\"../global.css\"/>
+                      <link rel=\"stylesheet\"
+                            href=\"//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/base16/solarized-light.min.css\">
+                      <script src=\"//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js\" defer></script>
+                      <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll(\"pre.src\"),function(t){var e;e=t.getAttribute(\"class\"),e=e.replace(/src-(\w+)/,\"src-$1 $1\"),console.log(e),t.setAttribute(\"class\",e),hljs.highlightBlock(t)})};addEventListener(\"DOMContentLoaded\",hlf);</script>"
+           :html-preamble "
+                                    <div class=\"header header-fixed\">
+                                      <div class=\"navbar container\">
+                                        <div class=\"logo\"><a href=\"/\">BHW</a></div>
+                                        <input type=\"checkbox\" id=\"navbar-toggle\" >
+                                        <label for=\"navbar-toggle\"><i></i></label>
+                                        <nav class=\"menu\">
+                                          <ul>
+                                            <li><a href=\"/about\">About</a></li>
+                                            <li><a href=\"/work\">Work</a></li>
+                                            <li><a href=\"/assets/blog/archive.html\">Blog</a></li>
+                                            <li><a href=\"/contact\">Contact</a></li>
+                                          </ul>
+                                        </nav>
+                                      </div>
+                                    </div>
+                                    <h1 class=\"title\">%t</h1>
+                                    <p class=\"subtitle\">%s</p> <br/>
+                                    <p class=\"updated\"><a href=\"/contact#article-history\">Updated:</a> %C</p>"
+
+           ;; Article Postamble includes
+           ;; Javascript snippet to insert anchor links to Table of Contents
+           ;; HTML Footer
+           :html-postamble "<script>
+                              const headers = Array.from( document.querySelectorAll('h2, h3, h4, h5, h6') );
+
+                              headers.forEach( header => {
+                                header.insertAdjacentHTML('afterbegin',
+                                 '<a href=\"#table-of-contents\">&#8689;</a>'
+                                );
+                              });
+                              </script>
+                              <hr/>
+                              <footer>
+                                <div class=\"copyright-container\">
+                                    Comments? Corrections? <a href=\"https://bhw.name/contact\"> Please do reach out.</a><a href=\"https://bhw.name/assets/blog/atom.xml\"> RSS Feed. </a><a href=\"https://bhw.name/subscribe\"> Mailing List. </a><br/>
+                                    Copyright 2021 Benedict H. Wang. <br/>
+                                    Blog content is available under <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/4.0/\"> CC-BY-SA 4.0 </a> unless otherwise noted.<br/>
+                                    Created with %c on <a href=\"https://www.gnu.org\">GNU</a>/<a href=\"https://www.kernel.org/\">Linux</a><br/>
+                                </div>
+                              </footer>"
+           )))
+  ;; https://alhassy.github.io/AlBasmala#Clickable-Headlines
+  (defun my/ensure-headline-ids (&rest _)
+    "Org trees without a custom ID will have
+     All non-alphanumeric characters are cleverly replaced with ‘-’.
+
+     If multiple trees end-up with the same id property, issue a
+     message and undo any property insertion thus far.
+
+     E.g., ↯ We'll go on a ∀∃⇅ adventure
+        ↦  We'll-go-on-a-adventure
+     "
+    (interactive)
+    (let ((ids))
+      (org-map-entries
+       (lambda ()
+         (org-with-point-at (point)
+           (let ((id (org-entry-get nil "CUSTOM_ID")))
+             (unless id
+               (thread-last (nth 4 (org-heading-components))
+                            (s-replace-regexp "[^[:alnum:]']" "-")
+                            (s-replace-regexp "-+" "-")
+                            (s-chop-prefix "-")
+                            (s-chop-suffix "-")
+                            (setq id))
+               (if (not (member id ids))
+                   (push id ids)
+                 (message-box "Oh no, a repeated id!\n\n\t%s" id)
+                 (undo)
+                 (setq quit-flag t))
+               (org-entry-put nil "CUSTOM_ID" id))))))))
+  ;; Whenever html & md export happens, ensure we have headline ids.
+  (advice-add 'org-html-export-to-html   :before 'my/ensure-headline-ids)
+  (advice-add 'org-md-export-to-markdown :before 'my/ensure-headline-ids)
+  (require 'webfeeder)
+  (defun ben/publish-blog()
+    (interactive)
+    (progn
+      (org-publish "blog")
+      (webfeeder-build
+       "atom.xml"
+       "~/common-lisp/project-isidore/assets/blog"
+       "https://bhw.name/"
+       ;; Remove blog index page and temporary files ".#"
+       (remove "archive.html" (directory-files "~/common-lisp/project-isidore/assets/blog" nil "^[^LICENSE]*\.html"))
+       :title "BHW Blog"
+       :description "Ben's personal blog")))
+  (add-hook 'org-mode 'org-tanglesync-mode)
+  (add-hook 'prog-mode 'org-tanglesync-watch-mode)
+  (add-hook 'text-mode 'org-tanglesync-watch-mode)
+  (setf org-tanglesync-default-diff-action ':diff
+        org-tanglesync-watch-files '("dotfiles.org"))
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "bS" 'org-tanglesync-process-buffer-interactive)
+  ;; Fix for wget option flags, as per https://github.com/alphapapa/org-web-tools/issues/35
+  (setq org-web-tools-archive-wget-options '("--ignore-tags=script,iframe" "--reject=eot,ttf,svg,otf,*.woff*" "--execute" "robots=off" "--adjust-extension" "--span-hosts" "--convert-links" "--page-requisites" "--timestamping" "--no-directories"))
+  (setq org-web-tools-archive-wget-html-only-options '("--execute" "robots=off" "--adjust-extension" "--timestamping" "--no-directories"))
+  ;; For when you are lost in a long code block
+  (spacemacs/set-leader-keys "aob" 'org-babel-goto-src-block-head)
+  ;; Used below to rename org edit blocks
+  ;; https://emacs.stackexchange.com/questions/2483/referring-to-the-org-babel-src-block-name-from-within-the-script
+  ;; EDIT please change function so that src blocks with no name get a temporary
+  ;;name. otherwise code highlighting is broken.
+  (defun org-src--construct-edit-buffer-name (org-buffer-name lang)
+    "Construct the buffer name for a source editing buffer."
+    (concat (nth 4 (org-babel-get-src-block-info)) " [" lang "]"))
+  ;; =SPC h d v "org-babel-load-languages" shows that emacs-lisp and
+  ;; shell code is already enabled in org-babel.
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               (append org-babel-load-languages
+                                       '((ledger . t)
+                                         (calc . t)
+                                         (js . t)
+                                         (emacs-lisp . t)
+                                         (shell . t)
+                                         (lisp . t)
+                                         ;; (mathematica . t)
+                                         (latex . t)
+                                         ;; (jupyter . t) ;; must be last
+                                         )))
+  ;; Sanitize output and deal with paths
+  (setq org-babel-mathematica-command (concat +project-maria-dir+ "mash.pl"))
+  ;; Font-locking
+  ;; (add-to-list 'org-src-lang-modes '("mathematica" . wolfram))
+  ;; (autoload 'wolfram-mode "wolfram-mode" nil t)
+  ;; (autoload 'run-wolfram "wolfram-mode" nil t)
+  ;; (setq wolfram-program "/home/ben/Wolfram/WolframEngine/12.2/Executables/WolframKernel")
+  ;; (add-to-list 'auto-mode-alist '("\.m$" . wolfram-mode))
+  ;; (setq wolfram-path "~/.WolframEngine/Applications") ;; e.g. on Linux ~/.Mathematica/Applications
+  ;; For wolfram-mode
+  ;; (setq mathematica-command-line "~/project-maria/mash.pl")
+  ;; (setq org-babel-python-command "/usr/bin/python3")
+  ;; enable proper mode for sagemath code blocks
+  ;; (add-to-list 'org-src-lang-modes '("jupyter-sage" . python))
+  ;; See library of babel > org babel org heading for more detail
+  (defun org-in-tangle-dir (sub-path)
+    "Expand the SUB-PATH into the directory given by the tangle-dir
+           property if that property exists, else use the
+           `default-directory'."
+    (expand-file-name sub-path
+                      (or
+                       (org-entry-get (point) "tangle-dir" 'inherit)
+                       (default-directory))))
+  ;; (load "~/.emacs.d/private/local/org-recoll.el")
+  ;; (setq org-recoll-results-num 50)
+  ;; (spacemacs/set-leader-keys "ss" 'org-recoll-search)
+  (setf
+   org-attach-id-dir "~/project-jerome/org-attach-data/"
+   ;; https://helpdeskheadesk.net/2022-03-13/
+   ;; For org attach, change org timestamps to more human readable format.
+   org-id-method 'ts
+   org-attach-id-to-path-function-list
+   '(org-attach-id-ts-folder-format org-attach-id-uuid-folder-format)
+   org-attach-method 'mv)
+  (defun fuco/org-attach-visit-headline-from-dired ()
+    "Go to the headline corresponding to this org-attach directory."
+    (interactive)
+    (let* ((id-parts (last (split-string default-directory "/" t) 2))
+           (id (apply #'concat id-parts)))
+      (let ((m (org-id-find id 'marker)))
+        (unless m (user-error "Cannot find entry with ID \"%s\"" id))
+        (pop-to-buffer (marker-buffer m))
+        (goto-char m)
+        (move-marker m nil)
+        (org-fold-show-context))))
+  (setf org-noter-always-create-frame nil
+        org-noter-hide-other nil
+        org-noter-auto-save-last-location t)
+  (spacemacs/set-leader-keys
+    "aon" 'org-noter)
+  ;; (require 'org-brain)
+  ;; (require 'org-expiry)
+  ;; ;; Add CREATED property when adding a new org-brain headline entry
+  ;; (add-hook 'org-brain-new-entry-hook #'org-expiry-insert-created)
+
+  ;; (spacemacs/set-leader-keys "o SPC" 'org-brain-visualize-dwim)
+  ;; ;; For evil users,
+  ;; (with-eval-after-load 'evil
+  ;;   (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
+  ;; ;; Automatically add ID properties to all org headlines when saving
+  ;; ;; Disabled because of slowdown, use org-id-get-create instead
+  ;; ;; (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
+  ;; (defun org-expiry-created-comp (a b)
+  ;;   "Compare `org-expiry-created-property-name' properties of A and B."
+  ;;   (let ((ta (ignore-errors
+  ;;               (org-time-string-to-seconds
+  ;;                (org-entry-get (get-text-property 0 'org-marker a)
+  ;;                               org-expiry-created-property-name))))
+  ;;         (tb (ignore-errors
+  ;;               (org-time-string-to-seconds
+  ;;                (org-entry-get (get-text-property 0 'org-marker b)
+  ;;                               org-expiry-created-property-name)))))
+  ;;     (cond ((if ta (and tb (< ta tb)) tb) -1)
+  ;;           ((if tb (and ta (< tb ta)) ta) +1))))
+
+  ;; (defun org-brain-timeline ()
+  ;;   "List all org-brain headlines in chronological order."
+  ;;   (interactive)
+  ;;   (let ((org-agenda-files (org-brain-files))
+  ;;         (org-agenda-cmp-user-defined #'org-expiry-created-comp)
+  ;;         (org-agenda-sorting-strategy '(user-defined-down)))
+  ;;     (org-tags-view nil (format "+%s>\"\"" org-expiry-created-property-name))))
+
+  ;; (defun org-brain-cliplink-resource ()
+  ;;   "Add a URL from the clipboard as an org-brain resource.
+  ;;                 Suggest the URL title as a description for resource."
+  ;;   (interactive)
+  ;;   (let ((url (org-cliplink-clipboard-content)))
+  ;;     (org-brain-add-resource
+  ;;      url
+  ;;      (org-cliplink-retrieve-title-synchronously url)
+  ;;      t)))
+
+  ;; (define-key org-brain-visualize-mode-map (kbd "L") #'org-brain-cliplink-resource)
+
+  ;; ;; Prettify the lines via aa2u package, or ascii art to unicode
+  ;; (defface aa2u-face '((t . nil))
+  ;;   "Face for aa2u box drawing characters")
+  ;; (advice-add #'aa2u-1c :filter-return
+  ;;             (lambda (str) (propertize str 'face 'aa2u-face)))
+  ;; (defun aa2u-org-brain-buffer ()
+  ;;   (let ((inhibit-read-only t))
+  ;;     (make-local-variable 'face-remapping-alist)
+  ;;     (add-to-list 'face-remapping-alist
+  ;;                  '(aa2u-face . org-brain-wires))
+  ;;     (ignore-errors (aa2u (point-min) (point-max)))))
+  ;; (with-eval-after-load 'org-brain
+  ;;   (add-hook 'org-brain-after-visualize-hook #'aa2u-org-brain-buffer))
+  ;; (define-key org-brain-visualize-mode-map (kbd "j") #'evil-scroll-page-down)
+  ;; (define-key org-brain-visualize-mode-map (kbd "k") #'evil-scroll-page-up)
+  ;; (define-key org-brain-visualize-mode-map (kbd "i") #'org-brain-select-map)
+  ;; (define-key org-brain-visualize-mode-map (kbd "I") #'org-brain-select-dwim)
+  ;; (define-key org-brain-visualize-mode-map (kbd "s") #'link-hint-open-link)
+  ;; ;; Org-brain initialization
+  ;; (setf org-brain-path +project-maria-dir+
+  ;;       org-id-track-globally t
+  ;;       org-brain-data-file "~/.emacs.d/.cache/.org-brain-data.el"
+  ;;       org-id-locations-file "~/.emacs.d/.cache/.org-id-locations"
+  ;;       org-brain-visualize-default-choices 'all
+  ;;       org-brain-title-max-length 90
+  ;;       org-brain-include-file-entries nil
+  ;;       org-brain-file-entries-use-title nil
+  ;;       org-brain-headline-entry-name-format-string "%2$s"
+  ;;       org-brain-quit-after-goto t
+  ;;       org-brain-backlink "<--"
+  ;;       org-expiry-inactive-timestamps t)
+  (require 'org-roam)
+  (setf org-roam-directory +project-maria-dir+
+        org-roam-dailies-directory "journal/")
+  (org-roam-db-autosync-mode)
+  (use-package poly-org :after org) ; Should be after org mode config.
+  ;; https://old.reddit.com/r/emacs/comments/g8ecpj/advice_for_auclatex_what_keybinds_do_you_find/foo64ge/
+  ;; What really increased my speed is having snippets (yasnippet) for
+  ;; frequently used patterns, auto paired parentheses
+  ;; (electric-pair-local-mode or smartparens), and cd-latex
+  ;; (org-cdlatex-mode) which auto inserts brackets for
+  ;; subscript/superscripts. There's still a lot more to be done for speed,
+  ;; learning these packages and creating keybindings though. All in due
+  ;; time! Turns on unicode characters for org-mode
+  (setf
+   org-pretty-entities t
+   org-pretty-entities-include-sub-superscripts nil
+   ;; Bigger latex fragment
+   org-format-latex-options (plist-put org-format-latex-options :scale 3))
+  ;; It generates a a png and overlays it onto the text as soon as your cursor
+  ;; moves away from the math mode dollar signs. Automatically toggle org-mode
+  ;; latex fragment previews as the cursor enters and exits them
+  ;; (add-hook 'org-mode-hook 'org-fragtog-mode)
+  (require 'org-ref)
+  (require 'org-ref-helm)
+  (defun my/org-ref-open-pdf-at-point ()
+    "Open the pdf for bibtex key under point if it exists."
+    (interactive)
+    (let* ((results (org-ref-get-bibtex-key-and-file))
+           (key (car results))
+           (pdf-file (funcall org-ref-get-pdf-filename-function key)))
+      (if (file-exists-p pdf-file)
+          (find-file pdf-file)
+        (message "No PDF found for %s" key))))
+
+  (spacemacs/set-leader-keys "s SPC" 'helm-bibtex)
+
+  (setf
+   org-bibtex-file (concat +project-maria-dir+ "project-jerome.bib")
+   reftex-default-bibliography (list (concat +project-maria-dir+ "project-jerome.bib"))
+   helm-bibtex-full-frame nil
+   bibtex-completion-bibliography (list (concat +project-maria-dir+ "project-jerome.bib"))
+   ;; Clicking on a citation in an org file will draw up a list of actions
+   ;; One of these is view notes. this is where the index of notes is stored
+   ;; Alternatively, calling ", n" while in project-jerome.bib will call
+   ;; org-ref-open-bibtex-notes, which will populate project-jerome-index.org
+   ;; Tell org-ref to let helm-bibtex find notes for it
+   org-ref-notes-function
+   (lambda (thekey)
+     (let ((bibtex-completion-bibliography (org-ref-find-bibliography)))
+       (bibtex-completion-edit-notes
+        (list (car (org-ref-get-bibtex-key-and-file thekey))))))
+   ;; Taken from  https://github.com/jkitchin/org-ref/blob/master/org-ref.org#customizing-how-pdfs-are-opened
+   org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+   org-ref-open-pdf-function 'my/org-ref-open-pdf-at-point
+   bibtex-completion-bibliography (concat +project-maria-dir+ "project-jerome.bib")
+   bibtex-completion-notes-path (concat +project-maria-dir+ "bibtex-notes")
+   bibtex-completion-notes-template-multiple-files
+   (concat
+    "* ${title}\n"
+    ":PROPERTIES:\n"
+    ":AUTHOR: ${author}\n"
+    ":YEAR: ${year}\n"
+    ":END:\n\n")
+   bibtex-completion-pdf-field "file"
+   bibtex-completion-library-path
+   '("~/project-jerome"
+     "~/project-jerome/000-generalities-information-computers"
+     "~/project-jerome/000-generalities-information-computers/000-computer-science"
+     "~/project-jerome/000-generalities-information-computers/010-bibliography"
+     "~/project-jerome/000-generalities-information-computers/020-library-information-sciences"
+     "~/project-jerome/000-generalities-information-computers/030-general-encyclopedic-works"
+     "~/project-jerome/000-generalities-information-computers/040-special-topics"
+     "~/project-jerome/000-generalities-information-computers/050-general-serials-indexes"
+     "~/project-jerome/000-generalities-information-computers/060-general-organizations-museums"
+     "~/project-jerome/000-generalities-information-computers/070-news-media-journalism-publishing"
+     "~/project-jerome/000-generalities-information-computers/080-general-collections"
+     "~/project-jerome/000-generalities-information-computers/090-manuscripts-rare-books"
+     "~/project-jerome/100-philosphy-psychology"
+     "~/project-jerome/100-philosphy-psychology/110-metaphysics"
+     "~/project-jerome/100-philosphy-psychology/120-epistemology-causation-humankind"
+     "~/project-jerome/100-philosphy-psychology/130-paranormal-phenomena"
+     "~/project-jerome/100-philosphy-psychology/140-specific-philosophical-schools"
+     "~/project-jerome/100-philosphy-psychology/150-psychology"
+     "~/project-jerome/100-philosphy-psychology/160-logic"
+     "~/project-jerome/100-philosphy-psychology/170-ethics-moral-philosophy"
+     "~/project-jerome/100-philosphy-psychology/180-ancient-medieval-oriental-philosophy"
+     "~/project-jerome/100-philosphy-psychology/190-modern-western-philosophy"
+     "~/project-jerome/200-religion"
+     "~/project-jerome/200-religion/210-natural-theology"
+     "~/project-jerome/200-religion/220-bible"
+     "~/project-jerome/200-religion/230-christian-theology"
+     "~/project-jerome/200-religion/230-christian-theology/239-apologetics"
+     "~/project-jerome/200-religion/240-christian-moral-devotional-theology"
+     "~/project-jerome/200-religion/240-christian-moral-devotional-theology/242-devotional-literature"
+     "~/project-jerome/200-religion/250-christian-orders-local-churches"
+     "~/project-jerome/200-religion/250-christian-orders-local-churches/252-texts-of-sermons"
+     "~/project-jerome/200-religion/250-christian-orders-local-churches/253-pastoral-office-and-work"
+     "~/project-jerome/200-religion/260-christian-social-theology"
+     "~/project-jerome/200-religion/270-christian-church-history"
+     "~/project-jerome/200-religion/280-christian-denominations-sects"
+     "~/project-jerome/200-religion/290-other-comparative-religions"
+     "~/project-jerome/300-social-sciences"
+     "~/project-jerome/300-social-sciences/310-general-statistics"
+     "~/project-jerome/300-social-sciences/320-political-science"
+     "~/project-jerome/300-social-sciences/330-economics"
+     "~/project-jerome/300-social-sciences/340-law"
+     "~/project-jerome/300-social-sciences/350-public-administration"
+     "~/project-jerome/300-social-sciences/360-social-problems-services"
+     "~/project-jerome/300-social-sciences/370-education"
+     "~/project-jerome/300-social-sciences/380-commerce-communications-transport"
+     "~/project-jerome/300-social-sciences/390-customs-etiquette-folklore"
+     "~/project-jerome/400-philology"
+     "~/project-jerome/400-philology/410-linguistics"
+     "~/project-jerome/400-philology/420-english-anglosaxon-languages"
+     "~/project-jerome/400-philology/430-germanic-languages"
+     "~/project-jerome/400-philology/440-romance-languages"
+     "~/project-jerome/400-philology/450-italian-romanian-rhaeto-romanic"
+     "~/project-jerome/400-philology/460-spanish-portuguese-languages"
+     "~/project-jerome/400-philology/470-italic-languages-latin"
+     "~/project-jerome/400-philology/480-hellenic-languages-classical-greek"
+     "~/project-jerome/400-philology/490-other-languages"
+     "~/project-jerome/500-natural-science"
+     "~/project-jerome/500-natural-science/510-mathematics"
+     "~/project-jerome/500-natural-science/520-astronomy-allied-sciences"
+     "~/project-jerome/500-natural-science/530-physics"
+     "~/project-jerome/500-natural-science/540-chemistry-allied-sciences"
+     "~/project-jerome/500-natural-science/550-earth-sciences"
+     "~/project-jerome/500-natural-science/560-paleontology-paleozoology"
+     "~/project-jerome/500-natural-science/570-life-sciences"
+     "~/project-jerome/500-natural-science/580-botanical-sciences"
+     "~/project-jerome/500-natural-science/590-zoological-sciences"
+     "~/project-jerome/600-applied-science"
+     "~/project-jerome/600-applied-science/610-medical-sciences-psychiatry"
+     "~/project-jerome/600-applied-science/620-engineering"
+     "~/project-jerome/600-applied-science/630-agriculture"
+     "~/project-jerome/600-applied-science/640-home-economics-family-living"
+     "~/project-jerome/600-applied-science/650-management"
+     "~/project-jerome/600-applied-science/660-chemical-engineering"
+     "~/project-jerome/600-applied-science/670-manufacturing"
+     "~/project-jerome/600-applied-science/680-manufacture-for-specific-use"
+     "~/project-jerome/600-applied-science/690-buildings"
+     "~/project-jerome/700-arts-recreation"
+     "~/project-jerome/700-arts-recreation/710-civic-landscape-art"
+     "~/project-jerome/700-arts-recreation/720-architecture"
+     "~/project-jerome/700-arts-recreation/730-sculpture"
+     "~/project-jerome/700-arts-recreation/740-drawings-decorative-arts"
+     "~/project-jerome/700-arts-recreation/750-paintings-painters"
+     "~/project-jerome/700-arts-recreation/760-graphics-arts-printmaking"
+     "~/project-jerome/700-arts-recreation/770-photography"
+     "~/project-jerome/700-arts-recreation/780-music"
+     "~/project-jerome/700-arts-recreation/790-recreational-performing-arts"
+     "~/project-jerome/800-literature"
+     "~/project-jerome/800-literature/810-american-literature-in-english"
+     "~/project-jerome/800-literature/820-english-literature"
+     "~/project-jerome/800-literature/830-literature-of-germanic-language"
+     "~/project-jerome/800-literature/840-literatures-of-romance-language"
+     "~/project-jerome/800-literature/850-italian-romanian-rhaeto-romaic-literatures"
+     "~/project-jerome/800-literature/860-spanish-portuguese-literatures"
+     "~/project-jerome/800-literature/870-italic-literatures-latin"
+     "~/project-jerome/800-literature/880-hellenic-literatures-classical-greek"
+     "~/project-jerome/800-literature/890-literatures-of-other-languages"
+     "~/project-jerome/900-history-geography-biography"
+     "~/project-jerome/900-history-geography-biography/910-geography-travel"
+     "~/project-jerome/900-history-geography-biography/920-biography-genealogy-insignia"
+     "~/project-jerome/900-history-geography-biography/930-history-of-the-ancient-world"
+     "~/project-jerome/900-history-geography-biography/940-general-history-of-europe"
+     "~/project-jerome/900-history-geography-biography/950-general-history-of-asia"
+     "~/project-jerome/900-history-geography-biography/960-general-history-of-africa"
+     "~/project-jerome/900-history-geography-biography/970-general-history-of-north-america"
+     "~/project-jerome/900-history-geography-biography/980-general-history-of-south-america"
+     "~/project-jerome/900-history-geography-biography/990-general-history-of-other-areas")
+   bibtex-completion-format-citation-functions
+   '((org-mode      . org-ref-helm-bibtex-insert-citation)
+     (latex-mode    . bibtex-completion-format-citation-cite)
+     (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+     (default       . bibtex-completion-format-citation-default))
+   helm-source-bibtex org-ref-helm-source-bibtex)
+  (require 'mu4e-contrib)
+  ;; https://mu-discuss.narkive.com/hXk7RbcH/set-from-address-depending-on-to-address-header
+  (defun mu4e-compose-set-from-address-dwim ()
+    "Set the From address based on the To address of the original. Added to
+  `mu4e-compose-pre-hook'"
+    (let ((msg mu4e-compose-parent-message))
+      (when msg
+        (setf user-mail-address
+              (cond
+               ((mu4e-message-contact-field-matches msg :to "seneschal@bhw.name")
+                "seneschal@bhw.name")
+               ((mu4e-message-contact-field-matches msg :to "foss@bhw.name")
+                "foss@bhw.name")
+               ((mu4e-message-contact-field-matches msg :to "ben@bhw.name")
+                "ben@bhw.name")
+               ((mu4e-message-contact-field-matches msg :to "wang.hanshen@shms.edu")
+                "wang.hanshen@shms.edu")
+               (t "benedicthanshenwang@gmail.com"))))))
+
+  (setf mu4e-change-filenames-when-moving t  ; mbsync specific.
+        ;; see an ASCII table for the character decimal codes
+        mu4e-bookmarks '(("maildir:/INBOX" "Inbox" 105 )
+                         ("\"maildir:/[Gmail]/All Mail\" and flag:unread" "Unread" 85))
+        user-mail-address (get-authinfo-password "personal.gmail" "ben")
+        user-full-name "Benedict H. Wang"
+        ;; mu4e-compose-signature
+        mail-user-agent 'mu4e-user-agent
+        mu4e-attachment-dir "/mnt/c/Users/bened/Downloads/"
+        mu4e-drafts-folder "/[Gmail]/Drafts"
+        mu4e-sent-folder "/[Gmail]/Sent Mail"
+        mu4e-trash-folder "/[Gmail]/Trash"
+        mu4e-refile-folder "/[Gmail]/All Mail"
+        send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        message-sendmail-f-is-evil t
+        mu4e-index-update-in-background t
+        mu4e-update-interval 900
+        mu4e-autorun-background-at-startup t
+        mu4e-get-mail-command "mbsync -a"
+        mu4e-hide-index-messages t
+        mu4e-enable-mode-line nil
+        ;; If this is enabled, prompts for new gpg fingerprints will not show up.
+        ;; Instead emails will silently fail to send.
+        mu4e-enable-async-operations nil
+        mu4e-search-skip-duplicates t
+        ;; Multipart html/plaintext email default, if the html portion is larger
+        ;; by a factor of 5, it is assumed the user wants to view html. This
+        ;; sets the factor to the largest possible fixnum, for we prefer the
+        ;; plaintext version.
+        mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum
+        gnus-blocked-images "."
+        mu4e-org-link-query-in-headers-mode nil
+        ;; mu4e-org-contacts-file (concat +project-maria-dir+ "contacts.org")
+        message-kill-buffer-on-exit t
+        mu4e-confirm-quit nil
+        mu4e-headers-time-format "%y/%m/%d %H:%M"
+        mu4e-headers-fields
+        '((:human-date . 14)
+          (:from-or-to . 20)
+          (:subject))
+        mml-secure-openpgp-sign-with-sender t
+        mml-secure-openpgp-signers '("06DDA93690F775E3715B628CCA949A6D46BC2BBE")
+        mu4e-compose-complete-addresses t
+        mu4e-compose-complete-only-after "2018-01-01"
+        browse-url-filename-alist
+        '(("^/\\(ftp@\\|anonymous@\\)?\\([^:/]+\\):/*" . "ftp://\\2/")
+          ("^/\\([^:@/]+@\\)?\\([^:/]+\\):/*" . "ftp://\\1\\2/")
+          ;; For gnus-article-browse-html-article on Windows Subsystem for Linux.
+          ("^/+" . "file://///wsl$/Debian/"))
+        mu4e-modeline-support nil
+        mu4e-search-include-related nil)
+  (with-eval-after-load "recentf"
+    (progn
+      (add-to-list 'recentf-exclude "~/project-jerome/email-archive/")
+      (add-to-list 'recentf-exclude "/tmp/")))
+  ;; Unbind s, originally bound to mu4e-headers-search.
+  ;; Unset =mu4e-headers=search= from both =mu4e-headers-mode-map= and
+  ;; =mu4e-view-mode-map=. Retain =s= for search in =mu4e-main-mode-map=.
+  (define-key mu4e-headers-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
+  (define-key mu4e-headers-mode-map (kbd "K") #'mu4e-view-save-url)
+  (define-key mu4e-headers-mode-map "S" 'helm-mu)
+  (add-hook 'mu4e-view-mode-hook
+            (lambda () (progn
+                         (evil-evilified-state)
+                         (define-key mu4e-view-mode-map (kbd "s") #'avy-goto-word-or-subword-1)
+                         (define-key mu4e-view-mode-map (kbd "K") #'mu4e-view-save-url)
+                         (define-key mu4e-view-mode-map "S" 'helm-mu))))
+  (add-hook 'mu4e-compose-pre-hook #'mu4e-compose-set-from-address-dwim)
+  (define-key mu4e-headers-mode-map (kbd "e") #'mu4e-headers-flag-all-read)
+  (with-eval-after-load 'mu4e (evil-define-key 'evilified 'mu4e-headers-mode (kbd "E") 'mu4e-headers-mark-all) (evil-normalize-keymaps) (add-hook 'mu4e-headers-mode #'evil-normalize-keymaps))
+  ;; Functions ran on every message sent
+  (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode "o" 'org-mime-edit-mail-in-org-mode)
+  (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode "p" 'mml-secure-message-sign-pgpmime)
+  (spacemacs/set-leader-keys
+    (kbd "aes") #'helm-mu
+    (kbd "aec") #'helm-mu-contacts
+    (kbd "aej") #'mu4e-search-bookmark)
+  (require 'elfeed)
+  (require 'hydra)
+  (require 'elfeed-tube)
+  (setf elfeed-db-directory "~/.emacs.d/.cache/elfeed"
+        elfeed-use-curl t)
+  ;; Remove default binding so evilify mapping takes over.
+  ;; Set shortcut for org-web-tools to fetch full article
+  (with-eval-after-load "elfeed"
+    (progn
+      (define-key elfeed-search-mode-map (kbd "RET") nil)
+      (define-key elfeed-search-mode-map (kbd "RET") #'ap/elfeed-search-browse-org)))
+  (defhydra ben/hydra-elfeed (:exit t)
+    ("g" (elfeed-search-set-filter "@6-months-ago +unread +gbl") "Global News")
+    ("l" (elfeed-search-set-filter "@6-months-ago +unread +lcl") "Local News")
+    ("s" (elfeed-search-set-filter "@6-months-ago +unread +sci") "Science & Tech")
+    ("b" (elfeed-search-set-filter "@6-months-ago +unread +blog") "Misc. Blogs")
+    ("c" (elfeed-search-set-filter "@6-months-ago +unread +rel") "Catholic")
+    ("f" (elfeed-search-set-filter "@6-months-ago +unread +frm") "Forums")
+    ("o" (elfeed-search-set-filter "@6-months-ago +unread +pod") "Podcasts")
+    ("y" (elfeed-search-set-filter "@6-months-ago +unread +vid") "Youtube")
+    ("a" (elfeed-search-set-filter "@6-months-ago +unread") "All")
+    ("q" nil "quit" :color blue))
+  (evilified-state-evilify-map elfeed-search-mode-map
+    :mode elfeed-search-mode
+    :eval-after-load elfeed-search
+    :bindings
+    "s"  #'avy-goto-word-or-subword-1
+    "S"  #'elfeed-search-live-filter
+    "f"  #'ben/hydra-elfeed/body
+    "r"  #'elfeed-mark-all-as-read
+    "RET"  #'ap/elfeed-search-browse-org
+    "t"   #'elfeed-search-show-entry
+    ";" #'helm-occur
+    "b" #'ben/elfeed-search-browse-url
+    "C-u b" #'elfeed-search-browse-url
+    "o" #'elfeed-tube-fetch
+    "gr" #'elfeed-update)
+  (evilified-state-evilify-map elfeed-show-mode-map
+    :bindings
+    "s"  #'avy-goto-word-or-subword-1
+    ";" #'helm-occur)
+  (defun elfeed-mark-all-as-read ()
+    "Marks entire buffer before tagging marked region as read"
+    (interactive)
+    (mark-whole-buffer)
+    (elfeed-search-untag-all-unread))
+  ;; Source https://www.reddit.com/r/emacs/comments/g6oowz/elfeed_rules/fodeb8x/
+  (defun ap/elfeed-search-browse-org ()
+    "Open selected items as Org."
+    (interactive)
+    (let ((browse-url-browser-function (lambda (url _)
+                                         (org-web-tools-read-url-as-org url))))
+      (ap/elfeed-search-selected-map #'ap/elfeed-search-browse-entry)))
+
+  (defun ap/elfeed-search-browse-entry (entry)
+    "Browse ENTRY with `browse-url' and mark as read.
+      If ENTRY is unread, it will also be unstarred.  To override the
+      browser function, bind `browse-url-browser-function' around the
+      call to this."
+    (let ((url (elfeed-entry-link entry))
+          (tags (elfeed-entry-tags entry)))
+      ;; Mark as read first, because apparently the elfeed functions don't work after `browse-url'
+      ;; potentially changes the buffer.
+      (elfeed-untag entry 'unread)
+      (elfeed-search-update-entry entry)
+      (browse-url url)))
+
+  (cl-defun ap/elfeed-search-selected-map (fn)
+    "Map FN across selected entries in elfeed-search buffer using `mapcar'."
+    (mapcar fn (elfeed-search-selected)))
+
+  (defun ben/elfeed-search-browse-url (&optional use-generic-p)
+    "Visit the current entry in your browser using `browse-url'.
+  If there is a prefix argument, visit the current entry in the
+  browser defined by `browse-url-generic-program'."
+    (interactive "P")
+    (let ((buffer (current-buffer))
+          (entries (elfeed-search-selected)))
+      (cl-loop for entry in entries
+               do (elfeed-untag entry 'unread)
+               when (elfeed-entry-link entry)
+               do (if use-generic-p
+                      (browse-url-generic it)
+                    (eww it)))
+      ;; `browse-url' could have switched to another buffer if eww or another
+      ;; internal browser is used, but the remainder of the functions needs to
+      ;; run in the elfeed buffer.
+      (with-current-buffer buffer
+        (mapc #'elfeed-search-update-entry entries)
+        (unless (or elfeed-search-remain-on-entry (use-region-p))
+          (forward-line)))))
+  (add-hook 'elfeed-new-entry-hook #'elfeed-tube--auto-fetch)
+  (advice-add 'elfeed-show-entry
+              :after #'elfeed-tube--auto-fetch)
+  (advice-add elfeed-show-refresh-function
+              :after #'elfeed-tube-show)
+  ;; Forces bash shell into interactive mode, leadings to sourcing of
+  ;; ~/.bashrc and interactive aliases and functions
+  ;; (setq shell-command-switch "-ic")
+  ;; Default value was "-c"
+  (setq shell-command-switch "-c")
+  (setf auto-revert-interval 30)
+  (auto-revert-set-timer)
+  ;; https://rufflewind.com/2014-07-20/pasting-unicode-in-emacs-on-windows
+  ;; (set-selection-coding-system 'utf-16-le)
+  ;; https://gnu.emacs.help.narkive.com/p20hvAvC/keyboard-translate-not-working-with-emacs-daemon
+  (define-key key-translation-map [?\(] [?\[])
+  (define-key key-translation-map [?\[] [?\(])
+  (define-key key-translation-map [?\)] [?\]])
+  (define-key key-translation-map [?\]] [?\)])
+  ;; Should double buffering cause lag spikes on 3840 x 2160 displays
+  ;; we can disable it via...
+  (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+  ;; For firefox: "/mnt/c/Program Files/Firefox Nightly/firefox.exe"
+  (setf browse-url-generic-program  "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
+        browse-url-browser-function #'browse-url-generic
+        package-install-upgrade-built-in t)
+  ;; Useful trick to share snippets between modes. Whenever a major mode
+  ;; is loaded, fundamental-mode is also loaded
+  (add-hook 'yas-minor-mode-hook (lambda ()
+                                   (yas-activate-extra-mode 'fundamental-mode)))
+  ;; User Defined Toggles -> See SPC t hydra menu
+  ;; VISUALLY wraps words that go past screen length
+  ;; setq-default command means the command is run in every major mode buffer
+  (setq-default truncate-lines nil)
+  ;; Enables line by line navigation. Lines are not line broken > use RET for that
+  (spacemacs/toggle-visual-line-navigation-globally-on)
+  ;; Determines the length of time between the end of typing for SPC j j (avy-timer)
+  ;; and the appearance of green prompt letters
+  (setq avy-timeout-seconds 0.50)
+  )
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(package-selected-packages
+     '(ace-jump-helm-line ace-window anki-editor ascii-art-to-unicode auto-yasnippet
+                          avy-jump-helm-line better-jumper bind-map biome casual
+                          cdlatex code-cells code-review column-enforce-mode
+                          company-quickhelp cython-mode diminish dired-quick-sort
+                          disable-mouse doom-modeline dumb-jump eat ebib
+                          elfeed-org elfeed-tube-mpv elisp-def elisp-demos
+                          elisp-slime-nav ement evil-cleverparens evil-collection
+                          evil-evilified-state evil-ledger evil-lion evil-matchit
+                          evil-nerd-commenter evil-org evil-snipe evil-surround
+                          evil-textobj-line exec-path-from-shell eyebrowse
+                          flycheck-ledger flyspell-correct-helm git-link gnuplot
+                          google-translate gptel greader helm-ag helm-bibtex
+                          helm-c-yasnippet helm-comint helm-lsp helm-mu
+                          helm-org-ql helm-projectile helm-pydoc helm-xref helpful
+                          highlight-parentheses hledger-mode holy-mode info+ lexic
+                          link-hint listen literate-calc-mode live-py-mode
+                          lsp-origami lsp-ui magit-todos mu4e nano-calendar
+                          org-appear org-cliplink org-contacts org-contrib
+                          org-download org-fragtog org-mime org-pdftools
+                          org-project-capture org-re-reveal org-ref org-roam
+                          org-superstar org-tanglesync org-timeline org-vcard
+                          org-web-tools orgit-forge page-break-lines paradox
+                          pdf-view-restore persp-mode pet pip-requirements pipenv
+                          pippel plantuml-mode poetry poly-org polymode popwin
+                          posframe py-isort pydoc pyenv-mode pylookup pytest
+                          python-pytest rainbow-delimiters shell-pop sly
+                          sly-macrostep space-doc spaceline
+                          spacemacs-purpose-popwin spacemacs-whitespace-cleanup
+                          sphinx-doc string-edit-at-point symbol-overlay
+                          transmission unfill vundo webfeeder wgrep window-purpose
+                          winum ws-butler youtube-sub-extractor)))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
+  )
