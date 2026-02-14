@@ -59,8 +59,6 @@
              ebib-preload-bib-files (list (concat +project-maria-dir+ "project-jerome.bib"))
              ebib-file-search-dirs (list +project-jerome-dir+)
              ebib-import-directory (list +project-jerome-dir+))
-     ;; $ git clone git@github.com:BenedictHW/common-lisp-sly.git ~/.emacs.d/private/
-     common-lisp-sly
      (elfeed :variables
              elfeed-enable-goodies nil
              rmh-elfeed-org-files (list (concat +project-maria-dir+ "/dotelfeed.org")))
@@ -99,9 +97,7 @@
      (llm-client :variables
                  llm-client-enable-ellama nil
                  llm-client-enable-gptel t)
-     (mu4e :variables
-           mu4e-installation-path "/usr/share/emacs/site-lisp/elpa/mu4e-1.10.8"
-           :packages (not
+     (mu4e :packages (not
                       mu4e-alert))
      (org :variables
           org-enable-roam-support t
@@ -248,8 +244,6 @@
      cdlatex
      org-fragtog
      ;; keyfreq
-     ;; For org-brain
-     ascii-art-to-unicode
      ;; wolfram-mode
      ;; See emacs-jupyter in user config section
      ;; jupyter
@@ -271,6 +265,7 @@
      anki-editor
      ;; (reader :location (recipe :fetcher codeberg
      ;;                           :repo "divyaranjan/emacs-reader"))
+     ef-themes
      )
 
    ;; A list of packages that cannot be updated.
@@ -460,8 +455,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light)
+   dotspacemacs-themes '((ef-owl :package ef-themes)
+                         (ef-eagle :package ef-themes))
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -812,7 +807,7 @@ package is loaded, you should place your code here."
   (spacemacs/set-leader-keys-for-major-mode 'reader-mode "ss" 'reader-search-mode)
   (setf nerd-icons-font-family "IosevkaTermSlab Nerd Font"
         nerd-icons-fonts-subdirectory "/usr/local/share/fonts/IosevkaTermSlab/")
-
+  
   (require 'biome)
   (biome-def-preset biome-query-preset-14
     ((:name . "GEM (Canada)")
@@ -825,73 +820,77 @@ package is loaded, you should place your code here."
   (require 'casual-calc)
   (keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
   (keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
-  (require 'gptel)
-  (require 'auth-source)
-
-  (defun bhw/switch-to-llm-buffer ()
-    (interactive)
-    (switch-to-buffer "*Gemini*"))
-
-  (defun get-authinfo-password (machine login)
-    (let ((credential (auth-source-search :max 1
-                                          :host machine
-                                          :user login
-                                          :require '(:secret))))
-      (if credential
-          (let ((secret (plist-get (nth 0 credential) :secret)))
-            (if (functionp secret)
-                (funcall secret)
-              secret))
-        (message "No password found for %s@%s" login machine))))
-  ;; In ~/.authinfo,
-  ;;machine aistudio.google.com login ben password *YourAPIkey*
-  (setf
-   gptel-model 'gemini-2.5-flash-preview-05-20
-   gptel-backend (gptel-make-gemini "Gemini"
-                   :key (get-authinfo-password "aistudio.google.com" "ben")
-                   :stream t)
-   gptel-directives
-   '((default . "
+    (require 'gptel)
+    (require 'auth-source)
+  
+    (defun bhw/switch-to-llm-buffer ()
+      (interactive)
+      (switch-to-buffer "*Gemini*"))
+  
+    (defun get-authinfo-password (machine login)
+      (let ((credential (auth-source-search :max 1
+                                            :host machine
+                                            :user login
+                                            :require '(:secret))))
+        (if credential
+            (let ((secret (plist-get (nth 0 credential) :secret)))
+              (if (functionp secret)
+                  (funcall secret)
+                secret))
+          (message "No password found for %s@%s" login machine))))
+    ;; In ~/.authinfo,
+    ;;machine aistudio.google.com login ben password *YourAPIkey*
+    (setf
+     gptel-model 'gemini-flash-latest
+     gptel-backend (gptel-make-gemini "Gemini"
+                     :key (get-authinfo-password "aistudio.google.com" "ben")
+                     :stream t)
+     gptel-directives
+     '((default . "
   Ignore all previous instructions.
-
+  
   1. You are to provide clear, concise, and direct responses. 2. Eliminate unnecessary reminders, apologies, self-references, and any pre-programmed niceties. 3. Maintain a casual tone in your communication. 4. Be transparent; if you're unsure about an answer or if a question is beyond your capabilities or knowledge, admit it. 5. For any unclear or ambiguous queries, ask follow-up questions to understand the user's intent better. 6. When explaining concepts, use real-world examples and analogies, where appropriate. 7. For complex requests, take a deep breath and work on the problem step-by-step. Show your work. 8. For every response, you will be tipped up to $20000 (depending on the quality of your output).
-
-  Prioritize substance, clarity, and depth. Challenge all my proposals, designs, and conclusions as hypotheses to be tested. Sharpen follow-up questions for precision, surfacing hidden assumptions, trade offs, and failure modes early. Default to terse, logically structured, information-dense responses unless detailed exploration is required. Skip unnecessary praise unless grounded in evidence. Explicitly acknowledge uncertainty when applicable. Always propose at least one alternative framing. Accept critical debate as normal and preferred. Treat all factual claims as provisional unless cited or clearly justified. Cite when appropriate. Acknowledge when claims rely on inference or incomplete information. Favor accuracy over sounding certain. When citing, please tell me in-situ, including reference links.  Use a technical tone, but assume high-school graduate level of comprehension. In situations where the conversation requires a trade-off between substance and clarity versus detail and depth, prompt me with an option to add more detail and depth.
-
+  
+  Prioritize substance, clarity, and depth. Challenge all my proposals, designs, and conclusions as hypotheses to be tested. Sharpen follow-up questions for precision, surfacing hidden assumptions, trade offs, and failure modes early. Default to terse, logically structured, information-dense responses unless detailed exploration is required. Skip unnecessary praise unless grounded in evidence. Explicitly acknowledge uncertainty when applicable. Always propose at least one alternative framing. Accept critical debate as normal and preferred. Treat all factual claims as provisional unless cited or clearly justified. Cite when appropriate. Acknowledge when claims rely on inference or incomplete information. Favor accuracy over sounding certain. When citing, please tell me in-situ, including reference links.  Use a technical tone, but assume college graduate level of comprehension. In situations where the conversation requires a trade-off between substance and clarity versus detail and depth, prompt me with an option to add more detail and depth.
+  
   It is very important that you get this right.")))
+  
+    (spacemacs/set-leader-keys
+      (kbd "swl") #'bhw/switch-to-llm-buffer)
   (add-hook 'eww-after-render-hook 'eww-readable)
   (require 'greader)
   ;; FIXME Auto-completion causes lag in shell-mode.
   (setf company-global-modes '(not shell-mode))
   (require 'ement)
   (evil-collection-ement-setup)
-
+  
   (spacemacs/set-leader-keys
     (kbd "acM") #'ement-connect
     (kbd "acm") #'ement-list-rooms
     (kbd "acn") #'ement-notify-switch-to-notifications-buffer
     (kbd "acc") #'ement-room-send-message
     (kbd "acv") #'ement-view-room)
-
+  
   (evilified-state-evilify-map ement-room-mode-map
     :mode ement-room-mode
     :eval-after-load ement-room
     :bindings
     ";" #'ement-room-occur
     "n" #'ement-room-scroll-up-mark-read)
-
+  
   (evilified-state-evilify-map ement-room-list-mode-map
     :mode ement-room-list-mode
     :eval-after-load ement-room-list
     :bindings
     ";" #'helm-occur
     "n" #'ement-room-list-next-unread)
-
+  
   (add-hook 'ement-room-compose-hook 'ement-room-compose-org)
-
+  
   (setf ement-save-sessions t
         ement-room-mark-rooms-read 'send
-        ement-room-send-typing nil)
+        ement-room-send-typing nil
+        ement-auto-sync t)
   (setf plantuml-default-exec-mode 'jar
         plantuml-jar-path "/usr/share/plantuml/plantuml.jar"
         org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar"
@@ -1006,26 +1005,26 @@ package is loaded, you should place your code here."
                                    file pages file file file)))
               (pdf-view-revert-buffer nil t)
             (error "Rotation error!"))))))
-
+  
   (defun pdf-view-rotate-clockwise (&optional arg)
     "Rotate PDF page 90 degrees clockwise.  With prefix ARG, rotate
   entire document."
     (interactive "P")
     (pdf-view--rotate nil (not arg)))
-
+  
   (defun pdf-view-rotate-counterclockwise (&optional arg)
     "Rotate PDF page 90 degrees counterclockwise.  With prefix ARG,
   rotate entire document."
     (interactive "P")
     (pdf-view--rotate :counterclockwise (not arg)))
-
+  
   (define-key spacemacs-pdf-view-mode-map (kbd "R") 'pdf-view-rotate-clockwise)
   (setf forge-owned-accounts '(("BenedictHW" :remote-name "origin"))
         magit-save-repository-buffers 'dontask)
   ;;-------------------------------------------------------------------------
   ;; ***  Emacs Jupyter Config
   ;;-------------------------------------------------------------------------
-
+  
   (setf dired-omit-mode t
         ;; Stop asking to quit dired buffers of deleted files
         dired-clean-up-buffers-too nil)
@@ -1114,9 +1113,7 @@ package is loaded, you should place your code here."
   (delq 'regexp-search-ring savehist-additional-variables)
   (delq 'extended-command-history savehist-additional-variables)
   (delq 'kill-ring savehist-additional-variables)
-  (put 'org-brain-headline-cache 'history-length 10)
   (put 'bibtex-completion-cache 'history-length 10)
-  (push 'org-brain-headline-cache savehist-additional-variables)
   (push 'bibtex-completion-cache savehist-additional-variables)
   (push 'helm-ff-history savehist-additional-variables)
   (push 'org-clock-history savehist-additional-variables)
@@ -1174,7 +1171,7 @@ package is loaded, you should place your code here."
                   (or (string= msg "Modified buffers exist; exit anyway? ")
                       (funcall real-yes-or-no-p msg)))))
       (funcall oldfn arg)))
-
+  
   (advice-add #'save-buffers-kill-emacs :around #'site/always-save-advice)
   ;; Spacemacs default is 60 seconds. Ridiculous.
   (setf auto-save-interval 1000
@@ -1245,60 +1242,60 @@ package is loaded, you should place your code here."
   ;; ;; and seems to induce performance problems
   ;; ;; TODO fix this properly
   ;; (advice-add 'evil-refresh-cursor :around 'fn/not-in-pdf-view-mode)
-  ;; See /home/ben/.config/fd/ignore
-  (require 'helm-fd)
-  (require 'helm-ag)
-
-  (defvar bhw/helm-source-fd
-    (helm-make-source "fd-find" 'helm-fd-class)
-    "For use of FD in `helm-for-files'. See also `helm-fd-switches'")
-
-  ;; HACK If (error "Candidates function ‘(closure (t) nil
-  ;; (helm-ag--do-ag-candidate-process +project-maria-dir+))’ should run a
-  ;; process") Then eval-current-form-sp on the form below.
-  (defvar bhw/helm-source-maria-ag
-    (helm-make-source "Project Maria - AG" 'helm-do-ag-class
-      :candidates-process
-      (lambda ()
-        (helm-ag--do-ag-candidate-process +project-maria-dir+)))
-    "To search Project Maria files from `helm-for-files'.
+    ;; See /home/ben/.config/fd/ignore
+    (require 'helm-fd)
+    (require 'helm-ag)
+  
+    (defvar bhw/helm-source-fd
+      (helm-make-source "fd-find" 'helm-fd-class)
+      "For use of FD in `helm-for-files'. See also `helm-fd-switches'")
+  
+    ;; HACK If (error "Candidates function ‘(closure (t) nil
+    ;; (helm-ag--do-ag-candidate-process +project-maria-dir+))’ should run a
+    ;; process") Then eval-current-form-sp on the form below.
+    (defvar bhw/helm-source-maria-ag
+      (helm-make-source "Project Maria - AG" 'helm-do-ag-class
+        :candidates-process
+        (lambda ()
+          (helm-ag--do-ag-candidate-process +project-maria-dir+)))
+      "To search Project Maria files from `helm-for-files'.
   `helm-ag--do-ag-set-source' used as exemplar. You may have to run
   `helm-projectile-ag' once for fuzzy matching to kick in :O.")
-
-  (defvar bhw/helm-source-emacs-commands
-    (helm-build-sync-source "Emacs Commands"
-      :candidates (lambda ()
-                    (let ((cmds))
-                      (mapatoms (lambda (elt)
-                                  (when (commandp elt)
-                                    (push (symbol-name elt) cmds))))
-                      cmds))
-      :coerce #'intern-soft
-      :action #'command-execute)
-    "A simple helm source for Emacs commands. Used in `helm-for-files'.")
-
-  (setf avy-jump-helm-line-default-action 'select
-        avy-jump-helm-line-idle-delay 1
-        helm-ff-auto-update-initial-value t
-        recentf-max-saved-items 1000
-        helm-for-files-preferred-list
-        '(helm-source-recentf
-          bhw/helm-source-fd
-          bhw/helm-source-maria-ag
-          bhw/helm-source-emacs-commands)
-        helm-candidate-number-limit 100
-        helm-ff-skip-boring-files t
-        helm-ag-fuzzy-match t
-        helm-fd-executable "fdfind"
-        helm-fd-switches
-        '("--search-path" "/home/ben" "--hidden" "--type" "f"
-          "--type" "d" "--color" "never" "--max-results" "10"
-          "--full-path")
-        helm-ag-use-agignore t)
-
-  (spacemacs/set-leader-keys "SPC" #'helm-for-files)
-  (define-key helm-map (kbd "C-q") nil) ; Replace default binding.
-  (define-key helm-map (kbd "C-d") 'avy-jump-helm-line)
+  
+    (defvar bhw/helm-source-emacs-commands
+      (helm-build-sync-source "Emacs Commands"
+        :candidates (lambda ()
+                      (let ((cmds))
+                        (mapatoms (lambda (elt)
+                                    (when (commandp elt)
+                                      (push (symbol-name elt) cmds))))
+                        cmds))
+        :coerce #'intern-soft
+        :action #'command-execute)
+      "A simple helm source for Emacs commands. Used in `helm-for-files'.")
+  
+    (setf avy-jump-helm-line-default-action 'select
+          avy-jump-helm-line-idle-delay 1
+          helm-ff-auto-update-initial-value t
+          recentf-max-saved-items 1000
+          helm-for-files-preferred-list
+          '(helm-source-recentf
+            bhw/helm-source-fd
+            bhw/helm-source-maria-ag
+            bhw/helm-source-emacs-commands)
+          helm-candidate-number-limit 100
+          helm-ff-skip-boring-files t
+          helm-ag-fuzzy-match t
+          helm-fd-executable "fdfind"
+          helm-fd-switches
+          '("--search-path" "/home/ben" "--hidden" "--type" "f"
+            "--type" "d" "--color" "never" "--max-results" "10"
+            "--full-path")
+          helm-ag-use-agignore t)
+  
+    (spacemacs/set-leader-keys "SPC" #'helm-for-files)
+    (define-key helm-map (kbd "C-q") nil) ; Replace default binding.
+    (define-key helm-map (kbd "C-d") 'avy-jump-helm-line)
   (require 'org)
   ;; Format text to fit 80 chars when pressing RET or ENTER.
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
@@ -1360,7 +1357,8 @@ package is loaded, you should place your code here."
         org-persist-directory "~/.cache/org-persist/"
         ;; Needs the libreoffice suite installed.
         ;; 'sudo apt install libreoffice'
-        org-odt-preferred-output-format "docx")
+        org-odt-preferred-output-format "docx"
+        org-id-extra-files (directory-files-recursively +project-maria-dir+  ".org$\\|.org.gpg$"))
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "xR" 'afs/org-replace-link-by-link-description)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "iI" 'org-id-get-create)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "tC" 'org-table-create-or-convert-from-region)
@@ -1380,9 +1378,12 @@ package is loaded, you should place your code here."
                                                    :with-toc nil
                                                    :with-latex dvipng))
   (setf org-export-backends '(ascii html icalendar latex odt beamer man md
-                                    org texinfo)
+                                         org texinfo)
         org-export-with-broken-links t)
-  (setf org-download-method 'attach)
+  (setf org-download-method 'attach
+        ;; https://www.reddit.com/r/emacs/comments/1ow0gza/some_tips_for_using_emacs_on_wsl/
+        org-download-screenshot-method
+        "powershell.exe -Command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")
   ;; Add key bindings for org-expiry package
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "dc" 'org-expiry-insert-created)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "de" 'org-expiry-insert-expiry)
@@ -1390,11 +1391,11 @@ package is loaded, you should place your code here."
   ;; (advice-add 'org-id-get-create :after 'org-expiry-insert-created)
   (require 'org-depend)
   (require 'cl-lib)
-
+  
   (org-clock-persistence-insinuate)
-
+  
   (add-hook 'org-clock-in-prepare-hook 'my-org-mode-ask-effort)
-
+  
   (defun my-org-mode-ask-effort ()
     "Ask for an effort estimate when clocking in if none exists."
     (unless (org-entry-get (point) "Effort")
@@ -1404,22 +1405,23 @@ package is loaded, you should place your code here."
               (org-entry-get-multivalued-property (point) "Effort"))))
         (unless (equal effort "")
           (org-set-property "Effort" effort)))))
-
-  (defun eos/org-clock-in ()
+  
+  (defun bhw/clock-in ()
+    "Call `org-clock-in' with a prefix argument to select from history."
     (interactive)
-    (org-clock-in '(10)))
-
+    (org-clock-in '(4)))
+  
   (defun bh/verify-refile-target ()
     "Exclude todo keywords with a done state from refile targets"
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-
+  
   (spacemacs/set-leader-keys "oa" 'ben/default-custom-agenda)
   (spacemacs/set-leader-keys "oj" 'spacemacs/org-clock-jump-to-current-clock)
-  (spacemacs/set-leader-keys "oi" 'eos/org-clock-in)
+  (spacemacs/set-leader-keys "oi" 'bhw/clock-in)
   (spacemacs/set-leader-keys "oo" 'org-clock-out)
   (spacemacs/set-leader-keys "or" 'org-resolve-clocks)
   (spacemacs/set-leader-keys "oc" 'org-capture)
-
+  
   ;; Press t to change task todo state
   (setf
    org-use-fast-todo-selection t
@@ -1509,14 +1511,14 @@ package is loaded, you should place your code here."
    org-agenda-dim-blocked-tasks nil
    org-agenda-inhibit-startup t
    org-agenda-ignore-properties '(ASSIGNED LAST_REPEAT)
-   org-agenda-sticky t)
-
+   org-agenda-sticky nil)
+  
   (add-hook 'org-agenda-mode-hook
             (lambda ()
               (define-key
                org-agenda-mode-map (kbd "s")
                'avy-goto-word-or-subword-1)))
-
+  
   (defun my/org-agenda-calculate-efforts (limit)
     "Sum the efforts of scheduled entries up to LIMIT in the
                             agenda buffer."
@@ -1530,7 +1532,7 @@ package is loaded, you should place your code here."
        (cl-reduce #'+
                   (mapcar #'org-duration-to-minutes
                           (cl-remove-if-not 'identity total))))))
-
+  
   (defun my/org-agenda-insert-efforts ()
     "Insert the efforts for each day inside the agenda buffer."
     (save-excursion
@@ -1547,10 +1549,10 @@ package is loaded, you should place your code here."
                         (point-max)))
                    ")"))
           (forward-line)))))
-
+  
   (add-hook 'org-agenda-finalize-hook 'my/org-agenda-insert-efforts)
   ;;; find-free-time.el --- Find available time blocks in an org-agenda view
-
+  
   ;;; Commentary:
   ;; This script provides an interactive function `bda/find-agenda-free-time'
   ;; that can be run from an org-mode agenda buffer. It parses the schedule,
@@ -1565,9 +1567,9 @@ package is loaded, you should place your code here."
   ;; point movement with `forward-line`.
   ;;
   ;; Modified to sort the output by day with the least scheduled effort first.
-
+  
   ;;; Code:
-
+  
   (defun bda/time-string-to-minutes (time-str)
     "Convert HH:MM string to minutes from midnight."
     (unless (string-match "\\`\\([0-9]+\\):\\([0-9]+\\)\\'" time-str)
@@ -1575,11 +1577,11 @@ package is loaded, you should place your code here."
     (let ((h (string-to-number (match-string 1 time-str)))
           (m (string-to-number (match-string 2 time-str))))
       (+ (* h 60) m)))
-
+  
   (defun bda/minutes-to-time-string (minutes)
     "Convert minutes from midnight to HH:MM string."
     (format "%02d:%02d" (/ minutes 60) (% minutes 60)))
-
+  
   (defun bda/find-agenda-free-time (effort-length start-time-str end-time-str include-weekends)
     "Parse the agenda buffer to find free time slots of EFFORT-LENGTH minutes.
   Slots are constrained between START-TIME-STR and END-TIME-STR.
@@ -1592,14 +1594,14 @@ package is loaded, you should place your code here."
            (y-or-n-p "Include weekends? ")))
     (unless (derived-mode-p 'org-agenda-mode)
       (error "This command must be run from an org-agenda buffer"))
-
+  
     (let ((all-days-data '())
           (current-day-entry nil)
           (start-of-day-minutes (bda/time-string-to-minutes start-time-str))
           (end-of-day-minutes (bda/time-string-to-minutes end-time-str))
           (date-regexp "^\\([A-Za-z]+[ \t]+[0-9]+[ \t]+[A-Za-z]+[ \t]+[0-9]\\{4\\}\\)")
           (time-regexp "\\([0-9]\\{1,2\\}:[0-9]\\{2\\}\\)-\\([0-9]\\{1,2\\}:[0-9]\\{2\\}\\)"))
-
+  
       ;; 1. Parse buffer to gather busy times for each day.
       (let ((lines (split-string (buffer-string) "\n" t)))
         (dolist (line lines)
@@ -1625,9 +1627,9 @@ package is loaded, you should place your code here."
               (setf (cadr current-day-entry)
                     (cons (cons start-min end-min)
                           (cadr current-day-entry))))))))
-
+  
       (setq all-days-data (nreverse all-days-data))
-
+  
       ;; 2. Process data: merge intervals, calculate total effort, then sort by effort.
       (let* ((processed-days-data
               (mapcar
@@ -1649,7 +1651,7 @@ package is loaded, you should place your code here."
                            (setq current-end (cdr next-interval))))
                        (push (cons current-start current-end) merged-times)
                        (setq merged-times (nreverse merged-times)))
-
+  
                      ;; Sum the durations of the merged intervals for total effort.
                      (dolist (interval merged-times)
                        (setq total-effort (+ total-effort (- (cdr interval) (car interval))))))
@@ -1659,7 +1661,7 @@ package is loaded, you should place your code here."
              (sorted-days-data
               (sort processed-days-data (lambda (day1 day2)
                                           (< (caddr day1) (caddr day2))))))
-
+  
         ;; 3. Generate output string from sorted data.
         (let ((output-string ""))
           (dolist (day-data sorted-days-data)
@@ -1670,7 +1672,7 @@ package is loaded, you should place your code here."
                                        day-name
                                        (bda/minutes-to-time-string total-effort)))
                    (free-slots '()))
-
+  
               ;; Find all free slots of EFFORT-LENGTH for the current day.
               (if merged-times
                   ;; --- Logic for days WITH appointments ---
@@ -1702,24 +1704,24 @@ package is loaded, you should place your code here."
                                   (bda/minutes-to-time-string (+ slot-start effort-length)))
                           free-slots)
                     (setq slot-start (+ slot-start effort-length)))))
-
+  
               (when free-slots
                 (setq output-string
                       (concat output-string
                               (format "%s\n" day-header)
                               (mapconcat 'identity (nreverse free-slots) "\n")
                               "\n")))))
-
+  
           ;; 4. Display the final result in the minibuffer.
           (message "%s" (if (string-empty-p output-string)
                             "No free slots found."
                           (substring output-string 0 -1)))))))
-
+  
   (defun ben/default-custom-agenda()
     "Functionally call custom agenda command bound to KEY"
     (interactive)
     (org-agenda nil "d"))
-
+  
   (defun ben/org-capture-set-priority-on-deadline ()
     "Set the priority of an org-capture entry to [#B] if a deadline exists.
                           This function is intended to be used with `org-capture-before-finalize-hook`."
@@ -1729,9 +1731,9 @@ package is loaded, you should place your code here."
       (when (re-search-forward "^[ \t]*DEADLINE:" nil t)
         ;; If a deadline is found, set the priority to 'B'
         (org-priority ?B))))
-
+  
   (add-hook 'org-capture-before-finalize-hook #'ben/org-capture-set-priority-on-deadline)
-
+  
   (setf
    org-agenda-block-separator 61
    org-agenda-breadcrumbs-separator " | "
@@ -1753,7 +1755,7 @@ package is loaded, you should place your code here."
    org-agenda-columns-add-appointments-to-effort-sum t
    org-agenda-default-appointment-duration 0
    org-agenda-log-mode-items '(closed state clock)
-   org-agenda-start-with-log-mode nil
+   org-agenda-start-with-log-mode t
    org-agenda-start-with-entry-text-mode nil
    org-agenda-add-entry-text-maxlines 5
    org-agenda-entry-text-maxlines 5
@@ -1802,7 +1804,7 @@ package is loaded, you should place your code here."
                    (org-agenda-start-day "+1d")
                    (org-agenda-entry-types '(:timestamp :sexp :scheduled))
                    (org-agenda-overriding-header "Calendar\n"))))
-      ((org-agenda-tag-filter-preset '("-SDAY" "-bio1200" "-his2500" "-cla154" "-lat122" "-mus221" "-the249" "-the274" "-phl300")))))
+      ((org-agenda-tag-filter-preset '("-SDAY" "-bio1200" "-his2500" "-cla154" "-lat122" "-mus221" "-the249" "-the274" "-phl300" "-the219")))))
    org-agenda-window-setup 'current-window)
   ;; Following 2 lines are needed to exclude parent heading from table of contents but still export the content
   ;; https://emacs.stackexchange.com/questions/30183/orgmode-export-skip-ignore-first-headline-level
@@ -1876,13 +1878,13 @@ package is loaded, you should place your code here."
                                     <h1 class=\"title\">%t</h1>
                                     <p class=\"subtitle\">%s</p> <br/>
                                     <p class=\"updated\"><a href=\"/contact#article-history\">Updated:</a> %C</p>"
-
+  
            ;; Article Postamble includes
            ;; Javascript snippet to insert anchor links to Table of Contents
            ;; HTML Footer
            :html-postamble "<script>
                               const headers = Array.from( document.querySelectorAll('h2, h3, h4, h5, h6') );
-
+  
                               headers.forEach( header => {
                                 header.insertAdjacentHTML('afterbegin',
                                  '<a href=\"#table-of-contents\">&#8689;</a>'
@@ -1903,10 +1905,10 @@ package is loaded, you should place your code here."
   (defun my/ensure-headline-ids (&rest _)
     "Org trees without a custom ID will have
      All non-alphanumeric characters are cleverly replaced with ‘-’.
-
+  
      If multiple trees end-up with the same id property, issue a
      message and undo any property insertion thus far.
-
+  
      E.g., ↯ We'll go on a ∀∃⇅ adventure
         ↦  We'll-go-on-a-adventure
      "
@@ -1936,15 +1938,15 @@ package is loaded, you should place your code here."
   (defun ben/publish-blog()
     (interactive)
     (progn
-      (org-publish "blog")
-      (webfeeder-build
-       "atom.xml"
-       "~/common-lisp/project-isidore/assets/blog"
-       "https://bhw.name/"
-       ;; Remove blog index page and temporary files ".#"
-       (remove "archive.html" (directory-files "~/common-lisp/project-isidore/assets/blog" nil "^[^LICENSE]*\.html"))
-       :title "BHW Blog"
-       :description "Ben's personal blog")))
+    (org-publish "blog")
+    (webfeeder-build
+     "atom.xml"
+     "~/common-lisp/project-isidore/assets/blog"
+     "https://bhw.name/"
+     ;; Remove blog index page and temporary files ".#"
+     (remove "archive.html" (directory-files "~/common-lisp/project-isidore/assets/blog" nil "^[^LICENSE]*\.html"))
+     :title "BHW Blog"
+     :description "Ben's personal blog")))
   (add-hook 'org-mode 'org-tanglesync-mode)
   (add-hook 'prog-mode 'org-tanglesync-watch-mode)
   (add-hook 'text-mode 'org-tanglesync-watch-mode)
@@ -2027,85 +2029,8 @@ package is loaded, you should place your code here."
         org-noter-auto-save-last-location t)
   (spacemacs/set-leader-keys
     "aon" 'org-noter)
-  ;; (require 'org-brain)
-  ;; (require 'org-expiry)
-  ;; ;; Add CREATED property when adding a new org-brain headline entry
-  ;; (add-hook 'org-brain-new-entry-hook #'org-expiry-insert-created)
-
-  ;; (spacemacs/set-leader-keys "o SPC" 'org-brain-visualize-dwim)
-  ;; ;; For evil users,
-  ;; (with-eval-after-load 'evil
-  ;;   (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
-  ;; ;; Automatically add ID properties to all org headlines when saving
-  ;; ;; Disabled because of slowdown, use org-id-get-create instead
-  ;; ;; (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
-  ;; (defun org-expiry-created-comp (a b)
-  ;;   "Compare `org-expiry-created-property-name' properties of A and B."
-  ;;   (let ((ta (ignore-errors
-  ;;               (org-time-string-to-seconds
-  ;;                (org-entry-get (get-text-property 0 'org-marker a)
-  ;;                               org-expiry-created-property-name))))
-  ;;         (tb (ignore-errors
-  ;;               (org-time-string-to-seconds
-  ;;                (org-entry-get (get-text-property 0 'org-marker b)
-  ;;                               org-expiry-created-property-name)))))
-  ;;     (cond ((if ta (and tb (< ta tb)) tb) -1)
-  ;;           ((if tb (and ta (< tb ta)) ta) +1))))
-
-  ;; (defun org-brain-timeline ()
-  ;;   "List all org-brain headlines in chronological order."
-  ;;   (interactive)
-  ;;   (let ((org-agenda-files (org-brain-files))
-  ;;         (org-agenda-cmp-user-defined #'org-expiry-created-comp)
-  ;;         (org-agenda-sorting-strategy '(user-defined-down)))
-  ;;     (org-tags-view nil (format "+%s>\"\"" org-expiry-created-property-name))))
-
-  ;; (defun org-brain-cliplink-resource ()
-  ;;   "Add a URL from the clipboard as an org-brain resource.
-  ;;                 Suggest the URL title as a description for resource."
-  ;;   (interactive)
-  ;;   (let ((url (org-cliplink-clipboard-content)))
-  ;;     (org-brain-add-resource
-  ;;      url
-  ;;      (org-cliplink-retrieve-title-synchronously url)
-  ;;      t)))
-
-  ;; (define-key org-brain-visualize-mode-map (kbd "L") #'org-brain-cliplink-resource)
-
-  ;; ;; Prettify the lines via aa2u package, or ascii art to unicode
-  ;; (defface aa2u-face '((t . nil))
-  ;;   "Face for aa2u box drawing characters")
-  ;; (advice-add #'aa2u-1c :filter-return
-  ;;             (lambda (str) (propertize str 'face 'aa2u-face)))
-  ;; (defun aa2u-org-brain-buffer ()
-  ;;   (let ((inhibit-read-only t))
-  ;;     (make-local-variable 'face-remapping-alist)
-  ;;     (add-to-list 'face-remapping-alist
-  ;;                  '(aa2u-face . org-brain-wires))
-  ;;     (ignore-errors (aa2u (point-min) (point-max)))))
-  ;; (with-eval-after-load 'org-brain
-  ;;   (add-hook 'org-brain-after-visualize-hook #'aa2u-org-brain-buffer))
-  ;; (define-key org-brain-visualize-mode-map (kbd "j") #'evil-scroll-page-down)
-  ;; (define-key org-brain-visualize-mode-map (kbd "k") #'evil-scroll-page-up)
-  ;; (define-key org-brain-visualize-mode-map (kbd "i") #'org-brain-select-map)
-  ;; (define-key org-brain-visualize-mode-map (kbd "I") #'org-brain-select-dwim)
-  ;; (define-key org-brain-visualize-mode-map (kbd "s") #'link-hint-open-link)
-  ;; ;; Org-brain initialization
-  ;; (setf org-brain-path +project-maria-dir+
-  ;;       org-id-track-globally t
-  ;;       org-brain-data-file "~/.emacs.d/.cache/.org-brain-data.el"
-  ;;       org-id-locations-file "~/.emacs.d/.cache/.org-id-locations"
-  ;;       org-brain-visualize-default-choices 'all
-  ;;       org-brain-title-max-length 90
-  ;;       org-brain-include-file-entries nil
-  ;;       org-brain-file-entries-use-title nil
-  ;;       org-brain-headline-entry-name-format-string "%2$s"
-  ;;       org-brain-quit-after-goto t
-  ;;       org-brain-backlink "<--"
-  ;;       org-expiry-inactive-timestamps t)
   (require 'org-roam)
-  (setf org-roam-directory +project-maria-dir+
-        org-roam-dailies-directory "journal/")
+  (setf org-roam-directory +project-maria-dir+)
   (org-roam-db-autosync-mode)
   (use-package poly-org :after org) ; Should be after org mode config.
   ;; https://old.reddit.com/r/emacs/comments/g8ecpj/advice_for_auclatex_what_keybinds_do_you_find/foo64ge/
@@ -2136,9 +2061,9 @@ package is loaded, you should place your code here."
       (if (file-exists-p pdf-file)
           (find-file pdf-file)
         (message "No PDF found for %s" key))))
-
+  
   (spacemacs/set-leader-keys "s SPC" 'helm-bibtex)
-
+  
   (setf
    org-bibtex-file (concat +project-maria-dir+ "project-jerome.bib")
    reftex-default-bibliography (list (concat +project-maria-dir+ "project-jerome.bib"))
@@ -2287,7 +2212,12 @@ package is loaded, you should place your code here."
   `mu4e-compose-pre-hook'"
     (let ((msg mu4e-compose-parent-message))
       (when msg
-        (setf user-mail-address
+        ;; In `mu4e-compose-set-from-address-dwim`, you are using `setf
+        ;; user-mail-address`. This sets the *global* value. If you have
+        ;; multiple compose buffers open, switching the account in one might
+        ;; unexpectedly change the identity in another if they are not properly
+        ;; isolated.
+        (setq-local user-mail-address
               (cond
                ((mu4e-message-contact-field-matches msg :to "seneschal@bhw.name")
                 "seneschal@bhw.name")
@@ -2298,7 +2228,7 @@ package is loaded, you should place your code here."
                ((mu4e-message-contact-field-matches msg :to "wang.hanshen@shms.edu")
                 "wang.hanshen@shms.edu")
                (t "benedicthanshenwang@gmail.com"))))))
-
+  
   (setf mu4e-change-filenames-when-moving t  ; mbsync specific.
         ;; see an ASCII table for the character decimal codes
         mu4e-bookmarks '(("maildir:/INBOX" "Inbox" 105 )
@@ -2433,7 +2363,7 @@ package is loaded, you should place your code here."
     (let ((browse-url-browser-function (lambda (url _)
                                          (org-web-tools-read-url-as-org url))))
       (ap/elfeed-search-selected-map #'ap/elfeed-search-browse-entry)))
-
+  
   (defun ap/elfeed-search-browse-entry (entry)
     "Browse ENTRY with `browse-url' and mark as read.
       If ENTRY is unread, it will also be unstarred.  To override the
@@ -2446,11 +2376,11 @@ package is loaded, you should place your code here."
       (elfeed-untag entry 'unread)
       (elfeed-search-update-entry entry)
       (browse-url url)))
-
+  
   (cl-defun ap/elfeed-search-selected-map (fn)
     "Map FN across selected entries in elfeed-search buffer using `mapcar'."
     (mapcar fn (elfeed-search-selected)))
-
+  
   (defun ben/elfeed-search-browse-url (&optional use-generic-p)
     "Visit the current entry in your browser using `browse-url'.
   If there is a prefix argument, visit the current entry in the
@@ -2459,11 +2389,12 @@ package is loaded, you should place your code here."
     (let ((buffer (current-buffer))
           (entries (elfeed-search-selected)))
       (cl-loop for entry in entries
+               for link = (elfeed-entry-link entry)
                do (elfeed-untag entry 'unread)
-               when (elfeed-entry-link entry)
+               when link
                do (if use-generic-p
-                      (browse-url-generic it)
-                    (eww it)))
+                      (browse-url-generic link)
+                    (eww link)))
       ;; `browse-url' could have switched to another buffer if eww or another
       ;; internal browser is used, but the remainder of the functions needs to
       ;; run in the elfeed buffer.
@@ -2510,53 +2441,4 @@ package is loaded, you should place your code here."
   ;; Determines the length of time between the end of typing for SPC j j (avy-timer)
   ;; and the appearance of green prompt letters
   (setq avy-timeout-seconds 0.50)
-  )
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(package-selected-packages
-     '(ace-jump-helm-line ace-window anki-editor ascii-art-to-unicode auto-yasnippet
-                          avy-jump-helm-line better-jumper bind-map biome casual
-                          cdlatex code-cells code-review column-enforce-mode
-                          company-quickhelp cython-mode diminish dired-quick-sort
-                          disable-mouse doom-modeline dumb-jump eat ebib
-                          elfeed-org elfeed-tube-mpv elisp-def elisp-demos
-                          elisp-slime-nav ement evil-cleverparens evil-collection
-                          evil-evilified-state evil-ledger evil-lion evil-matchit
-                          evil-nerd-commenter evil-org evil-snipe evil-surround
-                          evil-textobj-line exec-path-from-shell eyebrowse
-                          flycheck-ledger flyspell-correct-helm git-link gnuplot
-                          google-translate gptel greader helm-ag helm-bibtex
-                          helm-c-yasnippet helm-comint helm-lsp helm-mu
-                          helm-org-ql helm-projectile helm-pydoc helm-xref helpful
-                          highlight-parentheses hledger-mode holy-mode info+ lexic
-                          link-hint listen literate-calc-mode live-py-mode
-                          lsp-origami lsp-ui magit-todos mu4e nano-calendar
-                          org-appear org-cliplink org-contacts org-contrib
-                          org-download org-fragtog org-mime org-pdftools
-                          org-project-capture org-re-reveal org-ref org-roam
-                          org-superstar org-tanglesync org-timeline org-vcard
-                          org-web-tools orgit-forge page-break-lines paradox
-                          pdf-view-restore persp-mode pet pip-requirements pipenv
-                          pippel plantuml-mode poetry poly-org polymode popwin
-                          posframe py-isort pydoc pyenv-mode pylookup pytest
-                          python-pytest rainbow-delimiters shell-pop sly
-                          sly-macrostep space-doc spaceline
-                          spacemacs-purpose-popwin spacemacs-whitespace-cleanup
-                          sphinx-doc string-edit-at-point symbol-overlay
-                          transmission unfill vundo webfeeder wgrep window-purpose
-                          winum ws-butler youtube-sub-extractor)))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
   )
